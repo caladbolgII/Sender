@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sender</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_message1">Enter video link</string>
+    <string name="edit_message2">Enter a message</string>
+    <string name="button_send">send link</string>
+    <string name="search">search</string>
+    <string name="title_activity_text">text</string>
+    <string name="title_activity_youtube">youtube</string>
+
+</resources>

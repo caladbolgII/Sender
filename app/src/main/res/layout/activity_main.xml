@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+    <ImageButton
+        android:layout_width="460dp"
+        android:layout_height="162dp"
+        android:id="@+id/imageButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:maxHeight="25dp"
+        android:maxWidth="25dp"
+        android:src="@drawable/image" />
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="185dp"
+        android:id="@+id/imageButton2"
+        android:src="@drawable/text"
+        android:clickable="false"
+        android:maxHeight="30dp"
+        android:maxWidth="30dp"
+        android:layout_below="@+id/imageButton"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right"
+        android:onClick="open_sender"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton3"
+        android:src="@drawable/youtube"
+        android:clickable="false"
+        android:maxHeight="30dp"
+        android:maxWidth="30dp"
+        android:layout_below="@+id/imageButton"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_horizontal"
+        android:onClick="open_video"/>
+
+
+</LinearLayout>
