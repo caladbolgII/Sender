@@ -29,9 +29,9 @@ public class text extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
-        myTextField = (EditText) findViewById(R.id.message);
+        myTextField = (EditText) findViewById(R.id.text_message);
 
-        myButton = (Button) findViewById(R.id.button2);
+        myButton = (Button) findViewById(R.id.buttontext);
 
     }
 
@@ -76,12 +76,12 @@ public class text extends ActionBarActivity {
         try {
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action", myTextField.getText());
-            jsonObject.accumulate("url", "hello");
+            jsonObject.accumulate("action", "castText");
+            jsonObject.accumulate("customText", myTextField.getText());
             jsonObject.accumulate("deadline", "10-25-2015");
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost("http://10.150.241.225:8080");
+            HttpPost httpost = new HttpPost("http://192.168.1.102:8080");
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

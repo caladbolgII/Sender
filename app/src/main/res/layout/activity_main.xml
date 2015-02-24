@@ -14,7 +14,8 @@
         android:layout_alignParentStart="true"
         android:maxHeight="25dp"
         android:maxWidth="25dp"
-        android:src="@drawable/image" />
+        android:src="@drawable/image"
+        android:onClick="open_image"/>
 
     <ImageButton
         android:layout_width="match_parent"

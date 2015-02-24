@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imagelink"
+        android:hint="@string/edit_message2"
+        android:layout_marginTop="61dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_send"
+        android:id="@+id/buttonimage"
+        android:onClick="attemptSend"
+        android:layout_below="@+id/imagelink"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PLAY IMAGE"
+        android:id="@+id/play_image"
+        android:layout_marginTop="57dp"
+        android:onClick="attemptPlay"
+        android:layout_below="@+id/buttonimage"
+        android:layout_toStartOf="@+id/buttonimage" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAUSE IMAGE"
+        android:id="@+id/pause_image"
+        android:onClick="attemptPause"
+        android:layout_alignTop="@+id/play_image"
+        android:layout_toEndOf="@+id/buttonimage" />
+</RelativeLayout>

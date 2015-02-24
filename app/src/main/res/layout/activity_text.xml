@@ -8,7 +8,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/message"
+        android:id="@+id/text_message"
         android:hint="@string/edit_message2"
         android:layout_marginTop="61dp"
         android:layout_alignParentTop="true"
@@ -18,9 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_send"
-        android:id="@+id/button2"
+        android:id="@+id/buttontext"
         android:onClick="attemptSend"
-        android:layout_below="@+id/message"
+        android:layout_below="@+id/text_message"
         android:layout_centerHorizontal="true" />
 
 

@@ -2,12 +2,15 @@ package cast.ucl.sender;
 
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +19,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
 public class SearchActivity extends Activity {
@@ -26,7 +37,7 @@ public class SearchActivity extends Activity {
     private Handler handler;
 
     private List<VideoItem> searchResults;
-
+    public String yt_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +48,7 @@ public class SearchActivity extends Activity {
 
         handler = new Handler();
 
-        //addClickListener();
+        addClickListener();
 
         searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -51,21 +62,20 @@ public class SearchActivity extends Activity {
         });
 
     }
-/*
+
     private void addClickListener(){
         videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> av, View v, int pos,
-                                    long id) {
-                Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+
+                yt_id = searchResults.get(pos).getId();
+                new Connection().execute();
             }
 
         });
     }
-*/
+
     private void searchOnYoutube(final String keywords){
         new Thread(){
             public void run(){
@@ -102,4 +112,38 @@ public class SearchActivity extends Activity {
 
         videosFound.setAdapter(adapter);
     }
-}
+    private class Connection extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object... arg0){
+            connect();
+            return null;
+        }
+
+    }
+
+    private void connect() {
+        try {
+            String json = "";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("action", "castVideo");
+            jsonObject.accumulate("videoID", yt_id);
+            jsonObject.accumulate("deadline", "10-25-2015");
+
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpost = new HttpPost("http://192.168.1.102:8080");
+            json = jsonObject.toString();
+            StringEntity se = new StringEntity(json);
+            httpost.setEntity(se);
+            httpost.setHeader("Accept", "application/json");
+            httpost.setHeader("Content-type", "application/json");
+            httpclient.execute(httpost);
+        } catch (ClientProtocolException e) {
+            Log.d("HTTPCLIENT", e.getLocalizedMessage());
+        } catch (IOException e) {
+            Log.d("HTTPCLIENT", e.getLocalizedMessage());
+        } catch (JSONException e) {
+            Log.d("HTTPCLIENT", e.getLocalizedMessage());
+        }
+    }
+  }

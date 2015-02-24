@@ -9,6 +9,10 @@
     <string name="button_send">send link</string>
     <string name="search">search</string>
     <string name="title_activity_text">text</string>
+    <string name="title_activity_image">image</string>
     <string name="title_activity_youtube">youtube</string>
-
+    <string name="app_id">BC41EADD</string>
+    <string name="namespace">urn:x-cast:com.google.cast.sample.bbcast</string>
+    <string name="instructions">Talk to me</string>
+    <string name="media_route_menu_title">Play on&#8230;</string>
 </resources>
