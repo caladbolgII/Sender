@@ -1,7 +1,9 @@
 package cast.ucl.sender;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -30,7 +32,10 @@ public class text extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
         myTextField = (EditText) findViewById(R.id.text_message);
-
+        ActionBar actionBar = getSupportActionBar();
+        Drawable d=getResources().getDrawable(R.drawable.securedownload);
+        actionBar.setBackgroundDrawable(d);
+        actionBar.setDisplayShowTitleEnabled(false);
         myButton = (Button) findViewById(R.id.buttontext);
 
     }

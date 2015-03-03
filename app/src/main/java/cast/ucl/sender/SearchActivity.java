@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.text.Html;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.client.ClientProtocolException;
@@ -44,6 +44,8 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.activity_search);
 
         searchInput = (EditText)findViewById(R.id.search_input);
+        searchInput.setHint("Search Video to Cast from Youtube");
+        searchInput.setHint(Html.fromHtml("<font color='#000000'>Search Video to Cast from Youtube</font> "));
         videosFound = (ListView)findViewById(R.id.videos_found);
 
         handler = new Handler();
