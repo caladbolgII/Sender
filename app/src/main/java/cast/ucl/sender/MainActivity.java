@@ -89,7 +89,10 @@ public class MainActivity extends ActionBarActivity {
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
     }
-
+    public void go_to_cast(View view) {
+        Intent intent = new Intent(this,Selection.class);
+        startActivity(intent);
+    }
     @Override
     protected void onPause() {
         if (isFinishing()) {
@@ -131,18 +134,7 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void open_image(View view) {
-        Intent intent = new Intent(this,ImageSender.class);
-        startActivity(intent);
-    }
-    public void open_sender(View view) {
-        Intent intent = new Intent(this,text.class);
-        startActivity(intent);
-    }
-    public void open_video(View view) {
-        Intent intent = new Intent(this,SearchActivity.class);
-        startActivity(intent);
-    }
+
 
     /**
      * Callback for MediaRouter events

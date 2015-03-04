@@ -21,28 +21,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImageSender"
-            android:label="@string/title_activity_image"
+            android:name=".Selection"
+            android:label="@string/title_activity_select"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.MainActivity" />
+
+        </activity>
+        <activity
+            android:name=".ImageSender"
+            android:label="@string/title_activity_image"
+            android:parentActivityName=".Selection" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.Selection" />
         </activity>
         <activity
             android:name=".text"
             android:label="@string/title_activity_text"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".Selection" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cast.ucl.sender.MainActivity" />
+                android:value="cast.ucl.sender.Selection" />
         </activity>
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_youtube"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".Selection" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="cast.ucl.sender.MainActivity" />
+                android:value="cast.ucl.sender.Selection" />
         </activity>
     </application>
 
