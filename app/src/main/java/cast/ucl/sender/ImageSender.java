@@ -4,6 +4,8 @@ package cast.ucl.sender;
  * Created by LENOVO on 2/20/2015.
  */
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -69,7 +72,17 @@ public class ImageSender extends ActionBarActivity {
 
     public void attemptSend(View view){
         new Connection().execute();
+        Context context = getApplicationContext();
+        CharSequence text = "Image has been cast";
+        int duration = Toast.LENGTH_SHORT;
 
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        go_back();
+    }
+    public void go_back() {
+        Intent intent = new Intent(this, Selection.class);
+        startActivity(intent);
     }
     /*
     public void attemptPlay(View view){
