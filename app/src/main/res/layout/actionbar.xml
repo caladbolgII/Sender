@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top|right">
+
+    <at.markushi.ui.CircleButton
+        android:layout_width="50dp"
+        android:layout_height="50dip"
+        android:src="@drawable/cross"
+        app:cb_color="#FDB900"
+        android:id="@+id/add" />
+
+    <at.markushi.ui.CircleButton
+        android:layout_width="50dp"
+        android:layout_height="50dip"
+        android:src="@drawable/edit3"
+        app:cb_color="#FDB900"
+        android:id="@+id/edit"
+        android:layout_gravity="top|right"
+        />
+
+</LinearLayout>

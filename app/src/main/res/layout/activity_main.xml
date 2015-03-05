@@ -34,22 +34,33 @@
         android:textSize="35dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="To begin casting content on your Bulletin Board, please tap the Cast Icon on the upper right and select your Chromecast"
         android:id="@+id/textView3"
         android:layout_below="@+id/textView2"
-        android:layout_toEndOf="@+id/linearLayout" />
+        android:layout_toEndOf="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center" />
 
     <at.markushi.ui.CircleButton
         android:id="@+id/button0"
         android:layout_width="match_parent"
         android:layout_height="64dip"
         android:src="@drawable/ic_action_tick"
-        app:cb_color="#99CC00"
+        app:cb_color="#FDB900"
         android:onClick="go_to_cast"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Press the button when done"
+        android:id="@+id/textView4"
+        android:layout_above="@+id/button0"
         android:layout_centerHorizontal="true" />
 
 

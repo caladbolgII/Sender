@@ -1,10 +1,15 @@
 package cast.ucl.sender;
 
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,7 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.text.Html;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.client.ClientProtocolException;
@@ -29,7 +35,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends ActionBarActivity {
 
     private EditText searchInput;
     private ListView videosFound;
@@ -42,7 +48,10 @@ public class SearchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        ActionBar actionBar = getSupportActionBar();
+        Drawable d=getResources().getDrawable(R.drawable.securedownload);
+        actionBar.setBackgroundDrawable(d);
+        actionBar.setDisplayShowTitleEnabled(false);
         searchInput = (EditText)findViewById(R.id.search_input);
         searchInput.setHint("Search Video to Cast from Youtube");
         searchInput.setHint(Html.fromHtml("<font color='#000000'>Search Video to Cast from Youtube</font> "));
@@ -73,9 +82,21 @@ public class SearchActivity extends Activity {
 
                 yt_id = searchResults.get(pos).getId();
                 new Connection().execute();
+                Context context = getApplicationContext();
+                CharSequence text = "Video has been cast";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                go_back();
             }
 
         });
+    }
+
+    public void go_back() {
+        Intent intent = new Intent(this, Selection.class);
+        startActivity(intent);
     }
 
     private void searchOnYoutube(final String keywords){

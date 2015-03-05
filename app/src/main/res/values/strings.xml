@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cast_text">Cast Text</string>
+    <string name="edit_queue">Edit Queue</string>
+    <string name="add_to_queue">Add to Queue</string>
     <string name="cast_video">Cast Video</string>
     <string name="cast_img">Cast Image</string>
     <string name="BBCAST">BBCAST</string>
@@ -14,6 +16,9 @@
     <string name="title_activity_text">text</string>
     <string name="title_activity_image">image</string>
     <string name="title_activity_youtube">youtube</string>
+    <string name="title_activity_queue">video queue</string>
+    <string name="title_activity_queueimg">image queue</string>
+    <string name="title_activity_queuetxt">text queue</string>
     <string name="title_activity_select">CAST SELECTOR</string>
     <string name="app_id">BC41EADD</string>
     <string name="namespace">urn:x-cast:com.google.cast.sample.bbcast</string>

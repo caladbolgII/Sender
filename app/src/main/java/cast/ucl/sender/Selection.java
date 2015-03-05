@@ -46,15 +46,15 @@ public class Selection extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public void open_image(View view) {
-        Intent intent = new Intent(this,ImageSender.class);
+        Intent intent = new Intent(this,ImageQueueEdit.class);
         startActivity(intent);
     }
     public void open_sender(View view) {
-        Intent intent = new Intent(this,text.class);
+        Intent intent = new Intent(this,TextQueueEdit.class);
         startActivity(intent);
     }
     public void open_video(View view) {
-        Intent intent = new Intent(this,SearchActivity.class);
+        Intent intent = new Intent(this,QueueEdit.class);
         startActivity(intent);
     }
 }
