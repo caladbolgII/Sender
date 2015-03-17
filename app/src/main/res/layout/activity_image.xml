@@ -26,10 +26,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PLAY IMAGE"
-        android:id="@+id/play_image"
+        android:text="Download from dropbox"
+        android:id="@+id/btnDownload"
         android:layout_marginTop="57dp"
-        android:onClick="attemptPlay"
         android:layout_below="@+id/buttonimage"
         android:layout_toStartOf="@+id/buttonimage" />
 
@@ -37,9 +36,8 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PAUSE IMAGE"
-        android:id="@+id/pause_image"
-        android:onClick="attemptPause"
-        android:layout_alignTop="@+id/play_image"
-        android:layout_toEndOf="@+id/buttonimage" />
+        android:text="Upload to Dropbox"
+        android:id="@+id/btnUploadPhoto"
+        android:layout_alignTop="@+id/btnDownload"
+        android:layout_toEndOf="@+id/imagelink" />
 </RelativeLayout>

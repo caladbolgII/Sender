@@ -2,6 +2,7 @@ package cast.ucl.sender;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,8 +20,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 
@@ -36,9 +38,11 @@ public class text extends ActionBarActivity {
         setContentView(R.layout.activity_text);
         myTextField = (EditText) findViewById(R.id.text_message);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.securedownload);
-        actionBar.setBackgroundDrawable(d);
-        actionBar.setDisplayShowTitleEnabled(false);
+        Drawable d=getResources().getDrawable(R.drawable.icon);
+        actionBar.setHomeAsUpIndicator(d);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
+        actionBar.setTitle("SELECT IMAGE");
         myButton = (Button) findViewById(R.id.buttontext);
 
     }

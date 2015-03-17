@@ -1,6 +1,7 @@
 package cast.ucl.sender;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -17,10 +18,13 @@ public class Selection extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.securedownload);
-        actionBar.setBackgroundDrawable(d);
-        actionBar.setDisplayShowTitleEnabled(false);
+     //   actionBar.setDisplayShowTitleEnabled(true);
+   //     actionBar.setDisplayShowCustomEnabled(true);
 
+        Drawable d=getResources().getDrawable(R.drawable.icon);
+        actionBar.setHomeAsUpIndicator(d);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
     }
 
 

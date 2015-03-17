@@ -1,6 +1,7 @@
 package cast.ucl.sender;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -62,9 +63,11 @@ public class MainActivity extends ActionBarActivity {
                         CastMediaControlIntent.categoryForCast(getResources()
                                 .getString(R.string.app_id))).build();
         mMediaRouterCallback = new MyMediaRouterCallback();
-        Drawable d=getResources().getDrawable(R.drawable.securedownload);
-        actionBar.setBackgroundDrawable(d);
-        actionBar.setDisplayShowTitleEnabled(false);
+        Drawable d=getResources().getDrawable(R.drawable.icon);
+        actionBar.setHomeAsUpIndicator(d);
+         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
 
      }
 

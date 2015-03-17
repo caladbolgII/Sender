@@ -1,6 +1,7 @@
 package cast.ucl.sender;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -20,8 +21,6 @@ public class ImageQueueEdit extends ActionBarActivity{
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.securedownload);
-        actionBar.setBackgroundDrawable(d);
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
                 .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View customActionBarView = inflater.inflate(R.layout.actionbar, null);
@@ -52,8 +51,11 @@ public class ImageQueueEdit extends ActionBarActivity{
         });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
-        actionBar.setTitle("Image Queue");
-        actionBar.setDisplayShowTitleEnabled(true);
+        Drawable d=getResources().getDrawable(R.drawable.icon);
+        actionBar.setHomeAsUpIndicator(d);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
+        actionBar.setTitle("IMAGE QUEUE");
     }
 
 
