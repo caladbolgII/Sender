@@ -48,9 +48,10 @@ public class QueueEdit extends ActionBarActivity {
         });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
-        Drawable d=getResources().getDrawable(R.drawable.icon);
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
         actionBar.setTitle("VIDEO QUEUE");
     }

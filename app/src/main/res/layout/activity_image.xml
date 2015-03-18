@@ -3,41 +3,71 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/bg">
+    style="@style/bg"
+    android:background="@drawable/twitter_icon">
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:id="@+id/imagelink"
-        android:hint="@string/edit_message2"
-        android:layout_marginTop="61dp"
+        android:hint="DROPBOX IMAGE URL"
+        android:layout_marginTop="10dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#f94b4b4b" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_send"
+        android:text="@string/imagecastbutton"
         android:id="@+id/buttonimage"
         android:onClick="attemptSend"
-        android:layout_below="@+id/imagelink"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignBottom="@+id/btnDownload"
+        android:layout_toEndOf="@+id/textView6"
+        android:layout_marginTop="15dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:text="Download from dropbox"
+        android:text="Select Image from Dropbox"
         android:id="@+id/btnDownload"
-        android:layout_marginTop="57dp"
-        android:layout_below="@+id/buttonimage"
-        android:layout_toStartOf="@+id/buttonimage" />
+        android:layout_below="@+id/deadline_image"
+        android:layout_toStartOf="@+id/textView6"
+        android:layout_marginTop="15dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Upload to Dropbox"
         android:id="@+id/btnUploadPhoto"
-        android:layout_alignTop="@+id/btnDownload"
-        android:layout_toEndOf="@+id/imagelink" />
+        android:layout_alignTop="@+id/buttonimage"
+        android:layout_toStartOf="@+id/buttonimage"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/selectdeadline"
+        android:id="@+id/textView6"
+        android:textAlignment="center"
+        android:textColor="#ffffffff"
+        android:textColorHighlight="#ff000000"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/imagelink"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deadline_image"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:clickable="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
 </RelativeLayout>

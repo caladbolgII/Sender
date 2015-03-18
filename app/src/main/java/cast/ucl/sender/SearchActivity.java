@@ -50,9 +50,10 @@ public class SearchActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.icon);
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
         actionBar.setTitle("SELECT IMAGE");
         searchInput = (EditText)findViewById(R.id.search_input);

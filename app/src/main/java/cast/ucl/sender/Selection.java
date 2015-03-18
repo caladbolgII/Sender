@@ -3,6 +3,7 @@ package cast.ucl.sender;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -21,9 +22,10 @@ public class Selection extends ActionBarActivity {
      //   actionBar.setDisplayShowTitleEnabled(true);
    //     actionBar.setDisplayShowCustomEnabled(true);
 
-        Drawable d=getResources().getDrawable(R.drawable.icon);
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
     }
 
@@ -49,6 +51,19 @@ public class Selection extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void open_twitter(View view){
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("twitter://user?screen_name=Mari_navi"));
+            startActivity(intent);
+
+        }catch (Exception e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/#!/Mari_navi")));
+        }
+    }
+
     public void open_image(View view) {
         Intent intent = new Intent(this,ImageQueueEdit.class);
         startActivity(intent);

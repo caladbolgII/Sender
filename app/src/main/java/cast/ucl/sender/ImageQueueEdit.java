@@ -11,54 +11,56 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
+
+import java.util.List;
 
 /**
  * Created by LENOVO on 3/6/2015.
  */
-public class ImageQueueEdit extends ActionBarActivity{
+public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnItemClickListener{
+    List<String> imagequeue;
+    private ListView imagelist;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_imgcast);
+        //setting up the actionbar
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
                 .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View customActionBarView = inflater.inflate(R.layout.actionbar, null);
 
-        actionBar.setDisplayOptions(
-                ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP |ActionBar.DISPLAY_SHOW_HOME
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP |ActionBar.DISPLAY_SHOW_HOME
                         | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setCustomView(customActionBarView,
-                new ActionBar.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));
+        actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        setContentView(R.layout.activity_imgcast);
-
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
+        actionBar.setHomeAsUpIndicator(d);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
+        actionBar.setTitle("IMAGE QUEUE");
 
         ImageView addqueue = ( ImageView) customActionBarView
                 .findViewById(R.id.add);
         addqueue.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(view.getContext(), ImageSender.class);
                 startActivity(intent);
-
             }
         });
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
-        Drawable d=getResources().getDrawable(R.drawable.icon);
-        actionBar.setHomeAsUpIndicator(d);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        actionBar.setTitle("IMAGE QUEUE");
+        imagelist = (ListView) findViewById(R.id.imglist);
+        imagelist.setOnItemClickListener(this);
     }
 
+    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,6 +26,11 @@ import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -40,10 +46,11 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     private ArrayList<DropboxAPI.Entry> files;
     private ArrayList<String> dir;
     private boolean isItemClicked = false;
-    // , onResume = false;
     private ListView lvDropboxDownloadFilesList;
-    // private Button btnDropboxDownloadDone;
     private ProgressDialog pd;
+    public static final String TAG = DropboxDownload.class.getSimpleName();
+
+
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == 0) {
@@ -64,9 +71,10 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
         setContentView(R.layout.dropboxdownload);
         lvDropboxDownloadFilesList = (ListView) findViewById(R.id.lvDropboxDownloadFilesList);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.icon);
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
         actionBar.setTitle("SELECT IMAGE");
         // btnDropboxDownloadDone = (Button)
@@ -100,6 +108,7 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
 
         }
     }
+    //sharelinker is an async task that gets true url of an image then passes it to an intent and opens the image casting activity
     private class Sharelinker extends AsyncTask {
 
         @Override
@@ -111,11 +120,33 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     private void getshareurl() {
         try {
             DropboxAPI.DropboxLink shareLink = mApi.share(fileSelected.path);
-            shareurl = shareLink.url.toString();
+            shareurl = getShareURL(shareLink.url).replaceFirst("https://www", "https://dl");
             goback();
         } catch (DropboxException e) {
             e.printStackTrace();
         }
+    }
+
+    String getShareURL(String strURL) {
+        URLConnection conn = null;
+        String redirectedUrl = null;
+        try {
+            URL inputURL = new URL(strURL);
+            conn = inputURL.openConnection();
+            conn.connect();
+
+            InputStream is = conn.getInputStream();
+            System.out.println("Redirected URL: " + conn.getURL());
+            redirectedUrl = conn.getURL().toString();
+            is.close();
+
+        } catch (MalformedURLException e) {
+            Log.d(TAG, "Please input a valid URL");
+        } catch (IOException ioe) {
+            Log.d(TAG, "Can not connect to the URL");
+        }
+
+        return redirectedUrl;
     }
 
     public void goback() {

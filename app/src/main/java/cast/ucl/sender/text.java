@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,21 +29,23 @@ import java.io.IOException;
 
 public class text extends ActionBarActivity {
     public EditText myTextField;
-
+    public DatePicker textdeadline;
     public Button myButton;
-
+    public String deaddate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
         myTextField = (EditText) findViewById(R.id.text_message);
+        textdeadline = (DatePicker) findViewById(R.id.deadline_text);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.icon);
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        actionBar.setTitle("SELECT IMAGE");
+        actionBar.setTitle("MESSAGE SENDER");
         myButton = (Button) findViewById(R.id.buttontext);
 
     }
@@ -70,7 +73,8 @@ public class text extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public void attemptSend(View view){
-    new Connection().execute();
+        deaddate = Integer.toString(textdeadline.getDayOfMonth()) + Integer.toString(textdeadline.getMonth()) + Integer.toString(textdeadline.getYear());
+         new Connection().execute();
         Context context = getApplicationContext();
         CharSequence text = "Text has been cast";
         int duration = Toast.LENGTH_SHORT;
@@ -99,7 +103,7 @@ public class text extends ActionBarActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action", "castText");
             jsonObject.accumulate("customText", myTextField.getText());
-            jsonObject.accumulate("deadline", "10-25-2015");
+            jsonObject.accumulate("deadline", deaddate);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpPost httpost = new HttpPost("http://192.168.1.102:8080");

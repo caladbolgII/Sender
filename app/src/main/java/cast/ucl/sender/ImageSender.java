@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -44,12 +45,14 @@ import java.util.Date;
 public class ImageSender extends ActionBarActivity implements View.OnClickListener {
 // variable declarations
     public EditText myTextField;
+    public DatePicker imagedeadline;
     private static final int TAKE_PHOTO = 1;
     private Button btnUpload, btnDownload;
     private final String DIR = "/";
     private File f;
     private boolean mLoggedIn, onResume;
     private DropboxAPI<AndroidAuthSession> mApi;
+    public String deaddate= "";
     @Override
 
 
@@ -58,13 +61,13 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
         myTextField = (EditText) findViewById(R.id.imagelink);
+        imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        Drawable d=getResources().getDrawable(R.drawable.icon);
+        Drawable d=getResources().getDrawable(R.drawable.backicon);
         actionBar.setHomeAsUpIndicator(d);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
         AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
 
@@ -105,6 +108,8 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     }
 
     public void attemptSend(View view){
+
+        deaddate = Integer.toString(imagedeadline.getDayOfMonth()) + Integer.toString(imagedeadline.getMonth()) + Integer.toString(imagedeadline.getYear());
         new Connection().execute();
         Context context = getApplicationContext();
         CharSequence text = "Image has been cast";
@@ -135,7 +140,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action", "castImage");
             jsonObject.accumulate("imageURL", myTextField.getText());
-            jsonObject.accumulate("deadline", "10-25-2015");
+            jsonObject.accumulate("deadline", deaddate);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpPost httpost = new HttpPost("http://192.168.1.102:8080");

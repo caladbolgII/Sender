@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -49,23 +48,22 @@ public class MainActivity extends ActionBarActivity {
     private boolean mApplicationStarted;
     private boolean mWaitingForReconnect;
     private String mSessionId;
-    Animation animFadein;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
-       // animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
-        // actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(
-                        CastMediaControlIntent.categoryForCast(getResources()
+        .addControlCategory(
+        CastMediaControlIntent.categoryForCast(getResources()
                                 .getString(R.string.app_id))).build();
         mMediaRouterCallback = new MyMediaRouterCallback();
         Drawable d=getResources().getDrawable(R.drawable.icon);
         actionBar.setHomeAsUpIndicator(d);
-         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
 
