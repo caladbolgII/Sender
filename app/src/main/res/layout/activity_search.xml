@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/bg"
-    android:background="#FFf3db0d">
+    android:background="#2b2b2b">
 
     <EditText
         android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -12,8 +13,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -68,15 +73,20 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.dropboxdownload);
         lvDropboxDownloadFilesList = (ListView) findViewById(R.id.lvDropboxDownloadFilesList);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.backicon);
+        Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        actionBar.setTitle("SELECT IMAGE");
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        Spannable text = new SpannableString("SELECT IMAGE");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
         // btnDropboxDownloadDone = (Button)
         // findViewById(R.id.btnDropboxDownloadDone);
         AndroidAuthSession session = buildSession();
@@ -96,7 +106,7 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
-       fileSelected = files.get(arg2);
+        fileSelected = files.get(arg2);
 
         if (fileSelected.isDir) {
             isItemClicked = true;
@@ -273,103 +283,91 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
             return null;
         }
     }
-/*
-    private boolean downloadDropboxFile(DropboxAPI.Entry fileSelected) {// , String
-        // localFilePath)
-        // {
-        File dir = new File(Utils.getPath());
-        if (!dir.exists())
-            dir.mkdirs();
-        try {
-            File localFile = new File(dir + "/" + fileSelected.fileName());
-            if (!localFile.exists()) {
-                localFile.createNewFile();
-                copy(fileSelected, localFile);
-
-            } else {
-                showFileExitsDialog(fileSelected, localFile);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-
-
-    private void copy(final DropboxAPI.Entry fileSelected, final File localFile) {
-        final ProgressDialog pd = ProgressDialog.show(DropboxDownload.this,
-                "Downloading...", "Please wait...");
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                BufferedInputStream br = null;
-                BufferedOutputStream bw = null;
-                DropboxAPI.DropboxInputStream fd;
-                try {
-                    fd = mApi.getFileStream(fileSelected.path,
-                            localFile.getPath());
-                    br = new BufferedInputStream(fd);
-                    bw = new BufferedOutputStream(new FileOutputStream(
-                            localFile));
-
-                    byte[] buffer = new byte[4096];
-                    int read;
-                    while (true) {
-                        read = br.read(buffer);
-                        if (read <= 0) {
-                            break;
-                        }
-                        bw.write(buffer, 0, read);
-                    }
-                    pd.dismiss();
-                    Message message = new Message();
-                    message.obj = localFile.getAbsolutePath();
-                    message.what = 1;
-                    mHandler.sendMessage(message);
-                } catch (DropboxException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (bw != null) {
-                        try {
-                            bw.close();
-                            if (br != null) {
-                                br.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
+    /*
+        private boolean downloadDropboxFile(DropboxAPI.Entry fileSelected) {// , String
+            // localFilePath)
+            // {
+            File dir = new File(Utils.getPath());
+            if (!dir.exists())
+                dir.mkdirs();
+            try {
+                File localFile = new File(dir + "/" + fileSelected.fileName());
+                if (!localFile.exists()) {
+                    localFile.createNewFile();
+                    copy(fileSelected, localFile);
+                } else {
+                    showFileExitsDialog(fileSelected, localFile);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }).start();
-
-    }
-
-    private void showFileExitsDialog(final DropboxAPI.Entry fileSelected,
-                                     final File localFile) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(DropboxDownload.this);
-        alertBuilder.setMessage(Constants.OVERRIDEMSG);
-        alertBuilder.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        copy(fileSelected, localFile);
+            return true;
+        }
+        private void copy(final DropboxAPI.Entry fileSelected, final File localFile) {
+            final ProgressDialog pd = ProgressDialog.show(DropboxDownload.this,
+                    "Downloading...", "Please wait...");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    BufferedInputStream br = null;
+                    BufferedOutputStream bw = null;
+                    DropboxAPI.DropboxInputStream fd;
+                    try {
+                        fd = mApi.getFileStream(fileSelected.path,
+                                localFile.getPath());
+                        br = new BufferedInputStream(fd);
+                        bw = new BufferedOutputStream(new FileOutputStream(
+                                localFile));
+                        byte[] buffer = new byte[4096];
+                        int read;
+                        while (true) {
+                            read = br.read(buffer);
+                            if (read <= 0) {
+                                break;
+                            }
+                            bw.write(buffer, 0, read);
+                        }
+                        pd.dismiss();
+                        Message message = new Message();
+                        message.obj = localFile.getAbsolutePath();
+                        message.what = 1;
+                        mHandler.sendMessage(message);
+                    } catch (DropboxException e) {
+                        e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (bw != null) {
+                            try {
+                                bw.close();
+                                if (br != null) {
+                                    br.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                });
-        alertBuilder.setNegativeButton("Cancel", null);
-        alertBuilder.create().show();
-
-    }
-*/
+                }
+            }).start();
+        }
+        private void showFileExitsDialog(final DropboxAPI.Entry fileSelected,
+                                         final File localFile) {
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(DropboxDownload.this);
+            alertBuilder.setMessage(Constants.OVERRIDEMSG);
+            alertBuilder.setPositiveButton("Ok",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            copy(fileSelected, localFile);
+                        }
+                    });
+            alertBuilder.setNegativeButton("Cancel", null);
+            alertBuilder.create().show();
+        }
+    */
     @Override
     public void onBackPressed() {
         if (isItemClicked) {

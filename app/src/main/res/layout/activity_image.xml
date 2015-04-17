@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/bg"
-    android:background="@drawable/twitter_icon">
+    android:background="#2b2b2b">
     <EditText
         android:layout_width="500dp"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
 
     <Button
         android:layout_width="175dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="@string/imagecastbutton"
         android:id="@+id/buttonimage"
         android:onClick="attemptSend"
@@ -28,17 +28,18 @@
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:text="Select Image from Dropbox"
+        android:layout_height="50dp"
+        android:text="Choose Dropbox Image"
         android:id="@+id/btnDownload"
         android:layout_below="@+id/deadline_image"
         android:layout_toStartOf="@+id/textView6"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="2dp"
+        android:layout_toLeftOf="@+id/btnUploadPhoto" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="175dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text="Upload to Dropbox"
         android:id="@+id/btnUploadPhoto"
         android:layout_alignTop="@+id/buttonimage"
@@ -61,13 +62,13 @@
 
     <DatePicker
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:id="@+id/deadline_image"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:clickable="true"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="15dp"
+        android:layout_alignTop="@+id/textView6" />
 
 </RelativeLayout>

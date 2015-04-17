@@ -2,7 +2,6 @@ package cast.ucl.sender;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v4.view.MenuItemCompat;
@@ -15,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -52,23 +52,27 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
-
+        // animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
+        // actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
-        .addControlCategory(
-        CastMediaControlIntent.categoryForCast(getResources()
+                .addControlCategory(
+                        CastMediaControlIntent.categoryForCast(getResources()
                                 .getString(R.string.app_id))).build();
         mMediaRouterCallback = new MyMediaRouterCallback();
-        Drawable d=getResources().getDrawable(R.drawable.icon);
-        actionBar.setHomeAsUpIndicator(d);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        actionBar.setDisplayShowTitleEnabled(false);
 
      }
 
+    public void layout_selector(View view){
+        Intent intent = new Intent(view.getContext(), LayoutSelector.class);
+        startActivity(intent);
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -90,10 +94,7 @@ public class MainActivity extends ActionBarActivity {
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
     }
-    public void go_to_cast(View view) {
-        Intent intent = new Intent(this,Selection.class);
-        startActivity(intent);
-    }
+
     @Override
     protected void onPause() {
         if (isFinishing()) {

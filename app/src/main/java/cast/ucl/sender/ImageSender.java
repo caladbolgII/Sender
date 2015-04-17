@@ -7,6 +7,7 @@ package cast.ucl.sender;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -15,10 +16,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -59,15 +64,21 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_image);
         myTextField = (EditText) findViewById(R.id.imagelink);
         imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.backicon);
+        Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        Spannable text = new SpannableString("Cast Image");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
+
         AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
 
@@ -109,7 +120,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
 
     public void attemptSend(View view){
 
-        deaddate = Integer.toString(imagedeadline.getDayOfMonth()) + Integer.toString(imagedeadline.getMonth()) + Integer.toString(imagedeadline.getYear());
+        deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ Integer.toString(imagedeadline.getMonth()) + "-" +Integer.toString(imagedeadline.getDayOfMonth());
         new Connection().execute();
         Context context = getApplicationContext();
         CharSequence text = "Image has been cast";
@@ -138,12 +149,12 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         try {
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action", "castImage");
+            jsonObject.accumulate("action", Constants.action_add_image);
             jsonObject.accumulate("imageURL", myTextField.getText());
             jsonObject.accumulate("deadline", deaddate);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost("http://192.168.1.102:8080");
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

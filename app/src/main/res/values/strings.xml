@@ -14,18 +14,22 @@
     <string name="edit_message3">Post your message here</string>
     <string name="button_send">send link</string>
     <string name="search">Search Youtube for Videos to Cast</string>
+    <string name="title_activity_dropbox">DROPBOX SELECTOR</string>
     <string name="title_activity_text">MESSAGE BOARD</string>
     <string name="title_activity_image">IMAGE</string>
     <string name="title_activity_youtube">YOUTUBE SEARCH</string>
     <string name="title_activity_queue">VIDEO QUEUE</string>
-    <string name="title_activity_queueimg">IMAGE QUEUE</string>
+    <string name="title_activity_queueing">IMAGE QUEUE</string>
+    <string name="title_activity_layout">LAYOUT SELECTION</string>
     <string name="title_activity_queuetxt">TEXT QUEUE</string>
     <string name="title_activity_select">TILE CASTING</string>
-    <string name="app_id">BC41EADD</string>
+    <string name="app_id">312C4643</string>
     <string name="namespace">urn:x-cast:com.google.cast.sample.bbcast</string>
     <string name="instructions">Talk to me</string>
     <string name="media_route_menu_title">Play on&#8230;</string>
     <string name="post_message">POST</string>
     <string name="imagecastbutton">CAST IMAGE</string>
     <string name="selectdeadline">Select Deadline:</string>
+    <string name="config">Start configuring your display by selecting your Chromecast then choose a layout</string>
+    <string name="step2">After selecting a Chromecast, tap the button below to select a layout</string>
 </resources>

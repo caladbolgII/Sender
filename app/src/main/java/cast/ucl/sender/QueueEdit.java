@@ -11,12 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 
 public class QueueEdit extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
         .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -34,25 +37,25 @@ public class QueueEdit extends ActionBarActivity {
         setContentView(R.layout.activity_vidcast);
 
 
-        ImageView addqueue = ( ImageView) customActionBarView
+       Button addqueue = ( Button) customActionBarView
                 .findViewById(R.id.add);
         addqueue.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
                 Intent intent = new Intent(view.getContext(), SearchActivity.class);
                 startActivity(intent);
 
             }
         });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
+                | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
         Drawable d=getResources().getDrawable(R.drawable.backicon);
-        actionBar.setHomeAsUpIndicator(d);
+        // actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
         actionBar.setTitle("VIDEO QUEUE");
     }
 

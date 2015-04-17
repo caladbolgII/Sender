@@ -82,4 +82,3 @@ public class DownloadFileAdapter extends BaseAdapter {
     }
 
 }
-

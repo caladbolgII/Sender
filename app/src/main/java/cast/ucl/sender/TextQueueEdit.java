@@ -1,25 +1,38 @@
 package cast.ucl.sender;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by LENOVO on 3/6/2015.
  */
 public class TextQueueEdit extends ActionBarActivity{
+    public TextView response;
+    ArrayList<String> animalsNameList;
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ActionBar actionBar = getSupportActionBar();
 
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
@@ -36,15 +49,20 @@ public class TextQueueEdit extends ActionBarActivity{
                         ViewGroup.LayoutParams.MATCH_PARENT));
 
         setContentView(R.layout.activity_txtcast);
+        response = (TextView)findViewById(R.id.http_text_queue);
+       // Bundle bundle = getIntent().getExtras();
+        //String var_from_prev_intent = bundle.getString("response");
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+        response.setText(globalVariable.getresponse());
 
 
-        ImageView addqueue = ( ImageView) customActionBarView
+        Button addqueue = ( Button) customActionBarView
                 .findViewById(R.id.add);
         addqueue.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
                 Intent intent = new Intent(view.getContext(),text.class);
                 startActivity(intent);
 
@@ -52,13 +70,14 @@ public class TextQueueEdit extends ActionBarActivity{
         });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
-        Drawable d=getResources().getDrawable(R.drawable.backicon);
+        Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        actionBar.setTitle("SELECT IMAGE");
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        Spannable text = new SpannableString("Message Queue");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
     }
 
 

@@ -3,6 +3,7 @@ package cast.ucl.sender;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -11,10 +12,14 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -48,14 +53,19 @@ public class SearchActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_search);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.backicon);
+        Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff0047ab));
-        actionBar.setTitle("SELECT IMAGE");
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        Spannable text = new SpannableString("Video Search");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
+
         searchInput = (EditText)findViewById(R.id.search_input);
         searchInput.setHint("Search Video to Cast from Youtube");
         searchInput.setHint(Html.fromHtml("<font color='#000000'>Search Video to Cast from Youtube</font> "));
@@ -153,18 +163,19 @@ public class SearchActivity extends ActionBarActivity {
         try {
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action", "castVideo");
+            jsonObject.accumulate("action", Constants.action_add_video);
             jsonObject.accumulate("videoID", yt_id);
             jsonObject.accumulate("deadline", "10-25-2015");
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost("http://192.168.1.102:8080");
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);
             httpost.setHeader("Accept", "application/json");
             httpost.setHeader("Content-type", "application/json");
             httpclient.execute(httpost);
+            httpclient.getConnectionManager().shutdown();
         } catch (ClientProtocolException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         } catch (IOException e) {
