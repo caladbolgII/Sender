@@ -43,6 +43,8 @@ public class text extends ActionBarActivity {
     public Button myButton;
     public String deaddate;
     String responseStr;
+    public String command;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,18 +90,35 @@ public class text extends ActionBarActivity {
     }
     public void attemptSend(View view){
         deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
+        command = Constants.action_cast_text;
          new Connection().execute();
 
         final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
         globalVariable.settextresponse(responseStr);
         Context context = getApplicationContext();
-        CharSequence text = "Text has been cast";
+        CharSequence text = "Message has been cast";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         go_back();
 }
+
+    public void attempt_add_text(View view){
+        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
+        command = Constants.action_add_text;
+        new Connection().execute();
+
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+        globalVariable.settextresponse(responseStr);
+        Context context = getApplicationContext();
+        CharSequence text = "Message has been added to Queue";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        go_back();
+    }
     public void go_back() {
         Intent intent = new Intent(this, TextQueueEdit.class);
         startActivity(intent);
@@ -120,7 +139,7 @@ public class text extends ActionBarActivity {
             InputStream inputStream = null;
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_add_text);
-            jsonObject.accumulate("text", myTextField.getText());
+            jsonObject.accumulate("text", command);
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();

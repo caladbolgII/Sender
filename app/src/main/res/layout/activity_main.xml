@@ -72,8 +72,8 @@
                 android:layout_alignParentRight="false" />
 
         <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/imageButton"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"

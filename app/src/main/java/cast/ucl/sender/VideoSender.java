@@ -107,7 +107,7 @@ public class VideoSender extends ActionBarActivity {
         toast.show();
         go_back();
     }
-    public void attemptAdd(View view){
+    public void attempt_add_video(View view){
         deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
         command = Constants.action_add_video;
         new Connection().execute();

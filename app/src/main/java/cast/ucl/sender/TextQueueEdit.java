@@ -45,6 +45,7 @@ public class TextQueueEdit extends ActionBarActivity{
     ArrayList<String> animalsNameList;
     String responseStr;
 
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
