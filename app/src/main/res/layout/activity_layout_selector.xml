@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:orientation="horizontal"
-    android:background="#ff2b2b2b"
+    android:background="#ffbdc3c7"
     android:baselineAligned="true">
 
     <LinearLayout
@@ -20,10 +20,11 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="layout1"
+            android:text="Layout1"
             android:id="@+id/button5"
             android:onClick="set_layout1"
-            android:drawableBottom="@drawable/layout1_1" />
+            android:drawableBottom="@drawable/layout1"
+            android:background="#ffbdc3c7" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,10 +37,11 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="layout2"
+            android:text="Layout2"
             android:id="@+id/button6"
             android:onClick="set_layout2"
-            android:drawableBottom="@drawable/layout2" />
+            android:drawableBottom="@drawable/layout2"
+            android:background="#bdc3c7" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,9 +54,10 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="layout3"
+            android:text="Layout3"
             android:id="@+id/button7"
             android:onClick="set_layout3"
-            android:drawableBottom="@drawable/layout3" />
+            android:drawableBottom="@drawable/layout3"
+            android:background="#bdc3c7" />
     </LinearLayout>
 </LinearLayout>

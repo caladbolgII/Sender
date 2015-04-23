@@ -8,7 +8,7 @@
     <Button
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/layout"
+        android:background="@drawable/layouter"
         android:textColor="#FFFFFF"
         android:id="@+id/layout"
         android:textSize="12sp"

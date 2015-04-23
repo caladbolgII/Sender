@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:background="#2b2b2b">
+    android:background="#ffecf0f1">
 
     <ListView
         android:layout_width="wrap_content"
@@ -20,9 +20,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/http_queue"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
         android:editable="true"
-        android:enabled="true"
-        android:hint="hello" />
+        android:enabled="true" />
 
 </LinearLayout>

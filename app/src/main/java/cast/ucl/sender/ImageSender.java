@@ -58,6 +58,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     private boolean mLoggedIn, onResume;
     private DropboxAPI<AndroidAuthSession> mApi;
     public String deaddate= "";
+    public String command;
     @Override
 
 
@@ -84,7 +85,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
 
         // checkAppKeySetup();
         setLoggedIn(false);
-        btnDownload = (Button) findViewById(R.id.btnDownload);
+        btnDownload = (Button) findViewById(R.id.button_search);
 
         btnUpload = (Button) findViewById(R.id.btnUploadPhoto);
         btnUpload.setOnClickListener(this);
@@ -121,9 +122,24 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     public void attemptSend(View view){
 
         deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ Integer.toString(imagedeadline.getMonth()) + "-" +Integer.toString(imagedeadline.getDayOfMonth());
+        command = Constants.action_cast_image;
         new Connection().execute();
         Context context = getApplicationContext();
         CharSequence text = "Image has been cast";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        go_back();
+    }
+
+    public void attempt_cast_image(View view){
+
+        deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ Integer.toString(imagedeadline.getMonth()) + "-" +Integer.toString(imagedeadline.getDayOfMonth());
+        command = Constants.action_add_image;
+        new Connection().execute();
+        Context context = getApplicationContext();
+        CharSequence text = "Image has been added to queue";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
@@ -149,7 +165,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         try {
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action", Constants.action_add_image);
+            jsonObject.accumulate("action", command);
             jsonObject.accumulate("imageURL", myTextField.getText());
             jsonObject.accumulate("deadline", deaddate);
 

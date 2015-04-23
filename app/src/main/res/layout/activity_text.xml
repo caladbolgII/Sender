@@ -7,7 +7,7 @@
     tools:context="cast.ucl.sender.text"
     style="@style/bg"
     android:orientation="vertical"
-    android:background="#2b2b2b">
+    android:background="#ffecf0f1">
 
     <EditText
         android:layout_width="1000px"
@@ -31,22 +31,12 @@
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/deadline_text" />
 
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/deadline_text"
-        android:datePickerMode="spinner"
-        android:calendarViewShown="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="62.5dp"
-        android:layout_alignTop="@+id/text_message" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/selectdeadline"
         android:id="@+id/textView5"
-        android:textColor="#ffffffff"
+        android:textColor="#ff000000"
         android:textAlignment="textEnd"
         android:textSize="25dp"
         android:textIsSelectable="true"
@@ -54,6 +44,15 @@
         android:layout_below="@+id/text_message"
         android:layout_centerHorizontal="true"
         android:layout_alignParentStart="false" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deadline_text"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:layout_above="@+id/buttontext"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

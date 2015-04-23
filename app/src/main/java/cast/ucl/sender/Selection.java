@@ -198,7 +198,7 @@ public class Selection extends ActionBarActivity {
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
            // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.BLACK);
+            paint.setColor(Color.parseColor("#ecf0f1"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
@@ -207,9 +207,9 @@ public class Selection extends ActionBarActivity {
             paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
             canvas.drawRect(3, 3, x-3, y-3, paint );
             p=new Paint();
-            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.youtube_icon);
-            Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.editer);
-            Bitmap n = b.createScaledBitmap(b,3*y/4,3*y/4,true);
+            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.video_file);
+            Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
+            Bitmap n = b.createScaledBitmap(b,1*y/4,1*y/4,true);
             p.setColor(Color.RED);
             int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
             int cy = (mHeight - b.getHeight()) >> 1;
@@ -221,13 +221,14 @@ public class Selection extends ActionBarActivity {
             if (mAngle > 0) {
                 canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
             }
-            if(globalVariable.getlayout()=="layout1")  canvas.drawBitmap(b,cx-80, cy-70, p);
+            if(globalVariable.getlayout()=="layout1")
+            canvas.drawBitmap(b,cx, cy, p);
             else canvas.drawBitmap(n,cxn, cyn, p);
 
             paint.setColor(Color.BLACK);
-            paint.setTextSize(40);
-            canvas.drawText("Videos", cx+100, cy+70, paint);
-            canvas.drawBitmap(e,cxe, cye+20, p);
+            paint.setTextSize(27);
+            canvas.drawText("Edit Video Queue", e.getWidth()+10, y-15, paint);
+            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
 
         }
     }
@@ -255,7 +256,7 @@ public class Selection extends ActionBarActivity {
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.BLACK);
+            paint.setColor(Color.parseColor("#ecf0f1"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
@@ -264,7 +265,8 @@ public class Selection extends ActionBarActivity {
             paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
             canvas.drawRect(3, 3, x-3, y-3, paint );
             p=new Paint();
-            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.photo_icon);
+            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.image);
+            Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
             Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
             p.setColor(Color.RED);
             int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
@@ -273,8 +275,16 @@ public class Selection extends ActionBarActivity {
             if (mAngle > 0) {
                 canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
             }
-            if(globalVariable.getlayout()=="layout1")  canvas.drawBitmap(b,cx, cy, p);
-            else canvas.drawBitmap(r,cx, cy, p);
+            //if(globalVariable.getlayout()=="layout1")
+            canvas.drawBitmap(b,cx, cy, p);
+          //  else canvas.drawBitmap(r,cx, cy, p);
+
+
+
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(27);
+            canvas.drawText("Edit Image Queue", e.getWidth()+10, y-15, paint);
+            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
         }
     }
 
@@ -302,7 +312,7 @@ public class Selection extends ActionBarActivity {
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.BLACK);
+            paint.setColor(Color.parseColor("#ecf0f1"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
@@ -311,9 +321,10 @@ public class Selection extends ActionBarActivity {
             paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
             canvas.drawRect(3, 3, x-3, y-3, paint );
             p=new Paint();
-            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.message);
+            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.text);
+            Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
             Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
-            Bitmap n = b.createScaledBitmap(b,2*x/5,2*x/5,true);
+            Bitmap n = b.createScaledBitmap(b,1*y/4,1*y/4,true);
             p.setColor(Color.RED);
             int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
             int cy = (mHeight - b.getHeight()) >> 1;
@@ -326,8 +337,14 @@ public class Selection extends ActionBarActivity {
                 canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
             }
             if(globalVariable.getlayout()=="layout1")
-           canvas.drawBitmap(r,cxr, cyr, p);
+           canvas.drawBitmap(b,cx, cy, p);
             else canvas.drawBitmap(n,cxn, cyn, p);
+
+
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(27);
+            canvas.drawText("Edit Text Queue", e.getWidth()+10, y-15, paint);
+            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
         }
     }
 
@@ -354,7 +371,7 @@ public class Selection extends ActionBarActivity {
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.BLACK);
+            paint.setColor(Color.parseColor("#ecf0f1"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
@@ -365,6 +382,7 @@ public class Selection extends ActionBarActivity {
             p=new Paint();
             Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.twitter_icon);
             Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
+            Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
             p.setColor(Color.RED);
             int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
             int cy = (mHeight - b.getHeight()) >> 1;
@@ -377,6 +395,12 @@ public class Selection extends ActionBarActivity {
             }
             if(globalVariable.getlayout()=="layout1")  canvas.drawBitmap(r,cxr, cyr, p);
             else canvas.drawBitmap(b,cx, cy, p);
+
+
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(27);
+            canvas.drawText("Twitter", e.getWidth()+10, y-15, paint);
+            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
         }
     }
 

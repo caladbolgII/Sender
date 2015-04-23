@@ -13,7 +13,7 @@
     <application
         android:name="cast.ucl.sender.GlobalClass"
         android:allowBackup="true"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
@@ -102,13 +102,22 @@
         </activity>
         <activity
             android:screenOrientation="landscape"
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_youtube"
+            android:name=".VideoSender"
+            android:label="@string/title_activity_vidsend"
             android:parentActivityName=".QueueEdit" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.QueueEdit" />
         </activity>
+            <activity
+                android:screenOrientation="landscape"
+                android:name=".SearchActivity"
+                android:label="@string/title_activity_youtube"
+                android:parentActivityName=".VideoSender" >
+                <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="cast.ucl.sender.VideoSender" />
+            </activity>
     <activity android:name="DropboxDownload"
         android:screenOrientation="landscape"
         android:label="@string/title_activity_dropbox"

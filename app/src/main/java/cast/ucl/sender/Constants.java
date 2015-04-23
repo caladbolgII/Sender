@@ -19,9 +19,12 @@ public class Constants {
     final static public String ACCESS_SECRET_NAME = "ACCESS_SECRET";
     // RECEIVER API's
     //ADD
-    final static public String action_add_video = "castVideo";
-    final static public String action_add_image = "castImage";
-    final static public String action_add_text = "castMessage";
+    final static public String action_add_video = "addVideo";
+    final static public String action_add_image = "addImage";
+    final static public String action_add_text = "addMessage";
+    final static public String action_cast_video = "castVideo";
+    final static public String action_cast_image = "castImage";
+    final static public String action_cast_text = "castMessage";
     final static public String action_add_text2 = "test2";
     final static public String action_delete_video = "deleteVideo";
     final static public String action_delete_image = "deleteImage";
@@ -36,8 +39,8 @@ public class Constants {
     final static public String action_get_text = "getTextQueue";
     //IP address and port
     //ADD
-    final static public String SERVER_ADDR = "http://192.168.1.101:3000";
-    final static public String SERVER_ADDR2 = "http://192.168.1.101:3000";
-
+    final static public String SERVER_ADDR = "http://192.168.1.102:3000";
+    final static public String SERVER_ADDR2 = "http://192.168.1.102:3000/deleteMedia";
+    final static public String SERVER_ADDR3 = "http://192.168.1.102:3000/addMedia";
 
 }

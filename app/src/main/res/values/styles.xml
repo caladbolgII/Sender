@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="Hello" parent="Theme.AppCompat.Light">
-        <item name= "android:background">#FF2b2b2b</item>
+        <item name= "android:background">#ffecf0f1</item>
         <item name="actionBarSize">50dip</item>
         <item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item>
 
@@ -11,7 +11,7 @@
 
     </style>
     <style name="bg" parent="Theme.AppCompat.Light">
-        <item name= "android:background">#FF2b2b2b</item>
+        <item name= "android:background">#ffecf0f1</item>
         <item name="actionBarSize">50dip</item>
         <item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item>
 
@@ -21,10 +21,11 @@
     </style>
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#ff0047ab</item>
+        <item name="android:background">#ffbdc3c7</item>
         <item name="android:height">@dimen/bar_height</item>
     </style>
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">#ffecf0f1</item>
+        <item name="android:textColor">#ffbdc3c7</item>
     </style>
+
 </resources>

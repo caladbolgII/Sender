@@ -1,13 +1,14 @@
 package cast.ucl.sender;
 
+
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.app.MediaRouteButton;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
@@ -25,21 +26,23 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.nhaarman.supertooltips.ToolTip;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
+import com.nhaarman.supertooltips.ToolTipView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE = 1;
 
-    private MediaRouter mMediaRouter;
-    private MediaRouteSelector mMediaRouteSelector;
-    private MediaRouter.Callback mMediaRouterCallback;
-    private CastDevice mSelectedDevice;
+   // private MediaRouter mMediaRouter;
+   // private MediaRouteSelector mMediaRouteSelector;
+   // private MediaRouter.Callback mMediaRouterCallback;
+  //  private CastDevice mSelectedDevice;
     private GoogleApiClient mApiClient;
     private Cast.Listener mCastListener;
     private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks;
@@ -49,24 +52,65 @@ public class MainActivity extends ActionBarActivity {
     private boolean mWaitingForReconnect;
     private String mSessionId;
 
+    private static final String TAG = MainActivity.class
+            .getSimpleName();
+
+    private MediaRouter mMediaRouter;
+    private MediaRouteSelector mMediaRouteSelector;
+    private MediaRouter.Callback mMediaRouterCallback;
+    private MediaRouteButton mMediaRouteButton;
+    private CastDevice mSelectedDevice;
+    private int mRouteCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        ActionBar actionBar = getSupportActionBar();
+        //ActionBar actionBar = getSupportActionBar();
         // animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
         // actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+       // mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+      //  mMediaRouteSelector = new MediaRouteSelector.Builder()
+        //        .addControlCategory(
+       //                 CastMediaControlIntent.categoryForCast(getResources()
+        //                        .getString(R.string.app_id))).build();
+      //  mMediaRouterCallback = new MyMediaRouterCallback();
+       // actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+       // actionBar.setDisplayShowTitleEnabled(false);
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        // Create a MediaRouteSelector for the type of routes your app supports
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(
                         CastMediaControlIntent.categoryForCast(getResources()
                                 .getString(R.string.app_id))).build();
+        // Create a MediaRouter callback for discovery events
         mMediaRouterCallback = new MyMediaRouterCallback();
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
-        actionBar.setDisplayShowTitleEnabled(false);
 
-     }
+        // Set the MediaRouteButton selector for device discovery.
+        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
+        mMediaRouteButton.setRouteSelector(mMediaRouteSelector);
+
+        ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.mediatip);
+
+        ToolTip toolTip = new ToolTip()
+                .withText("Press to Select Chromecast")
+                .withColor(Color.parseColor("#3498db"))
+                .withShadow()
+                ;
+      //  toolTip.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
+        ToolTipView myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, findViewById(R.id.media_route_button));
+       // ToolTipRelativeLayout toolTipRelativeLayout2 = (ToolTipRelativeLayout) findViewById(R.id.layouttip);
+
+       ToolTip toolTip2 = new ToolTip()
+               .withText("Press to Choose Layout")
+                .withColor(Color.parseColor("#3498db"))
+               .withShadow()
+               ;
+      //  toolTip2.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
+        ToolTipView myToolTipView2 = toolTipRelativeLayout.showToolTipForView(toolTip2, findViewById(R.id.imageButton));
+
+    }
 
     public void layout_selector(View view){
         Intent intent = new Intent(view.getContext(), LayoutSelector.class);
@@ -116,8 +160,8 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat
-                .getActionProvider(mediaRouteMenuItem);
-        // Set the MediaRouteActionProvider selector for device discovery.
+               .getActionProvider(mediaRouteMenuItem);
+         //Set the MediaRouteActionProvider selector for device discovery.
         mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
         return true;
     }
@@ -186,6 +230,8 @@ public class MainActivity extends ActionBarActivity {
                     .build();
 
             mApiClient.connect();
+            Intent i = new Intent(MainActivity.this, LayoutSelector.class);
+            startActivity(i);
         } catch (Exception e) {
             Log.e(TAG, "Failed launchReceiver", e);
         }

@@ -36,32 +36,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
-public class text extends ActionBarActivity {
+/**
+ * Created by LENOVO on 4/23/2015.
+ */
+public class VideoSender extends ActionBarActivity {
     public EditText myTextField;
     public DatePicker textdeadline;
     public Button myButton;
+    public Button searchButton;
     public String deaddate;
+    public String command;
     String responseStr;
+    String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_text);
-        myTextField = (EditText) findViewById(R.id.text_message);
-        textdeadline = (DatePicker) findViewById(R.id.deadline_text);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_video_sender);
+        myTextField = (EditText) findViewById(R.id.video_url);
+        textdeadline = (DatePicker) findViewById(R.id.deadline_video);
         ActionBar actionBar = getSupportActionBar();
         Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
-        Spannable text = new SpannableString("Message Sender");
+        Spannable text = new SpannableString("Video Sender");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-        myButton = (Button) findViewById(R.id.buttontext);
-
+        myButton = (Button) findViewById(R.id.button_castvid);
+        searchButton = (Button) findViewById(R.id.button_search);
     }
 
 
@@ -88,20 +93,42 @@ public class text extends ActionBarActivity {
     }
     public void attemptSend(View view){
         deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
-         new Connection().execute();
+        command = Constants.action_cast_video;
+        new Connection().execute();
 
         final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.settextresponse(responseStr);
+        globalVariable.setvideoresponse(responseStr);
+
         Context context = getApplicationContext();
-        CharSequence text = "Text has been cast";
+        CharSequence text = "Video has been cast";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         go_back();
-}
+    }
+    public void attemptAdd(View view){
+        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
+        command = Constants.action_add_video;
+        new Connection().execute();
+
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+        globalVariable.setvideoresponse(responseStr);
+        Context context = getApplicationContext();
+        CharSequence text = "Video has been added to queue";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+        go_back();
+    }
+
     public void go_back() {
-        Intent intent = new Intent(this, TextQueueEdit.class);
+        Intent intent = new Intent(this, QueueEdit.class);
+        startActivity(intent);
+    }
+    public void search_youtube(View view) {
+        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
     private class Connection extends AsyncTask {
@@ -119,19 +146,19 @@ public class text extends ActionBarActivity {
             String json = "";
             InputStream inputStream = null;
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action",Constants.action_add_text);
-            jsonObject.accumulate("text", myTextField.getText());
+            jsonObject.accumulate("action",command);
+            jsonObject.accumulate("video_id", url);
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR2);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR3);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);
             httpost.setHeader("Accept", "application/json");
             httpost.setHeader("Content-type", "application/json");
             HttpResponse response = httpclient.execute(httpost);
-         // safeClose(httpclient);
+            // safeClose(httpclient);
             inputStream = response.getEntity().getContent();
 
             if(inputStream != null)
@@ -166,6 +193,25 @@ public class text extends ActionBarActivity {
         return result;
 
     }
+    @Override
+    protected void onStart() {
+        super.onStart();  // Always call the superclass method first
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
+            url = extras.getString("video");
+        }
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();  // Always call the superclass method first
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            myTextField.setText(extras.getString("video"));
+            url = extras.getString("video");
 
+        }
+        // Activity being restarted from stopped state
+    }
 
 }

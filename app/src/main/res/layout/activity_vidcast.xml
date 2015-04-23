@@ -8,7 +8,7 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:background="#2b2b2b"
+    android:background="#ffecf0f1"
     android:baselineAligned="false">
     <FrameLayout
         android:layout_width="match_parent"
@@ -26,5 +26,7 @@
         android:src="@drawable/play"
         app:cb_color="#0cff12"
         android:id="@+id/PLAY"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="delete"
+        android:nestedScrollingEnabled="false" />
 </LinearLayout>

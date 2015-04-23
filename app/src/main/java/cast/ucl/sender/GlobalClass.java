@@ -8,7 +8,9 @@ import android.app.Application;
 public class GlobalClass extends Application {
 
     private String IP;
-    private String response;
+    private String videoresponse;
+    private String imageresponse;
+    private String textresponse;
     private String layout;
 
     public String getlayout() {
@@ -22,17 +24,36 @@ public class GlobalClass extends Application {
 
     }
 
-    public String getresponse() {
+    public String getvideoresponse() {
 
-        return response;
+        return videoresponse;
     }
 
-    public void setresponse(String aName) {
+    public void setvideoresponse(String aName) {
 
-      response = aName;
+      videoresponse = aName;
 
     }
+    public String getimageresponse() {
 
+        return imageresponse;
+    }
+
+    public void setimageresponse(String aName) {
+
+        imageresponse = aName;
+
+    }
+    public String gettextresponse() {
+
+        return textresponse;
+    }
+
+    public void settextresponse(String aName) {
+
+        textresponse = aName;
+
+    }
     public String getName() {
 
         return IP;
