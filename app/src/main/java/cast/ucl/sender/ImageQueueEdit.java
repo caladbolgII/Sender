@@ -95,8 +95,6 @@ public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnI
             }
         });
 
-        imagelist = (ListView) findViewById(R.id.imglist);
-        imagelist.setOnItemClickListener(this);
 
        // new image_connect().execute();
 
@@ -125,7 +123,7 @@ public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnI
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_get_text);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.102:3000/getImages");
+            URI website = new URI("http://192.168.1.102:8080/getImages");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);

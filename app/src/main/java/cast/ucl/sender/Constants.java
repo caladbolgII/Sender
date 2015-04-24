@@ -39,8 +39,10 @@ public class Constants {
     final static public String action_get_text = "getTextQueue";
     //IP address and port
     //ADD
-    final static public String SERVER_ADDR = "http://192.168.1.102:3000";
-    final static public String SERVER_ADDR2 = "http://192.168.1.102:3000/deleteMedia";
-    final static public String SERVER_ADDR3 = "http://192.168.1.102:3000/addMedia";
+    final static public String SERVER_ADDR = "http://192.168.1.102:8080";
+    final static public String SERVER_ADDR2 = "http://192.168.1.102:8080/deleteMedia";
+    final static public String SERVER_ADDR3 = "http://192.168.1.102:8080/addMedia";
+    final static public String SERVER_ADDR4 = "http://192.168.1.102:8080/castMedia";
+    final static public String SERVER_ADDR_LAYOUT = "http://192.168.1.102:8080/setLayout";
 
 }

@@ -12,12 +12,12 @@
     android:baselineAligned="false">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="137dp"
         android:layout_gravity="center_horizontal">
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:id="@+id/videolist"
         android:layout_gravity="bottom" />
     </FrameLayout>
     <at.markushi.ui.CircleButton
@@ -29,4 +29,10 @@
         android:layout_gravity="center_horizontal"
         android:onClick="delete"
         android:nestedScrollingEnabled="false" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/debugview"
+        android:hint="string" />
 </LinearLayout>

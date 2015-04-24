@@ -170,7 +170,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             jsonObject.accumulate("deadline", deaddate);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR4);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

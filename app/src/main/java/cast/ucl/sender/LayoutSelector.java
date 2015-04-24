@@ -69,7 +69,7 @@ private String layout_selected;
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
            // DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_LAYOUT);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

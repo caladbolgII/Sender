@@ -35,14 +35,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 /**
  * Created by LENOVO on 3/6/2015.
  */
 public class TextQueueEdit extends ActionBarActivity{
 
-    ArrayList<String> animalsNameList;
     String responseStr;
 
 
@@ -115,7 +113,7 @@ public class TextQueueEdit extends ActionBarActivity{
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_get_text);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.102:3000/getTexts");
+            URI website = new URI("http://192.168.1.102:8080/getTexts");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);

@@ -16,6 +16,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,6 +27,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,14 +37,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class QueueEdit extends ActionBarActivity {
     String responseStr;
+    public TextView debugger;
+    public ListView listView ;
+    public SimpleAdapter simpleAdapter;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
         .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -77,7 +91,18 @@ public class QueueEdit extends ActionBarActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
         actionBar.setTitle("VIDEO QUEUE");
-     //   new video_connect().execute();
+        debugger =   (TextView)findViewById(R.id.debugview);
+        listView = (ListView) findViewById(R.id.videolist);
+        try {
+            new video_connect().execute().get();
+        }
+        catch (Exception e){
+            
+        }
+        simpleAdapter = new SimpleAdapter(this, videoqueue, android.R.layout.simple_list_item_1, new String[] {"video"}, new int[] {android.R.id.text1});
+        listView.setAdapter(simpleAdapter);
+
+
     }
 
     public void delete(View view){
@@ -136,9 +161,9 @@ public class QueueEdit extends ActionBarActivity {
             // String json = "";
             InputStream inputStream = null;
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action",Constants.action_get_text);
+            jsonObject.accumulate("action",Constants.action_get_video);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.102:3000/getVideos");
+            URI website = new URI("http://192.168.1.102:8080/getVideos");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);
@@ -151,9 +176,15 @@ public class QueueEdit extends ActionBarActivity {
             else
                 responseStr = "Did not work!";
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-            globalVariable.setimageresponse(responseStr);
+            globalVariable.setvideoresponse(responseStr);
+
+            debugger.setText(responseStr);
            // TextView httpresponse = (TextView) findViewById(R.id.http_queue);
            // httpresponse.setText(globalVariable.getimageresponse());
+
+
+
+
 
         } catch (ClientProtocolException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
@@ -167,6 +198,35 @@ public class QueueEdit extends ActionBarActivity {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
     }
+
+
+    List<Map<String,String>> videoqueue = new ArrayList<Map<String,String>>();
+    private void initList(){
+
+        try{
+            JSONObject jsonResponse = new JSONObject(responseStr);
+            JSONArray jsonMainNode = jsonResponse.optJSONArray("video");
+
+            for(int i = 0; i<jsonMainNode.length();i++){
+                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                String url = jsonChildNode.optString("video_id");
+                String deadline = jsonChildNode.optString("time_out");
+                String outPut = url + "deadline:" +deadline;
+                videoqueue.add(createvideo("video", outPut));
+            }
+        }
+        catch(JSONException e){
+            Toast.makeText(getApplicationContext(), "Error" + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private HashMap<String, String> createvideo(String name,String number){
+        HashMap<String, String> employeeNameNo = new HashMap<String, String>();
+        employeeNameNo.put(name, number);
+        return employeeNameNo;
+    }
+
+
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
