@@ -1,5 +1,6 @@
 package cast.ucl.sender;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -32,9 +33,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -47,7 +50,8 @@ public class QueueEdit extends ActionBarActivity {
     public TextView debugger;
     public ListView listView ;
     public SimpleAdapter simpleAdapter;
-
+    public String queue = "";
+    ArrayList<HashMap<String, String>> videoList;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +87,17 @@ public class QueueEdit extends ActionBarActivity {
 
             }
         });
+
+        Button editqueue = ( Button) customActionBarView
+                .findViewById(R.id.edit);
+        editqueue.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+
+            }
+        });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
         Drawable d=getResources().getDrawable(R.drawable.back);
@@ -91,18 +106,76 @@ public class QueueEdit extends ActionBarActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
         actionBar.setTitle("VIDEO QUEUE");
-        debugger =   (TextView)findViewById(R.id.debugview);
-        listView = (ListView) findViewById(R.id.videolist);
-        try {
-            new video_connect().execute().get();
-        }
-        catch (Exception e){
-            
-        }
-        simpleAdapter = new SimpleAdapter(this, videoqueue, android.R.layout.simple_list_item_1, new String[] {"video"}, new int[] {android.R.id.text1});
-        listView.setAdapter(simpleAdapter);
 
 
+            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+
+            String jsonStr = readFromFile();
+            jsonStr = "{ " +
+                    " \"videoqueue\": " + jsonStr + "} ";
+
+        ListViewLoaderTask listViewLoaderTask = new ListViewLoaderTask();
+
+        /** Start parsing xml data */
+        listViewLoaderTask.execute(jsonStr);
+
+
+
+
+    }
+
+
+    private class ListViewLoaderTask extends AsyncTask<String, Void, SimpleAdapter>{
+
+        JSONObject jObject;
+        /** Doing the parsing of xml data in a non-ui thread */
+        @Override
+        protected SimpleAdapter doInBackground(String... jsonStr) {
+            try{
+                jObject = new JSONObject(jsonStr[0]);
+                VideoJSONParser videoJsonParser = new VideoJSONParser();
+                videoJsonParser.parse(jObject);
+
+            }catch(Exception e){
+                Log.d("JSON Exception1",e.toString());
+            }
+
+           VideoJSONParser videoJsonParser = new VideoJSONParser();
+
+            List<HashMap<String, String>> videos = null;
+
+            try{
+                /** Getting the parsed data as a List construct */
+                videos = videoJsonParser.parse(jObject);
+            }catch(Exception e){
+                Log.d("Exception",e.toString());
+            }
+
+            /** Keys used in Hashmap */
+            String[] from = { "_id","video_id","time_out"};
+
+            /** Ids of views in listview_layout */
+            int[] to = { R.id.item_id,R.id.vid_url,R.id.item_timeout};
+
+            /** Instantiating an adapter to store each items
+             *  R.layout.listview_layout defines the layout of each item
+             */
+            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(),videos, R.layout.activity_video_item, from, to);
+
+            return adapter;
+        }
+
+        /** Invoked by the Android system on "doInBackground" is executed completely */
+        /** This will be executed in ui thread */
+        @Override
+        protected void onPostExecute(SimpleAdapter adapter) {
+
+            /** Getting a reference to listview of main.xml layout file */
+            ListView listView = ( ListView ) findViewById(R.id.videolist);
+
+            /** Setting the adapter containing the country list to listview */
+            listView.setAdapter(adapter);
+        }
     }
 
     public void delete(View view){
@@ -163,7 +236,7 @@ public class QueueEdit extends ActionBarActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_get_video);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.102:8080/getVideos");
+            URI website = new URI("http://10.150.242.196:8080/getVideos");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);
@@ -178,7 +251,7 @@ public class QueueEdit extends ActionBarActivity {
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             globalVariable.setvideoresponse(responseStr);
 
-            debugger.setText(responseStr);
+
            // TextView httpresponse = (TextView) findViewById(R.id.http_queue);
            // httpresponse.setText(globalVariable.getimageresponse());
 
@@ -261,6 +334,43 @@ public class QueueEdit extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    private void writeToFile(String data) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("file.txt", Context.MODE_WORLD_READABLE));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+    private String readFromFile() {
 
+        String ret = "";
 
+        try {
+            InputStream inputStream = openFileInput("file.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
+    }
 }

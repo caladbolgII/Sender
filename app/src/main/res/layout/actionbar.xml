@@ -20,11 +20,11 @@
     <Button
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:drawableTop="@drawable/edit2"
+        android:drawableTop="@drawable/synclist"
         android:background="@android:color/transparent"
         android:textColor="#FFFFFF"
         android:id="@+id/edit"
-        android:text="EDIT"
+        android:text="SYNC"
         android:textSize="12sp"
         android:textStyle="bold"
         android:layout_gravity="right"

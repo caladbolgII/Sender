@@ -37,12 +37,14 @@ public class Constants {
     final static public String action_get_video = "getVideoQueue";
     final static public String action_get_image = "getImageQueue";
     final static public String action_get_text = "getTextQueue";
+    final static public String action_follow_twitter = "twitterFollow";
     //IP address and port
     //ADD
-    final static public String SERVER_ADDR = "http://192.168.1.102:8080";
-    final static public String SERVER_ADDR2 = "http://192.168.1.102:8080/deleteMedia";
-    final static public String SERVER_ADDR3 = "http://192.168.1.102:8080/addMedia";
-    final static public String SERVER_ADDR4 = "http://192.168.1.102:8080/castMedia";
-    final static public String SERVER_ADDR_LAYOUT = "http://192.168.1.102:8080/setLayout";
+    final static public String SERVER_ADDR = "http://10.150.242.196:8080";
+    final static public String SERVER_ADDR_TWIT = "http://10.150.242.196:8080/social";
+    final static public String SERVER_ADDR2 = "http://10.150.242.196:8080/deleteMedia";
+    final static public String SERVER_ADDR3 = "http://10.150.242.196:8080/addMedia";
+    final static public String SERVER_ADDR4 = "http://10.150.242.196:8080/castMedia";
+    final static public String SERVER_ADDR_LAYOUT = "http://10.150.242.196:8080/setLayout";
 
 }
