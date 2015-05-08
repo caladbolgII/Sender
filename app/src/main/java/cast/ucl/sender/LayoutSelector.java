@@ -90,22 +90,34 @@ private String layout_selected;
 
 
     public void set_layout1(View view){
+        try {
         layout_selected = "layout1";
-        new Connection().execute();
+        new Connection().execute().get();
         globalVariable.setlayout("layout1");
         go_back();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
     }
     public void set_layout2(View view){
-        layout_selected = "layout2";
-        new Connection().execute();
-        globalVariable.setlayout("layout2");
-        go_back();
+        try {
+            layout_selected = "layout2";
+            new Connection().execute().get();
+            globalVariable.setlayout("layout2");
+            go_back();
+        }catch(Exception e){
+        Log.d("Exception",e.toString());
+        }
     }
     public void set_layout3(View view){
+     try {
         layout_selected = "layout3";
-        new Connection().execute();
+        new Connection().execute().get();
         globalVariable.setlayout("layout3");
         go_back();
+     }catch(Exception e){
+        Log.d("Exception",e.toString());
+     }
     }
 
     public void go_back() {

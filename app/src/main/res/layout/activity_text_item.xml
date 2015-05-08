@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="490dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="fill">
+        <!-- Name Label -->
+
+        <TextView
+            android:id="@+id/item_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="2dip"
+            android:paddingTop="6dip"
+            android:textColor="#43bd00"
+            android:text="Object id: "
+            android:layout_gravity="fill"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elegantTextHeight="true"
+            android:gravity="fill"
+            android:lines="2" />
+
+        <!-- Email label -->
+        <TextView
+            android:id="@+id/textposted"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:text="URL: "
+            android:paddingBottom="2dip"
+            android:textColor="#acacac"
+            android:gravity="fill"
+            android:lines="2" />
+
+        <!-- Mobile number label -->
+        <TextView
+            android:id="@+id/item_timeout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|fill"
+            android:text="Deadline: "
+            android:textColor="#5d5d5d"
+            android:layout_gravity="fill"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:background="@drawable/delete" />
+    </FrameLayout>
+</LinearLayout>

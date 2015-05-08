@@ -92,9 +92,18 @@ public class VideoSender extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public void attemptSend(View view){
-        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
+        String month;
+        String day ;
+        month = String.format("%02d", textdeadline.getMonth());
+        day = String.format("%02d", textdeadline.getDayOfMonth());
+
+        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ month + "-" +day;
         command = Constants.action_cast_video;
-        new Connection().execute();
+        try {
+            new Connection().execute();
+        }catch(Exception e){
+            Log.d("JSON Exception1",e.toString());
+        }
 
         final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
         globalVariable.setvideoresponse(responseStr);
@@ -108,9 +117,18 @@ public class VideoSender extends ActionBarActivity {
         go_back();
     }
     public void attempt_add_video(View view){
-        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
+        String month;
+        String day ;
+        month = String.format("%02d", textdeadline.getMonth());
+        day = String.format("%02d", textdeadline.getDayOfMonth());
+
+        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ month + "-" +day;
         command = Constants.action_add_video;
-        new Connection().execute();
+        try {
+            new Connection().execute();
+        }catch(Exception e){
+            Log.d("JSON Exception1",e.toString());
+        }
 
         final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
         globalVariable.setvideoresponse(responseStr);
@@ -151,7 +169,7 @@ public class VideoSender extends ActionBarActivity {
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR4);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR3);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

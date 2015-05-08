@@ -19,7 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
@@ -35,6 +38,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by LENOVO on 3/6/2015.
@@ -42,7 +48,8 @@ import java.net.URISyntaxException;
 public class TextQueueEdit extends ActionBarActivity{
 
     String responseStr;
-
+    String textItem = "";
+    ArrayList<HashMap<String, String>> textList;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -93,9 +100,88 @@ public class TextQueueEdit extends ActionBarActivity{
         Spannable text = new SpannableString("Message Queue");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-        new text_connect().execute();
-    }
 
+        try {
+            new text_connect().execute().get();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
+
+        String jsonStr = "";//readFromFile();
+        jsonStr = "{ " +
+                " \"textqueue\": " + responseStr + "} ";
+
+        ListViewLoaderTask listViewLoaderTask = new ListViewLoaderTask();
+
+        /** Start parsing xml data */
+        //responseStr = globalVariable.getvideoresponse();
+        listViewLoaderTask.execute(jsonStr);
+        TextView textresponse = (TextView)findViewById(R.id.http_text_queue);
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+        textresponse.setText(globalVariable.gettextresponse());
+
+    }
+    private class ListViewLoaderTask extends AsyncTask<String, Void, SimpleAdapter>{
+
+        JSONObject jObject;
+        /** Doing the parsing of xml data in a non-ui thread */
+        @Override
+        protected SimpleAdapter doInBackground(String... jsonStr) {
+            try{
+                jObject = new JSONObject(jsonStr[0]);
+                TextJSONParser textJsonParser = new TextJSONParser();
+                textJsonParser.parse(jObject);
+
+            }catch(Exception e){
+                Log.d("JSON Exception1",e.toString());
+            }
+
+            TextJSONParser textJsonParser = new TextJSONParser();
+
+            List<HashMap<String, String>> texts = null;
+
+            try{
+                /** Getting the parsed data as a List construct */
+                texts = textJsonParser.parse(jObject);
+            }catch(Exception e){
+                Log.d("Exception",e.toString());
+            }
+
+            /** Keys used in Hashmap */
+            String[] from = { "_id","text","time_out"};
+
+            /** Ids of views in listview_layout */
+            int[] to = { R.id.item_id,R.id.textposted,R.id.item_timeout};
+
+            /** Instantiating an adapter to store each items
+             *  R.layout.listview_layout defines the layout of each item
+             */
+            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(),texts, R.layout.activity_text_item, from, to);
+
+            return adapter;
+        }
+
+        /** Invoked by the Android system on "doInBackground" is executed completely */
+        /** This will be executed in ui thread */
+        @Override
+        protected void onPostExecute(SimpleAdapter adapter) {
+
+            /** Getting a reference to listview of main.xml layout file */
+            ListView listView = ( ListView ) findViewById(R.id.videolist);
+
+            /** Setting the adapter containing the country list to listview */
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    TextView textView = (TextView) view.findViewById(R.id.item_id);
+                    textItem = textView.getText().toString();
+                   //s delete();
+
+                }});
+
+        }
+    }
     private class text_connect extends AsyncTask {
 
         @Override
@@ -113,7 +199,7 @@ public class TextQueueEdit extends ActionBarActivity{
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_get_text);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.102:8080/getTexts");
+            URI website = new URI("http://192.168.1.104:8080/getTexts");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);
@@ -128,8 +214,7 @@ public class TextQueueEdit extends ActionBarActivity{
 
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             globalVariable.settextresponse(responseStr);
-            TextView textresponse = (TextView)findViewById(R.id.http_text_queue);
-            textresponse.setText(globalVariable.gettextresponse());
+
             // TextView httpresponse = (TextView) findViewById(R.id.http_queue);
             // httpresponse.setText(globalVariable.getimageresponse());
 

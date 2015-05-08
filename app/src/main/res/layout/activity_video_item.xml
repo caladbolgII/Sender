@@ -2,11 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp" >
 
+    <FrameLayout
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:id="@+id/video_icon">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/vid_thumb"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="440dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="fill">
     <!-- Name Label -->
 
     <TextView
@@ -39,12 +59,24 @@
     <!-- Mobile number label -->
     <TextView
         android:id="@+id/item_timeout"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left|fill"
         android:text="Deadline: "
         android:textColor="#5d5d5d"
         android:layout_gravity="fill"
         android:textStyle="bold" />
+    </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:background="@drawable/delete" />
+    </FrameLayout>
 </LinearLayout>

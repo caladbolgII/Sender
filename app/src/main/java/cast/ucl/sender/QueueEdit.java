@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -51,13 +52,15 @@ public class QueueEdit extends ActionBarActivity {
     public ListView listView ;
     public SimpleAdapter simpleAdapter;
     public String queue = "";
+    String videoItem = "";
     ArrayList<HashMap<String, String>> videoList;
+    public ListViewLoaderTask listViewLoaderTask;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
         .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -95,7 +98,19 @@ public class QueueEdit extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                try {
+                    new video_connect().execute().get();
+                }catch(Exception e){
+                    Log.d("Exception",e.toString());
+                }
 
+                String jsonStr ;// readFromFile();
+                jsonStr = "{ " +
+                        " \"videoqueue\": " + responseStr + "} ";
+
+                /** Start parsing xml data */
+                listViewLoaderTask = new ListViewLoaderTask();
+                listViewLoaderTask.execute(jsonStr);
             }
         });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
@@ -108,16 +123,25 @@ public class QueueEdit extends ActionBarActivity {
         actionBar.setTitle("VIDEO QUEUE");
 
 
-            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
 
-            String jsonStr = readFromFile();
+        try {
+            new video_connect().execute().get();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
+
+        String jsonStr ;// readFromFile();
             jsonStr = "{ " +
-                    " \"videoqueue\": " + jsonStr + "} ";
+                    " \"videoqueue\": " + responseStr + "} ";
 
-        ListViewLoaderTask listViewLoaderTask = new ListViewLoaderTask();
+       listViewLoaderTask = new ListViewLoaderTask();
 
         /** Start parsing xml data */
-        listViewLoaderTask.execute(jsonStr);
+        //responseStr = globalVariable.getvideoresponse();
+        if (responseStr.length() <5){
+
+        }
+        else listViewLoaderTask.execute(jsonStr);
 
 
 
@@ -175,13 +199,40 @@ public class QueueEdit extends ActionBarActivity {
 
             /** Setting the adapter containing the country list to listview */
             listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    TextView textView = (TextView) view.findViewById(R.id.item_id);
+                    videoItem = textView.getText().toString();
+
+                    delete();
+
+                }});
+
         }
     }
 
-    public void delete(View view){
+    public void delete(){
+        try {
 
-        new video_delete().execute();
+            new video_delete().execute().get();
+            try {
+                new video_connect().execute().get();
+            }catch(Exception e){
+                Log.d("Exception",e.toString());
+            }
 
+            String jsonStr ;// readFromFile();
+            jsonStr = "{ " +
+                    " \"videoqueue\": " + responseStr + "} ";
+            /** Start parsing xml data */
+            //responseStr = globalVariable.getvideoresponse();
+            listViewLoaderTask = new ListViewLoaderTask();
+            listViewLoaderTask.execute(jsonStr);
+
+        }catch(Exception e){
+            Log.d("JSON Exception1",e.toString());
+        }
 
     }
 
@@ -200,7 +251,8 @@ public class QueueEdit extends ActionBarActivity {
             String json = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action","deleteVideo");
-            jsonObject.accumulate("id", "5538a9dcc8bee1d996cfd0e6");
+
+            jsonObject.accumulate("id",videoItem.substring(5));
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpPost httpost = new HttpPost(Constants.SERVER_ADDR2);
@@ -236,7 +288,7 @@ public class QueueEdit extends ActionBarActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_get_video);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://10.150.242.196:8080/getVideos");
+            URI website = new URI("http://192.168.1.104:8080/getVideos");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);

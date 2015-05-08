@@ -61,6 +61,7 @@ public class MainActivity extends FragmentActivity {
     private MediaRouteButton mMediaRouteButton;
     private CastDevice mSelectedDevice;
     private int mRouteCount = 0;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,19 @@ public class MainActivity extends FragmentActivity {
         ToolTipView myToolTipView2 = toolTipRelativeLayout.showToolTipForView(toolTip2, findViewById(R.id.imageButton));
 
     }
+    public void hello_message(View view){
+        String hello = "wow! such cast! very chrome! much content!";
+        String hi = "茅野好きです";
+        if (count%2 ==0 ){
+            Log.d(TAG, "sento to message bus=" + hello);
+            sendMessage(hello);
+        }
+        else {
+            Log.d(TAG, "sento to message bus=" +hi);
+            sendMessage(hi);
+        }
+        count++;
+    }
 
     public void layout_selector(View view){
         Intent intent = new Intent(view.getContext(), LayoutSelector.class);
@@ -150,7 +164,8 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onDestroy() {
-        teardown();
+        //
+         //teardown();
         super.onDestroy();
     }
 
@@ -214,7 +229,7 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onApplicationDisconnected(int errorCode) {
                     Log.d(TAG, "application has stopped");
-                    teardown();
+                   teardown();
                 }
 
             };
@@ -230,8 +245,8 @@ public class MainActivity extends FragmentActivity {
                     .build();
 
             mApiClient.connect();
-            Intent i = new Intent(MainActivity.this, LayoutSelector.class);
-            startActivity(i);
+            //Intent i = new Intent(MainActivity.this, LayoutSelector.class);
+            //startActivity(i);
         } catch (Exception e) {
             Log.e(TAG, "Failed launchReceiver", e);
         }
@@ -261,7 +276,7 @@ public class MainActivity extends FragmentActivity {
                             && connectionHint
                             .getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
                         Log.d(TAG, "App  is no longer running");
-                        teardown();
+                        //teardown();
                     } else {
                         // Re-create the custom message channel
                         try {
@@ -326,7 +341,7 @@ public class MainActivity extends FragmentActivity {
 
                                                 // set the initial instructions
                                                 // on the receiver
-                                                sendMessage(getString(R.string.instructions));
+                                                //sendMessage(getString(R.string.instructions));
                                             } else {
                                                 Log.e(TAG,
                                                         "application could not launch");

@@ -34,8 +34,8 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
             HashMap<String, String> video = null;
 
             /** Taking each country, parses and adds to list object */
-            //for(int i=0; i<videoCount;i++){
-            for(int i=0; i<3;i++){
+            for(int i=0; i<videoCount;i++){
+
                 try {
                     /** Call getCountry with country JSON object to parse the country */
                     video = getVideo((JSONObject)jVideos.get(i));
@@ -57,7 +57,7 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
             String videoid = "";
             //String timein = "";
             String timeout = "";
-
+            String url = "";
 
             try {
                 id = jVideo.getString("_id");
@@ -68,11 +68,12 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
                 id = "Item:"+id;
                 videoid = "Video ID: "+videoid;
                 timeout = "Deadline: "+ timeout.substring(0, 10);
-
+               // url = "http://img.youtube.com/vi/"+  videoid + "/default.jpg";
                 video.put("_id", id);
                 video.put("video_id", videoid);
                 //video.put("details", details);
                 video.put("time_out",timeout);
+                //video.put("video_url", url);
 
             } catch (JSONException e) {
                 e.printStackTrace();

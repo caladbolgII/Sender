@@ -26,7 +26,7 @@
     <string name="title_activity_select">TILE CASTING</string>
     <string name="app_id">312C4643</string>
     <string name="namespace">urn:x-cast:com.ucl.bbcast</string>
-    <string name="instructions">Talk to me</string>
+    <string name="instructions">setLayout1</string>
     <string name="media_route_menu_title">Play on&#8230;</string>
     <string name="post_message">POST</string>
     <string name="imagecastbutton">CAST IMAGE</string>
@@ -34,32 +34,5 @@
     <string name="selectdeadline">Select Deadline:</string>
     <string name="config">Start configuring your display by selecting your Chromecast then choose a layout</string>
     <string name="step2">After selecting a Chromecast, tap the button below to select a layout</string>
-    <string name="video_queue_string">
-       [
-   {
-      "_id":"5538a2adfasf",
-      "video_id":"eKKzMkQDWbA",
-      "time_in":"2015-04-23T08:07:06.434Z",
-      "time_out":"2015-04-23T08:07:06.434Z"
-   },
-   {
-      "_id":"5538a2adfadf",
-      "video_id":"rP4GpBzrrGM",
-      "time_in":"2015-04-23T08:07:06.434Z",
-      "time_out":"2015-04-23T08:07:06.434Z"
-   },
-   {
-      "_id":"5538a2adfasd",
-      "video_id":"WVIc7L230bA",
-      "time_in":"2015-04-23T08:07:06.434Z",
-      "time_out":"2015-04-23T08:07:06.434Z"
-   },
-   {
-      "_id":"5538a2adfasa",
-      "video_id":"oc_9r4wifFc",
-      "time_in":"2015-04-23T08:07:06.434Z",
-      "time_out":"2015-04-23T08:07:06.434Z"
-   }
-]
-    </string>
+
 </resources>
