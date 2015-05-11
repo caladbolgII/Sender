@@ -12,7 +12,7 @@ import java.util.List;
  * Created by LENOVO on 5/8/2015.
  */
 public class VideoJSONParser 	{/** Receives a JSONObject and returns a list */
-public List<HashMap<String,String>> parse(JSONObject jObject){
+public ArrayList<VideoListModel> parse(JSONObject jObject){
 
     JSONArray jVideos = null;
     try {
@@ -28,30 +28,49 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
 }
 
 
-        private List<HashMap<String, String>> getVideos(JSONArray jVideos){
+        private ArrayList<VideoListModel> getVideos(JSONArray jVideos){
             int videoCount = jVideos.length();
-            List<HashMap<String, String>> videoList = new ArrayList<HashMap<String,String>>();
-            HashMap<String, String> video = null;
+           // List<HashMap<String, String>> videoList = new ArrayList<HashMap<String,String>>();
+            //HashMap<String, String> video = null;
 
+            ArrayList<VideoListModel> vidlist = new ArrayList<VideoListModel>();
             /** Taking each country, parses and adds to list object */
             for(int i=0; i<videoCount;i++){
+           // for(int i=0; i<3;i++){
 
                 try {
                     /** Call getCountry with country JSON object to parse the country */
-                    video = getVideo((JSONObject)jVideos.get(i));
-                    videoList.add(video);
+                    //video = getVideo((JSONObject)jVideos.get(i));
+                    //videoList.add(video);
+                    VideoListModel listitem = new VideoListModel();
+                    JSONObject jVideo;
+                    jVideo = (JSONObject)jVideos.get(i);
+                    String id =  "";
+                    String videoid = "";
+                    String timeout = "";
 
+                    id = jVideo.getString("_id");
+                    videoid = jVideo.getString("video_id");
+                    timeout = jVideo.getString("time_out");
+                    id = "Item:"+id;
+                    //videoid = "Video ID: "+videoid;
+                    timeout = "Deadline: "+ timeout.substring(0, 10);
+                    listitem.setId(id);
+                    listitem.setUrl(videoid);
+                    listitem.setTimeout(timeout);
+
+                    vidlist.add(i,listitem);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
-            return videoList;
+            return vidlist;
         }
 
         /** Parsing the Country JSON object */
         private HashMap<String, String> getVideo(JSONObject jVideo){
-
+            List<VideoListModel> list;
             HashMap<String, String> video = new HashMap<String, String>();
             String id =  "";
             String videoid = "";
@@ -62,7 +81,6 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
             try {
                 id = jVideo.getString("_id");
                 videoid = jVideo.getString("video_id");
-                //timein = jVideo.getString("time_in");
                 timeout = jVideo.getString("time_out");
 
                 id = "Item:"+id;

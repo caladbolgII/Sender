@@ -113,8 +113,8 @@ public class MainActivity extends FragmentActivity {
 
     }
     public void hello_message(View view){
-        String hello = "wow! such cast! very chrome! much content!";
-        String hi = "茅野好きです";
+        String hello = "setLayout1";
+        String hi = "setLayout2";
         if (count%2 ==0 ){
             Log.d(TAG, "sento to message bus=" + hello);
             sendMessage(hello);
@@ -333,6 +333,7 @@ public class MainActivity extends FragmentActivity {
                                                                     mHelloWorldChannel
                                                                             .getNamespace(),
                                                                     mHelloWorldChannel);
+                                                    Log.e(TAG, "Cast api callbacks set");
                                                 } catch (IOException e) {
                                                     Log.e(TAG,
                                                             "Exception while creating channel",

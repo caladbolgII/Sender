@@ -46,6 +46,7 @@ public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnI
     List<String> imagequeue;
     private ListView imagelist;
     String responseStr;
+    TextView test;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,13 @@ public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnI
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                new image_connect().execute();
+                try {
+                new image_connect().execute().get();
+                }catch(Exception e){
+                    Log.d("Exception",e.toString());
+                }
+                test = (TextView)findViewById(R.id.http_queue);
+                test.setText(responseStr);
             }
         });
 
@@ -123,7 +130,7 @@ public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnI
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_get_text);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.102:8080/getImages");
+            URI website = new URI("http://10.111.14.51:8080/getImages");
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);
@@ -137,8 +144,8 @@ public class ImageQueueEdit extends ActionBarActivity implements AdapterView.OnI
                 responseStr = "Did not work!";
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             globalVariable.setimageresponse(responseStr);
-            TextView httpresponse = (TextView) findViewById(R.id.http_queue);
-            httpresponse.setText(globalVariable.getimageresponse());
+            //TextView httpresponse = (TextView) findViewById(R.id.http_queue);
+            //httpresponse.setText(globalVariable.getimageresponse());
 
         } catch (ClientProtocolException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());

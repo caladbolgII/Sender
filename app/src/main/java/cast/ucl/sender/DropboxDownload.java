@@ -130,7 +130,9 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     private void getshareurl() {
         try {
             DropboxAPI.DropboxLink shareLink = mApi.share(fileSelected.path);
-            shareurl = getShareURL(shareLink.url).replaceFirst("https://www", "https://dl");
+            shareurl = getShareURL(shareLink.url).replaceFirst("https://www.dropbox", "https://dl.dropboxusercontent");
+            //shareurl = getShareURL(shareLink.url);
+            shareurl = shareurl.substring(0, shareurl.length() - 5);
             goback();
         } catch (DropboxException e) {
             e.printStackTrace();
@@ -148,6 +150,7 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
             InputStream is = conn.getInputStream();
             System.out.println("Redirected URL: " + conn.getURL());
             redirectedUrl = conn.getURL().toString();
+            //redirectedUrl =redirectedUrl.substring(0,  redirectedUrl.length() - 5);
             is.close();
 
         } catch (MalformedURLException e) {

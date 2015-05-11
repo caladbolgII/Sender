@@ -40,11 +40,12 @@ public class Constants {
     final static public String action_follow_twitter = "twitterFollow";
     //IP address and port
     //ADD
-    final static public String SERVER_ADDR ="http://192.168.1.104:8080";
-    final static public String SERVER_ADDR_TWIT ="http://192.168.1.104:8080/social";
-    final static public String SERVER_ADDR2 = "http://192.168.1.104:8080/deleteMedia";
-    final static public String SERVER_ADDR3 = "http://192.168.1.104:8080/addMedia";
-    final static public String SERVER_ADDR4 = "http://192.168.1.104:8080/castMedia";
-    final static public String SERVER_ADDR_LAYOUT = "http://192.168.1.104:8080/setLayout";
+    final static public String SERVER = "http://192.168.1.4:8080";
+
+    final static public String SERVER_ADDR_DELETE = SERVER+"/deleteMedia";
+    final static public String SERVER_ADDR_ADD = SERVER+"/addMedia";
+    final static public String SERVER_ADDR_CAST = SERVER+ "/castMedia";
+    final static public String SERVER_ADDR_LAYOUT = SERVER+"/setLayout";
+    final static public String SERVER_GET_VIDEO = SERVER+"/getVideos";
 
 }

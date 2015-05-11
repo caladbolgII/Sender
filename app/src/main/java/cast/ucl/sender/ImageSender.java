@@ -134,8 +134,12 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     }
 
     public void attempt_cast_image(View view){
+        String month;
+        String day ;
+        month = String.format("%02d", imagedeadline.getMonth());
+        day = String.format("%02d",imagedeadline.getDayOfMonth());
 
-        deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ Integer.toString(imagedeadline.getMonth()) + "-" +Integer.toString(imagedeadline.getDayOfMonth());
+        deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ month + "-" +day;
         command = Constants.action_add_image;
         new Connection().execute();
         Context context = getApplicationContext();
@@ -166,11 +170,11 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             String json = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action", command);
-            jsonObject.accumulate("imageURL", myTextField.getText());
+            jsonObject.accumulate("imageURL",myTextField.getText());
             jsonObject.accumulate("deadline", deaddate);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR4);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_ADD);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

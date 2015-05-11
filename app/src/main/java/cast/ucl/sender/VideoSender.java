@@ -169,7 +169,7 @@ public class VideoSender extends ActionBarActivity {
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR3);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_ADD);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);
