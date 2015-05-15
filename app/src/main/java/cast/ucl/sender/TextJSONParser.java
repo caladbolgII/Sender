@@ -75,7 +75,7 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
             conv = conv+8;
             if (conv>24) conv = conv -24;
             else conv = conv;
-            timeconv = Integer.toString(conv,10);
+            timeconv = String.format("%02d",conv);
 
             mtext= "Message: "+mtext;
             timeout = "Expires on: "+timeout.substring(0, 10)+" "+timeconv +timeout.substring(13,16); ;

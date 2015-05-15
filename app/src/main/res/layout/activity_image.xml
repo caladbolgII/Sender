@@ -100,7 +100,8 @@
             android:text="Choose Dropbox Image"
             android:id="@+id/button_search"
             android:layout_weight="0.266"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp" />
 
         <Button
             android:layout_width="fill_parent"
@@ -109,7 +110,8 @@
             android:id="@+id/buttonimage"
             android:onClick="attemptSend"
             android:layout_weight="0.266"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp" />
 
         <Button
         style="?android:attr/buttonStyleSmall"

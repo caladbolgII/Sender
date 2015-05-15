@@ -22,9 +22,10 @@
     <string name="title_activity_queueing">IMAGE QUEUE</string>
     <string name="title_activity_layout">LAYOUT SELECTION</string>
     <string name="title_activity_queuetxt">TEXT QUEUE</string>
-    <string name="title_activity_vidsend">VIDEO CASR</string>
+    <string name="title_activity_txtedit">EDIT TEXT ITEM</string>
+    <string name="title_activity_vidsend">VIDEO CAST</string>
     <string name="title_activity_select">TILE CASTING</string>
-    <string name="app_id">2641E180</string>
+    <string name="app_id">312C4643</string>
     <string name="namespace">urn:x-cast:com.ucl.bbcast</string>
     <string name="instructions">setLayout1</string>
     <string name="media_route_menu_title">Play on&#8230;</string>

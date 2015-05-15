@@ -77,14 +77,16 @@
             android:id="@+id/button_search"
             android:onClick="search_youtube"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="60dp"
+            android:textSize="16sp" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:text="ADD VIDEO"
             android:id="@+id/add_queue_video"
             android:onClick="attempt_add_video"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

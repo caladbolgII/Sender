@@ -17,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -38,38 +41,48 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Created by LENOVO on 4/23/2015.
+ * Created by LENOVO on 5/15/2015.
  */
-public class VideoSender extends ActionBarActivity {
+public class TextEdit extends ActionBarActivity {
     public EditText myTextField;
     public DatePicker textdeadline;
+    public EditText TitleField;
     public Button myButton;
-    public Button searchButton;
     public String deaddate;
+    String responseStr;
     public String command;
     public TimePicker deadtime;
-    String responseStr;
-    String url;
+    public Spinner spinner;
+    public String type = "";
+    public TextView idtext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_video_sender);
-        myTextField = (EditText) findViewById(R.id.video_url);
-        textdeadline = (DatePicker) findViewById(R.id.deadline_video);
-        deadtime = (TimePicker)findViewById(R.id.vidtimePicker);
-        deadtime.setIs24HourView(Boolean.TRUE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_text_edit);
+        myTextField = (EditText) findViewById(R.id.text_message);
+        textdeadline = (DatePicker) findViewById(R.id.deadline_text);
+        TitleField = (EditText)findViewById(R.id.cast_text_title);
+        idtext = (TextView)findViewById(R.id.textitemid);
         ActionBar actionBar = getSupportActionBar();
         Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
-        Spannable text = new SpannableString("Video Sender");
+        Spannable text = new SpannableString("Message Editor");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-        searchButton = (Button) findViewById(R.id.button_search);
+
+        deadtime = (TimePicker)findViewById(R.id.txttimePicker);
+        deadtime.setIs24HourView(Boolean.TRUE);
+        spinner = (Spinner) findViewById(R.id.txtspinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
     }
 
 
@@ -95,44 +108,39 @@ public class VideoSender extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void attempt_add_video(View view){
+
+    public void attempt_add_text(View view){
+
         String month = "";
         String year = "";
         String day = "";
         String hour = "";
         String minutes = "";
         month = String.format("%02d",textdeadline.getMonth()+1);
-        Log.e("month",Integer.toString(textdeadline.getMonth()));
-
+        // Log.e("month",Integer.toString(imagedeadline.getMonth()));
+        command = "edit";
         day = String.format("%02d", textdeadline.getDayOfMonth());
         year = Integer.toString(textdeadline.getYear());
         hour = Integer.toString(deadtime.getCurrentHour());
         minutes = Integer.toString(deadtime.getCurrentMinute());
+        type = String.valueOf(spinner.getSelectedItem());
         deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
-        command = Constants.action_add_video;
-        try {
-            new Connection().execute();
-        }catch(Exception e){
-            Log.d("JSON Exception1",e.toString());
-        }
+        command = Constants.action_edit_text;
+
+        new Connection().execute();
 
         final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.setvideoresponse(responseStr);
+        globalVariable.settextresponse(responseStr);
         Context context = getApplicationContext();
-        CharSequence text = "Video has been added to queue";
+        CharSequence text = "Message has been edited";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         go_back();
     }
-
     public void go_back() {
-        Intent intent = new Intent(this, QueueEdit.class);
-        startActivity(intent);
-    }
-    public void search_youtube(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
+        Intent intent = new Intent(this, TextQueueEdit.class);
         startActivity(intent);
     }
     private class Connection extends AsyncTask {
@@ -150,13 +158,17 @@ public class VideoSender extends ActionBarActivity {
             String json = "";
             InputStream inputStream = null;
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action",command);
-            jsonObject.accumulate("video_id", url);
+            jsonObject.accumulate("action",Constants.action_edit_text);
+            jsonObject.accumulate("id",idtext.getText());
+            jsonObject.accumulate("text",myTextField.getText());
+            jsonObject.accumulate("classification",type);
+            jsonObject.accumulate("title", TitleField.getText());
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_VIDEO);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_TEXTS);
             json = jsonObject.toString();
+            Log.e("Json string",json);
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);
             httpost.setHeader("Accept", "application/json");
@@ -202,8 +214,62 @@ public class VideoSender extends ActionBarActivity {
         super.onStart();  // Always call the superclass method first
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
-            url = extras.getString("video");
+            String id = "";
+            String title = "";
+            String deadline = "";
+            String message = "";
+            String type = "";
+            String year = "";
+            String month = "";
+            String day = "";
+            String hour = "";
+            String min = "";
+            int typecast = 0;
+
+
+            type = extras.getString("type");
+            id = extras.getString("id");
+            title = extras.getString("title");
+            message = extras.getString("message");
+            deadline = extras.getString("timeout");
+            year = deadline.substring(12, 16);
+            month = deadline.substring(17, 19);
+            day = deadline.substring(20, 22);
+            hour = deadline.substring(23, 25);
+            min = deadline.substring(26, 28);
+            Log.e(year,month);
+            Log.e(day,hour);
+            switch ( type ) {
+                case "exam":
+                   typecast = 0;
+                    break;
+                case "quiz":
+                    typecast = 1;
+                    break;
+                case "seatwork":
+                    typecast = 2;
+                    break;
+                case "homework":
+                    typecast = 3;
+                    break;
+                case "event":
+                    typecast = 4;
+                    break;
+
+                default:
+                    typecast = 0;
+
+            }
+
+
+            textdeadline.updateDate(Integer.parseInt(year),Integer.parseInt(month)-1,Integer.parseInt(day));
+            TitleField.setText(title);
+            myTextField.setText(message.substring(9));
+            deadtime.setCurrentHour(Integer.parseInt(hour));
+            deadtime.setCurrentMinute(Integer.parseInt(min));
+            spinner.setSelection(typecast);
+            idtext.setText(id);
+
         }
     }
     @Override
@@ -211,33 +277,38 @@ public class VideoSender extends ActionBarActivity {
         super.onRestart();  // Always call the superclass method first
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
-            url = extras.getString("video");
+            String id = "";
+            String title = "";
+            String deadline = "";
+            String message = "";
+            String type = "";
+            String year = "";
+            String month = "";
+            String day = "";
+            String hour = "";
+            String min = "";
+
+
+            type = extras.getString("type");
+            id = extras.getString("id");
+            title = extras.getString("title");
+            message = extras.getString("message");
+            deadline = extras.getString("timeout");
+            year = deadline.substring(12, 15);
+            month = deadline.substring(17, 18);
+            day = deadline.substring(20,21);
+            hour = deadline.substring(23,24);
+            min = deadline.substring(26,27);
+
+            textdeadline.updateDate(Integer.parseInt(year),Integer.parseInt(month)-1,Integer.parseInt(day));
+            TitleField.setText(title);
+            deadtime.setCurrentHour(Integer.parseInt(hour));
+            deadtime.setCurrentMinute(Integer.parseInt(min));
+            spinner.setPrompt(type);
+            idtext.setText(id);
 
         }
         // Activity being restarted from stopped state
     }
-    @Override
-    protected void onResume() {
-        super.onResume();  // Always call the superclass method first
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
-            url = extras.getString("video");
-
-        }
-        // Activity being restarted from stopped state
-    }
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);//must store the new intent unless getIntent() will return the old one
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
-            url = extras.getString("video");
-
-        }
-    }
-
 
 }

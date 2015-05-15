@@ -1,6 +1,5 @@
 package cast.ucl.sender;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -35,7 +34,6 @@ public class Selection extends ActionBarActivity {
     LinearLayout.LayoutParams layoutParams;
     LinearLayout left, right, left_top, left_bottom, right_top, right_bottom,whole;
     String layout_selected;
-    ProgressDialog progressDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -421,17 +419,14 @@ public class Selection extends ActionBarActivity {
     public void open_image(View view) {
         Intent intent = new Intent(this,ImageQueueEdit.class);
         startActivity(intent);
-
     }
     public void open_sender(View view) {
         Intent intent = new Intent(this,TextQueueEdit.class);
         startActivity(intent);
-
     }
     public void open_video(View view) {
         Intent intent = new Intent(this,QueueEdit.class);
         startActivity(intent);
-
     }
 
     @Override

@@ -315,6 +315,10 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             }
         }
         super.onResume();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            myTextField.setText(extras.getString("imgurl"));
+        }
     }
     public void onClick(View v) {
         if (v == btnDownload) {
@@ -344,8 +348,20 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         super.onRestart();  // Always call the superclass method first
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText("HELLO");
+            myTextField.setText(extras.getString("imgurl"));
         }
         // Activity being restarted from stopped state
     }
+
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);//must store the new intent unless getIntent() will return the old one
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            myTextField.setText(extras.getString("imgurl"));
+        }
+
+    }
+
+
 }

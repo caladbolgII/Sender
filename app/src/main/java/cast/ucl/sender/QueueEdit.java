@@ -55,7 +55,7 @@ public class QueueEdit extends ActionBarActivity {
     Resources res;
     ProgressDialog progressDialog;
     String id;
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -419,4 +419,54 @@ public class QueueEdit extends ActionBarActivity {
 
         Log.e("Delete id:", id);
     }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();  // Always call the superclass method first
+        Bundle extras = getIntent().getExtras();
+        try {
+            new video_connect().execute().get();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
+        listViewLoaderTask = new ListViewLoaderTask();
+        jsonStr = "{ " +
+                " \"videoqueue\": " +responseStr + "} ";
+        try{
+            listViewLoaderTask.execute(jsonStr);
+        }
+        catch (Exception e){
+
+        }
+        // Activity being restarted from stopped state
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();  // Always call the superclass method first
+        Bundle extras = getIntent().getExtras();
+
+        // Activity being restarted from stopped state
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);//must store the new intent unless getIntent() will return the old one
+        Bundle extras = getIntent().getExtras();
+        try {
+            new video_connect().execute().get();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
+        listViewLoaderTask = new ListViewLoaderTask();
+        jsonStr = "{ " +
+                " \"videoqueue\": " +responseStr + "} ";
+        try{
+            listViewLoaderTask.execute(jsonStr);
+        }
+        catch (Exception e){
+
+        }
+    }
+
 }

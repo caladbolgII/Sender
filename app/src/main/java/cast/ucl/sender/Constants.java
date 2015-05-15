@@ -22,6 +22,7 @@ public class Constants {
     final static public String action_add_video = "add";
     final static public String action_add_image = "add";
     final static public String action_add_text = "add";
+    final static public String action_edit_text = "edit";
     final static public String action_cast_video = "castVideo";
     final static public String action_cast_image = "castImage";
     final static public String action_cast_text = "castMessage";
@@ -36,7 +37,7 @@ public class Constants {
 
     //IP address and port
     //ADD
-    final static public String SERVER = "http://192.168.1.105:8080";
+    final static public String SERVER = "http://192.168.1.104:8080";
     final static public long results = 30;
     final static public String SERVER_ADDR_DELETE = SERVER+"/deleteMedia";
     final static public String SERVER_ADDR_VIDEO = SERVER+"/videos";

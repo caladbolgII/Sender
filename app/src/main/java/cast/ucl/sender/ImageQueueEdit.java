@@ -362,6 +362,62 @@ public class ImageQueueEdit extends ActionBarActivity{
 
         Log.e("Delete id:", id);
     }
+    @Override
+    protected void onRestart() {
+        super.onRestart();  // Always call the superclass method first
+        Bundle extras = getIntent().getExtras();
+        try {
+            new image_connect().execute().get();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
+        listViewLoaderTask = new ListViewLoaderTask();
+        jsonStr = "{ " +
+                " \"imagequeue\": " +responseStr + "} ";
+        //Log.e("REPLY",jsonStr);
+        try{
+            listViewLoaderTask.execute(jsonStr).get();
+        }
+        catch (Exception e){
 
+        }
+        imagelist = ( ListView ) findViewById(R.id.imglist);
+        imagequeue = new ImageQueueAdapter(image_queue,imageList,res);
+        if (imageList.isEmpty()) isEmpty();
+        else imagelist.setAdapter(imagequeue);
+        // Activity being restarted from stopped state
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();  // Always call the superclass method first
+        Bundle extras = getIntent().getExtras();
+
+        // Activity being restarted from stopped state
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);//must store the new intent unless getIntent() will return the old one
+        Bundle extras = getIntent().getExtras();
+        try {
+            new image_connect().execute().get();
+        }catch(Exception e){
+            Log.d("Exception",e.toString());
+        }
+        listViewLoaderTask = new ListViewLoaderTask();
+        jsonStr = "{ " +
+                " \"imagequeue\": " +responseStr + "} ";
+        //Log.e("REPLY",jsonStr);
+        try{
+            listViewLoaderTask.execute(jsonStr).get();
+        }
+        catch (Exception e){
+
+        }
+        imagelist = ( ListView ) findViewById(R.id.imglist);
+        imagequeue = new ImageQueueAdapter(image_queue,imageList,res);
+        if (imageList.isEmpty()) isEmpty();
+        else imagelist.setAdapter(imagequeue);
+    }
 }
 

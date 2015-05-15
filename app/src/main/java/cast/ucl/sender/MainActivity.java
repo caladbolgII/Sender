@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
@@ -375,13 +376,14 @@ public class MainActivity extends FragmentActivity {
                                 if (!result.isSuccess()) {
                                     Log.e(TAG, "Sending message failed");
                                 }
+                                else Toast.makeText(MainActivity.this,"Message Sent", Toast.LENGTH_SHORT).show();
                             }
                         });
             } catch (Exception e) {
                 Log.e(TAG, "Exception while sending message", e);
             }
         } else {
-           // Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
     /**
