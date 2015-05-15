@@ -48,6 +48,16 @@
         </activity>
         <activity
             android:screenOrientation="landscape"
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName=".Selection"
+            android:launchMode="singleInstance">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.Selection" />
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
             android:name=".LayoutSelector"
             android:label="@string/title_activity_layout"
             android:parentActivityName=".Selection" >

@@ -42,6 +42,7 @@ public class Constants {
     final static public String SERVER_ADDR_DELETE = SERVER+"/deleteMedia";
     final static public String SERVER_ADDR_VIDEO = SERVER+"/videos";
     final static public String SERVER_ADDR_TEXTS = SERVER+"/texts";
+    final static public String SERVER_ADDR_CHAT = SERVER+"/message";
     final static public String SERVER_ADDR_IMAGES = SERVER+"/images";
     final static public String SERVER_ADDR_ADD = SERVER+"/addMedia";
     final static public String SERVER_ADDR_LAYOUT = SERVER+"/setLayout";

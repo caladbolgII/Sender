@@ -43,7 +43,7 @@ public class Selection extends ActionBarActivity {
         VideoView left_pane = new VideoView(this);
         VideoView left_pane_top = new  VideoView(this);
         TextView left_pane_bottom = new TextView(this);
-        TextView right_pane = new TextView(this);
+         ChatView right_pane = new ChatView(this);
         ImageView right_pane_top = new ImageView(this);
         TwitterView right_pane_bottom = new TwitterView(this);
         VideoView whole_pane = new VideoView(this);
@@ -51,7 +51,7 @@ public class Selection extends ActionBarActivity {
 
 
         layout_selected = globalVariable.getlayout();
-        setContentView(R.layout.acitivty_blank);
+        setContentView(R.layout.activity_blank);
 
         whole = (LinearLayout)findViewById(R.id.whole);
         right = (LinearLayout)findViewById(R.id.column_right);
@@ -110,7 +110,7 @@ public class Selection extends ActionBarActivity {
                 right_pane.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        open_sender(view);
+                        open_chat(view);
                     }
                 });
                 left_pane.setLayoutParams(layoutParams);
@@ -347,7 +347,65 @@ public class Selection extends ActionBarActivity {
             canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
         }
     }
+    public class ChatView extends View{
+        Paint p;
+        public ChatView(Context context) {
+            super(context);
 
+        }
+        private int mWidth;
+        private int mHeight;
+        private float mAngle;
+
+        @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        {
+            mWidth = View.MeasureSpec.getSize(widthMeasureSpec);
+            mHeight = View.MeasureSpec.getSize(heightMeasureSpec);
+
+            setMeasuredDimension(mWidth, mHeight);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            // paint.setColor(Color.parseColor("#000000"));//bdc3c7
+            paint.setColor(Color.parseColor("#ecf0f1"));
+            int x = getWidth();
+            int y = getHeight();
+            paint.setStrokeWidth(3);
+            canvas.drawRect(0, 0, x, y, paint);
+            paint.setStrokeWidth(0);
+            paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
+            canvas.drawRect(3, 3, x-3, y-3, paint );
+            p=new Paint();
+            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.text);
+            Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
+            Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
+            Bitmap n = b.createScaledBitmap(b,1*y/4,1*y/4,true);
+            p.setColor(Color.RED);
+            int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
+            int cy = (mHeight - b.getHeight()) >> 1;
+            int cxr = (mWidth - r.getWidth()) >> 1; // same as (...) / 2
+            int cyr = (mHeight - r.getHeight()) >> 1;
+
+            int cxn = (mWidth - n.getWidth()) >> 1; // same as (...) / 2
+            int cyn = (mHeight - n.getHeight()) >> 1;
+            if (mAngle > 0) {
+                canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
+            }
+            if(globalVariable.getlayout()=="layout1")
+                canvas.drawBitmap(b,cx, cy, p);
+            else canvas.drawBitmap(n,cxn, cyn, p);
+
+
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(27);
+            canvas.drawText("Chatroom", e.getWidth()+10, y-15, paint);
+            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
+        }
+    }
     public class TwitterView extends View{
         Paint p;
         public TwitterView(Context context) {
@@ -426,6 +484,10 @@ public class Selection extends ActionBarActivity {
     }
     public void open_video(View view) {
         Intent intent = new Intent(this,QueueEdit.class);
+        startActivity(intent);
+    }
+    public void open_chat(View view) {
+        Intent intent = new Intent(this,ChatActivity.class);
         startActivity(intent);
     }
 
