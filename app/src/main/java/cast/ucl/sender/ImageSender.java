@@ -24,9 +24,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
@@ -50,6 +53,7 @@ import java.util.Date;
 public class ImageSender extends ActionBarActivity implements View.OnClickListener {
 // variable declarations
     public EditText myTextField;
+    public EditText TitleField;
     public DatePicker imagedeadline;
     private static final int TAKE_PHOTO = 1;
     private Button btnUpload, btnDownload;
@@ -59,6 +63,9 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     private DropboxAPI<AndroidAuthSession> mApi;
     public String deaddate= "";
     public String command;
+    public TimePicker deadtime;
+    public  Spinner spinner;
+    public String type = "";
     @Override
 
 
@@ -66,9 +73,10 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_image);
         myTextField = (EditText) findViewById(R.id.imagelink);
+        TitleField = (EditText)findViewById(R.id.image_title);
         imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         ActionBar actionBar = getSupportActionBar();
         Drawable d=getResources().getDrawable(R.drawable.back);
@@ -90,9 +98,15 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         btnUpload = (Button) findViewById(R.id.btnUploadPhoto);
         btnUpload.setOnClickListener(this);
         btnDownload.setOnClickListener(this);
-
-
-
+        imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
+        deadtime = (TimePicker)findViewById(R.id.imgtimePicker);
+        deadtime.setIs24HourView(Boolean.TRUE);
+        spinner = (Spinner) findViewById(R.id.imgspinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
     }
 
@@ -121,8 +135,20 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
 
     public void attemptSend(View view){
 
-        deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ Integer.toString(imagedeadline.getMonth()) + "-" +Integer.toString(imagedeadline.getDayOfMonth());
-        command = Constants.action_cast_image;
+        String month = "";
+        String year = "";
+        String day = "";
+        String hour = "";
+        String minutes = "";
+        month = String.format("%02d",imagedeadline.getMonth()+1);
+       // Log.e("month",Integer.toString(imagedeadline.getMonth()));
+        command = "add";
+        day = String.format("%02d", imagedeadline.getDayOfMonth());
+        year = Integer.toString(imagedeadline.getYear());
+        hour = Integer.toString(deadtime.getCurrentHour());
+        minutes = Integer.toString(deadtime.getCurrentMinute());
+        type = String.valueOf(spinner.getSelectedItem());
+        deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         new Connection().execute();
         Context context = getApplicationContext();
         CharSequence text = "Image has been cast";
@@ -133,25 +159,9 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         go_back();
     }
 
-    public void attempt_cast_image(View view){
-        String month;
-        String day ;
-        month = String.format("%02d", imagedeadline.getMonth());
-        day = String.format("%02d",imagedeadline.getDayOfMonth());
 
-        deaddate = Integer.toString(imagedeadline.getYear())+ "-"+ month + "-" +day;
-        command = Constants.action_add_image;
-        new Connection().execute();
-        Context context = getApplicationContext();
-        CharSequence text = "Image has been added to queue";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        go_back();
-    }
     public void go_back() {
-        Intent intent = new Intent(this, Selection.class);
+        Intent intent = new Intent(this,ImageQueueEdit.class);
         startActivity(intent);
     }
 
@@ -170,11 +180,13 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             String json = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action", command);
-            jsonObject.accumulate("imageURL",myTextField.getText());
+            jsonObject.accumulate("image_url",myTextField.getText());
+            jsonObject.accumulate("title",TitleField.getText());
+            jsonObject.accumulate("classification",type);
             jsonObject.accumulate("deadline", deaddate);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_ADD);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_IMAGES);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

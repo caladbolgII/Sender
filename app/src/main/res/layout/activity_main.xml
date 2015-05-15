@@ -28,7 +28,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="140dp"
+            android:layout_height="100dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView3"
             android:layout_centerHorizontal="true"
@@ -46,7 +46,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.80">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/Hello"
+            android:clickable="false"
+            android:longClickable="false"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:background="#ffbdc3c7"
+            android:baselineAligned="true">
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:id="@+id/layout1_pane">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Layout1"
+                    android:id="@+id/button5"
+                    android:onClick="set_layout1"
+                    android:drawableBottom="@drawable/layout1"
+                    android:background="#ffbdc3c7"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:id="@+id/layout2_pane">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Layout2"
+                    android:id="@+id/button6"
+                    android:onClick="set_layout2"
+                    android:drawableBottom="@drawable/layout2"
+                    android:background="#bdc3c7"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:id="@+id/layout3_pane">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Layout3"
+                    android:id="@+id/button7"
+                    android:onClick="set_layout3"
+                    android:drawableBottom="@drawable/layout3"
+                    android:background="#bdc3c7"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
 
             <android.support.v7.app.MediaRouteButton
                 android:id="@+id/media_route_button"
@@ -55,45 +119,22 @@
                 android:mediaRouteTypes="user"
                 android:background="@drawable/circle"
 
-                android:layout_alignParentBottom="false"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentLeft="false"
                 android:layout_alignWithParentIfMissing="false"
                 android:layout_alignParentTop="false"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="70dp" />
+                android:layout_marginBottom="30dp"
+                android:layout_marginRight="30dp" />
 
 
             <com.nhaarman.supertooltips.ToolTipRelativeLayout
                 android:id="@+id/mediatip"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="fill_parent"
                 android:layout_alignParentBottom="false"
                 android:layout_alignParentRight="false" />
 
-        <ImageButton
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/imageButton"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/layouter"
-            android:onClick="layout_selector"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="65dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hello chromecast"
-            android:id="@+id/button2"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="35dp"
-            android:layout_marginStart="35dp"
-            android:onClick="hello_message" />
     </RelativeLayout>
 
 </LinearLayout>

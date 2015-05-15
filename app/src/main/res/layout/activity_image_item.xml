@@ -1,63 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp" >
+    android:layout_height="140dp"
+    android:orientation="horizontal">
 
     <FrameLayout
         android:layout_width="115dp"
-        android:layout_height="115dp"></FrameLayout>
+        android:layout_height="fill_parent"
+        android:id="@+id/video_icon">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            android:id="@+id/img_thumb"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="440dp"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:gravity="fill">
         <!-- Name Label -->
 
         <TextView
-            android:id="@+id/item_id"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:text="Title: "
+            android:id="@+id/img_title"
             android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="#43bd00"
-            android:text="Object id: "
-            android:layout_gravity="fill"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:elegantTextHeight="true"
+            android:textColor="#000000"
             android:gravity="fill"
-            android:lines="2" />
+            android:lines="2"
+            android:textSize="15sp" />
 
         <!-- Email label -->
         <TextView
+            android:id="@+id/item_timeout"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:gravity="left|fill"
+            android:text="Deadline: "
+            android:textColor="#5d5d5d"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:text="New Text"
+            android:id="@+id/img_class" />
+
+        <TextView
             android:id="@+id/img_url"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="fill"
             android:text="URL: "
             android:paddingBottom="2dip"
             android:textColor="#acacac"
             android:gravity="fill"
-            android:lines="2" />
+            android:lines="2"
+            android:visibility="invisible" />
 
         <!-- Mobile number label -->
+
         <TextView
-            android:id="@+id/item_timeout"
+            android:id="@+id/item_id"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left|fill"
-            android:text="Deadline: "
-            android:textColor="#5d5d5d"
-            android:layout_gravity="fill"
-            android:textStyle="bold" />
+            android:layout_height="0dp"
+            android:paddingBottom="2dip"
+            android:paddingTop="6dip"
+            android:textColor="#43bd00"
+            android:text="Object id: "
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elegantTextHeight="true"
+            android:gravity="fill"
+            android:lines="2"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <FrameLayout

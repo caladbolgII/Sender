@@ -8,8 +8,8 @@
     android:paddingRight="10dp" >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="490dp"
-        android:layout_height="wrap_content"
+        android:layout_width="545dp"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
         android:padding="10dp"
         android:paddingLeft="10dp"
@@ -18,31 +18,36 @@
         <!-- Name Label -->
 
         <TextView
-            android:id="@+id/item_id"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:text="Title"
+            android:id="@+id/text_title"
+            android:textStyle="bold"
+            android:textColor="#ff000000" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Message:"
+            android:id="@+id/message_item" />
+
+        <TextView
+            android:id="@+id/item_id"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
             android:paddingBottom="2dip"
             android:paddingTop="6dip"
             android:textColor="#43bd00"
             android:text="Object id: "
             android:layout_gravity="fill"
-            android:textSize="16sp"
+            android:textSize="11sp"
             android:textStyle="bold"
             android:elegantTextHeight="true"
             android:gravity="fill"
-            android:lines="2" />
+            android:lines="2"
+            android:visibility="invisible" />
 
         <!-- Email label -->
-        <TextView
-            android:id="@+id/textposted"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:text="URL: "
-            android:paddingBottom="2dip"
-            android:textColor="#acacac"
-            android:gravity="fill"
-            android:lines="2" />
 
         <!-- Mobile number label -->
         <TextView
@@ -54,17 +59,24 @@
             android:textColor="#5d5d5d"
             android:layout_gravity="fill"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:text="Classification"
+            android:id="@+id/text_type"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="fill_parent">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:layout_gravity="center"
-            android:background="@drawable/delete" />
+            android:background="@drawable/menu_1" />
     </FrameLayout>
 </LinearLayout>

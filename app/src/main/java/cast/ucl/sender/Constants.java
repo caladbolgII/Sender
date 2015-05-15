@@ -19,9 +19,9 @@ public class Constants {
     final static public String ACCESS_SECRET_NAME = "ACCESS_SECRET";
     // RECEIVER API's
     //ADD
-    final static public String action_add_video = "addVideo";
-    final static public String action_add_image = "addImage";
-    final static public String action_add_text = "addMessage";
+    final static public String action_add_video = "add";
+    final static public String action_add_image = "add";
+    final static public String action_add_text = "add";
     final static public String action_cast_video = "castVideo";
     final static public String action_cast_image = "castImage";
     final static public String action_cast_text = "castMessage";
@@ -33,19 +33,17 @@ public class Constants {
     final static public String action_change_video = "changeVideo";
     final static public String action_change_image = "changeImage";
     final static public String action_change_text = "changeText";
-    //GET
-    final static public String action_get_video = "getVideoQueue";
-    final static public String action_get_image = "getImageQueue";
-    final static public String action_get_text = "getTextQueue";
-    final static public String action_follow_twitter = "twitterFollow";
+
     //IP address and port
     //ADD
-    final static public String SERVER = "http://192.168.1.4:8080";
-
+    final static public String SERVER = "http://192.168.1.105:8080";
+    final static public long results = 30;
     final static public String SERVER_ADDR_DELETE = SERVER+"/deleteMedia";
+    final static public String SERVER_ADDR_VIDEO = SERVER+"/videos";
+    final static public String SERVER_ADDR_TEXTS = SERVER+"/texts";
+    final static public String SERVER_ADDR_IMAGES = SERVER+"/images";
     final static public String SERVER_ADDR_ADD = SERVER+"/addMedia";
-    final static public String SERVER_ADDR_CAST = SERVER+ "/castMedia";
     final static public String SERVER_ADDR_LAYOUT = SERVER+"/setLayout";
-    final static public String SERVER_GET_VIDEO = SERVER+"/getVideos";
+    final static public String SERVER_GET_VIDEO = SERVER+"/videos";
 
 }

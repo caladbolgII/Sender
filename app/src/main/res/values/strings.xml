@@ -24,15 +24,21 @@
     <string name="title_activity_queuetxt">TEXT QUEUE</string>
     <string name="title_activity_vidsend">VIDEO CASR</string>
     <string name="title_activity_select">TILE CASTING</string>
-    <string name="app_id">312C4643</string>
+    <string name="app_id">2641E180</string>
     <string name="namespace">urn:x-cast:com.ucl.bbcast</string>
     <string name="instructions">setLayout1</string>
     <string name="media_route_menu_title">Play on&#8230;</string>
     <string name="post_message">POST</string>
     <string name="imagecastbutton">CAST IMAGE</string>
     <string name="videocastbutton">CAST VIDEO</string>
-    <string name="selectdeadline">Select Deadline:</string>
+    <string name="selectdeadline">Play Until:</string>
     <string name="config">Start configuring your display by selecting your Chromecast then choose a layout</string>
     <string name="step2">After selecting a Chromecast, tap the button below to select a layout</string>
-
+    <string-array name="classification_array">
+        <item>exam</item>
+        <item>quiz</item>
+        <item>seatwork</item>
+        <item>homework</item>
+        <item>event</item>
+    </string-array>
 </resources>

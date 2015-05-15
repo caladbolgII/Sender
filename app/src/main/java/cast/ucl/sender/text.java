@@ -17,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -40,19 +43,24 @@ import java.io.InputStreamReader;
 public class text extends ActionBarActivity {
     public EditText myTextField;
     public DatePicker textdeadline;
+    public EditText TitleField;
     public Button myButton;
     public String deaddate;
     String responseStr;
     public String command;
+    public TimePicker deadtime;
+    public Spinner spinner;
+    public String type = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_text);
         myTextField = (EditText) findViewById(R.id.text_message);
         textdeadline = (DatePicker) findViewById(R.id.deadline_text);
+        TitleField = (EditText)findViewById(R.id.cast_text_title);
         ActionBar actionBar = getSupportActionBar();
         Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
@@ -62,8 +70,15 @@ public class text extends ActionBarActivity {
         Spannable text = new SpannableString("Message Sender");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-        myButton = (Button) findViewById(R.id.buttontext);
 
+        deadtime = (TimePicker)findViewById(R.id.txttimePicker);
+        deadtime.setIs24HourView(Boolean.TRUE);
+        spinner = (Spinner) findViewById(R.id.txtspinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
     }
 
 
@@ -88,24 +103,24 @@ public class text extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void attemptSend(View view){
-        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
-        command = Constants.action_cast_text;
-         new Connection().execute();
 
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.settextresponse(responseStr);
-        Context context = getApplicationContext();
-        CharSequence text = "Message has been cast";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        go_back();
-}
 
     public void attempt_add_text(View view){
-        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ Integer.toString(textdeadline.getMonth()) + "-" +Integer.toString(textdeadline.getDayOfMonth());
+
+        String month = "";
+        String year = "";
+        String day = "";
+        String hour = "";
+        String minutes = "";
+        month = String.format("%02d",textdeadline.getMonth()+1);
+        // Log.e("month",Integer.toString(imagedeadline.getMonth()));
+        command = "add";
+        day = String.format("%02d", textdeadline.getDayOfMonth());
+        year = Integer.toString(textdeadline.getYear());
+        hour = Integer.toString(deadtime.getCurrentHour());
+        minutes = Integer.toString(deadtime.getCurrentMinute());
+        type = String.valueOf(spinner.getSelectedItem());
+        deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         command = Constants.action_add_text;
         new Connection().execute();
 
@@ -139,11 +154,13 @@ public class text extends ActionBarActivity {
             InputStream inputStream = null;
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action",Constants.action_add_text);
-            jsonObject.accumulate("text", command);
+            jsonObject.accumulate("text",myTextField.getText());
+            jsonObject.accumulate("classification",type);
+            jsonObject.accumulate("title", TitleField.getText());
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_ADD);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_TEXTS);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

@@ -1,6 +1,8 @@
 package cast.ucl.sender;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,12 +26,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -49,8 +51,13 @@ public class TextQueueEdit extends ActionBarActivity{
 
     String responseStr;
     String textItem = "";
-    ArrayList<HashMap<String, String>> textList;
-
+    private ListView textlist;
+    public ImageQueueEdit image_queue;
+    private ArrayList<ImageListModel> imageList = new ArrayList<ImageListModel>();
+    public ListViewLoaderTask listViewLoaderTask;
+    String jsonStr = "";
+    Resources res;
+    List<HashMap<String, String>> buffer = null;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -85,9 +92,28 @@ public class TextQueueEdit extends ActionBarActivity{
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                Intent intent = new Intent(view.getContext(),text.class);
+                Intent intent = new Intent(view.getContext(), text.class);
                 startActivity(intent);
 
+            }
+        });
+        Button refreshqueue = (Button)customActionBarView.findViewById(R.id.edit);
+        refreshqueue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    new text_connect().execute().get();
+                }catch(Exception e){
+                    Log.d("Exception",e.toString());
+                }
+
+                //readFromFile();
+                jsonStr = "{ " +
+                        " \"textqueue\": " + responseStr + "} ";
+
+                listViewLoaderTask = new ListViewLoaderTask();
+
+                listViewLoaderTask.execute(jsonStr);
             }
         });
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
@@ -100,26 +126,32 @@ public class TextQueueEdit extends ActionBarActivity{
         Spannable text = new SpannableString("Message Queue");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-
+        textlist = ( ListView ) findViewById(R.id.textlist);
         try {
             new text_connect().execute().get();
         }catch(Exception e){
             Log.d("Exception",e.toString());
         }
 
-        String jsonStr = "";//readFromFile();
+        //readFromFile();
         jsonStr = "{ " +
                 " \"textqueue\": " + responseStr + "} ";
 
-        ListViewLoaderTask listViewLoaderTask = new ListViewLoaderTask();
+        listViewLoaderTask = new ListViewLoaderTask();
 
-        /** Start parsing xml data */
-        //responseStr = globalVariable.getvideoresponse();
         listViewLoaderTask.execute(jsonStr);
-        TextView textresponse = (TextView)findViewById(R.id.http_text_queue);
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        textresponse.setText(globalVariable.gettextresponse());
 
+
+
+    }
+
+    public void isEmpty(){
+        Context context = getApplicationContext();
+        CharSequence text = "Queue is Empty";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
     private class ListViewLoaderTask extends AsyncTask<String, Void, SimpleAdapter>{
 
@@ -143,20 +175,23 @@ public class TextQueueEdit extends ActionBarActivity{
             try{
                 /** Getting the parsed data as a List construct */
                 texts = textJsonParser.parse(jObject);
+                buffer = texts;
             }catch(Exception e){
                 Log.d("Exception",e.toString());
             }
 
             /** Keys used in Hashmap */
-            String[] from = { "_id","text","time_out"};
+            String[] from = { "_id","title","type","text","time_out"};
 
             /** Ids of views in listview_layout */
-            int[] to = { R.id.item_id,R.id.textposted,R.id.item_timeout};
+            int[] to = { R.id.item_id,R.id.text_title,R.id.text_type,R.id.message_item,R.id.item_timeout};
 
             /** Instantiating an adapter to store each items
              *  R.layout.listview_layout defines the layout of each item
              */
-            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(),texts, R.layout.activity_text_item, from, to);
+            SimpleAdapter adapter = null;
+
+                adapter = new SimpleAdapter(getBaseContext(), texts, R.layout.activity_text_item, from, to);
 
             return adapter;
         }
@@ -167,19 +202,22 @@ public class TextQueueEdit extends ActionBarActivity{
         protected void onPostExecute(SimpleAdapter adapter) {
 
             /** Getting a reference to listview of main.xml layout file */
-            ListView listView = ( ListView ) findViewById(R.id.videolist);
+
 
             /** Setting the adapter containing the country list to listview */
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    TextView textView = (TextView) view.findViewById(R.id.item_id);
-                    textItem = textView.getText().toString();
-                   //s delete();
+            if (buffer.isEmpty()) isEmpty();
+            else {
+                textlist.setAdapter(adapter);
+                textlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        TextView textView = (TextView) view.findViewById(R.id.item_id);
+                        textItem = textView.getText().toString();
+                        //s delete();
 
-                }});
-
+                    }
+                });
+            }
         }
     }
     private class text_connect extends AsyncTask {
@@ -196,10 +234,8 @@ public class TextQueueEdit extends ActionBarActivity{
         try {
             // String json = "";
             InputStream inputStream = null;
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action",Constants.action_get_text);
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            URI website = new URI("http://192.168.1.104:8080/getTexts");
+            URI website = new URI(Constants.SERVER_ADDR_TEXTS);
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);
@@ -212,18 +248,15 @@ public class TextQueueEdit extends ActionBarActivity{
             else
                 responseStr = "Did not work!";
 
-            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-            globalVariable.settextresponse(responseStr);
+//            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+//            globalVariable.settextresponse(responseStr);
 
             // TextView httpresponse = (TextView) findViewById(R.id.http_queue);
-            // httpresponse.setText(globalVariable.getimageresponse());
+            // httpresponse.setTexft(globalVariable.getimageresponse());
 
         } catch (ClientProtocolException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         } catch (IOException e) {
-            Log.d("HTTPCLIENT", e.getLocalizedMessage());
-        }
-        catch (JSONException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
         catch (URISyntaxException e) {

@@ -1,92 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     style="@style/bg"
     android:background="#ffecf0f1">
     <EditText
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
         android:id="@+id/imagelink"
         android:hint="DROPBOX IMAGE URL"
         android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColorHint="#f94b4b4b" />
+        android:textColorHint="#f94b4b4b"
+        android:layout_gravity="center"
+        android:layout_weight="0.10"
+        android:textSize="12sp" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/image_title"
+        android:hint="TITLE"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#f94b4b4b"
+        android:layout_gravity="center"
+        android:layout_weight="0.10"
+        android:textSize="12sp" />
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/selectdeadline"
         android:id="@+id/textView6"
         android:textAlignment="center"
         android:textColor="#ff000000"
         android:textColorHighlight="#ff000000"
-        android:textSize="25dp"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_below="@+id/imagelink"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
-
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:id="@+id/deadline_image"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:clickable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:layout_alignTop="@+id/textView6" />
-
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.10" />
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/deadline_image"
-        android:layout_alignParentStart="true"
-        android:weightSum="1">
-
-        <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Choose Dropbox Image"
-        android:id="@+id/button_search"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/deadline_image"
-            android:layout_weight="0.25" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Upload to Dropbox"
-        android:id="@+id/btnUploadPhoto"
-        android:layout_alignTop="@+id/button_search"
-        android:layout_toEndOf="@+id/button_search"
-        android:layout_weight="0.25" />
+        android:layout_weight="0.70">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_weight="0.7">
 
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonimageadd"
-        android:onClick="attempt_cast_image"
-        android:text="ADD IMAGE"
-        android:layout_alignBottom="@+id/buttonimage"
-        android:layout_toEndOf="@+id/buttonimage"
-        android:layout_weight="0.25" />
-
-        <Button
+        <DatePicker
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/deadline_image"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:clickable="true"
+            android:layout_gravity="center" />
+
+        <TimePicker
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/imgtimePicker"
+            android:layout_gravity="center" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.3">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="0.20">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Post Type:"
+                    android:id="@+id/textView"
+                    android:layout_gravity="center" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgspinner"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:text="Choose Dropbox Image"
+            android:id="@+id/button_search"
+            android:layout_weight="0.266"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
             android:text="@string/imagecastbutton"
             android:id="@+id/buttonimage"
             android:onClick="attemptSend"
-            android:layout_alignTop="@+id/btnUploadPhoto"
-            android:layout_toEndOf="@+id/btnUploadPhoto"
-            android:layout_weight="0.25" />
+            android:layout_weight="0.266"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+        style="?android:attr/buttonStyleSmall"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:text="Upload to Dropbox"
+            android:id="@+id/btnUploadPhoto"
+            android:layout_weight="0.266"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"
+            android:clickable="false"
+            android:enabled="false" />
+        </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>

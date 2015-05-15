@@ -54,7 +54,7 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     private ListView lvDropboxDownloadFilesList;
     private ProgressDialog pd;
     public static final String TAG = DropboxDownload.class.getSimpleName();
-
+    ProgressDialog progressDialog;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -119,10 +119,26 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
         }
     }
     //sharelinker is an async task that gets true url of an image then passes it to an intent and opens the image casting activity
-    private class Sharelinker extends AsyncTask {
+    private class Sharelinker extends AsyncTask<String, String, Void> {
 
         @Override
-        protected Object doInBackground(Object... arg0) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(DropboxDownload.this, "Retrieving Dropbox URL", "Please Wait ...");
+        }
+        @Override
+        protected void onProgressUpdate(String...values){
+            super.onProgressUpdate(values);
+
+        }
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+        }
+        /** Doing the parsing of xml data in a non-ui thread */
+        @Override
+        protected Void doInBackground(String... arg0){
             getshareurl();
             return null;
         }

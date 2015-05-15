@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
@@ -28,7 +27,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.nhaarman.supertooltips.ToolTip;
 import com.nhaarman.supertooltips.ToolTipRelativeLayout;
-import com.nhaarman.supertooltips.ToolTipView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class MainActivity extends FragmentActivity {
 
 
     private static final int REQUEST_CODE = 1;
-
+    GlobalClass globalVariable;
    // private MediaRouter mMediaRouter;
    // private MediaRouteSelector mMediaRouteSelector;
    // private MediaRouter.Callback mMediaRouterCallback;
@@ -66,19 +64,10 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        //ActionBar actionBar = getSupportActionBar();
-        // animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
-        // actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
-       // mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-      //  mMediaRouteSelector = new MediaRouteSelector.Builder()
-        //        .addControlCategory(
-       //                 CastMediaControlIntent.categoryForCast(getResources()
-        //                        .getString(R.string.app_id))).build();
-      //  mMediaRouterCallback = new MyMediaRouterCallback();
-       // actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
-       // actionBar.setDisplayShowTitleEnabled(false);
+        globalVariable= (GlobalClass) getApplicationContext();
+
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         // Create a MediaRouteSelector for the type of routes your app supports
         mMediaRouteSelector = new MediaRouteSelector.Builder()
@@ -100,7 +89,7 @@ public class MainActivity extends FragmentActivity {
                 .withShadow()
                 ;
       //  toolTip.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
-        ToolTipView myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, findViewById(R.id.media_route_button));
+        //ToolTipView myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, findViewById(R.id.media_route_button));
        // ToolTipRelativeLayout toolTipRelativeLayout2 = (ToolTipRelativeLayout) findViewById(R.id.layouttip);
 
        ToolTip toolTip2 = new ToolTip()
@@ -109,21 +98,8 @@ public class MainActivity extends FragmentActivity {
                .withShadow()
                ;
       //  toolTip2.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
-        ToolTipView myToolTipView2 = toolTipRelativeLayout.showToolTipForView(toolTip2, findViewById(R.id.imageButton));
+        //ToolTipView myToolTipView2 = toolTipRelativeLayout.showToolTipForView(toolTip2, findViewById(R.id.imageButton));
 
-    }
-    public void hello_message(View view){
-        String hello = "setLayout1";
-        String hi = "setLayout2";
-        if (count%2 ==0 ){
-            Log.d(TAG, "sento to message bus=" + hello);
-            sendMessage(hello);
-        }
-        else {
-            Log.d(TAG, "sento to message bus=" +hi);
-            sendMessage(hi);
-        }
-        count++;
     }
 
     public void layout_selector(View view){
@@ -131,7 +107,28 @@ public class MainActivity extends FragmentActivity {
         startActivity(intent);
 
     }
+    public void set_layout1(View view){
+        sendMessage("setLayout1");
+        globalVariable.setlayout("layout1");
+        go_back();
 
+    }
+    public void set_layout2(View view){
+        sendMessage("setLayout2");
+        globalVariable.setlayout("layout2");
+        go_back();
+
+    }
+    public void set_layout3(View view){
+        sendMessage("setLayout3");
+        globalVariable.setlayout("layout3");
+        go_back();
+
+    }
+    public void go_back() {
+        Intent intent = new Intent(this, Selection.class);
+        startActivity(intent);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
@@ -384,8 +381,7 @@ public class MainActivity extends FragmentActivity {
                 Log.e(TAG, "Exception while sending message", e);
             }
         } else {
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT)
-                    .show();
+           // Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
     /**

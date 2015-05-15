@@ -34,8 +34,8 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
         HashMap<String, String> text = null;
 
         /** Taking each country, parses and adds to list object */
-        //for(int i=0; i<videoCount;i++){
-        for(int i=0; i<3;i++){
+        for(int i=0; i<textCount;i++){
+        //for(int i=0; i<3;i++){
             try {
                 /** Call getCountry with country JSON object to parse the country */
                 text = getText((JSONObject) jTexts.get(i));
@@ -50,27 +50,41 @@ public List<HashMap<String,String>> parse(JSONObject jObject){
     }
 
     /** Parsing the Country JSON object */
-    private HashMap<String, String> getText(JSONObject jVideo){
+    private HashMap<String, String> getText(JSONObject jText){
 
         HashMap<String, String> text = new HashMap<String, String>();
         String id =  "";
         String mtext = "";
         //String timein = "";
         String timeout = "";
-
-
+        String title = "";
+        String type  = "";
+        String holder = "";
+        String timeconv="";
+        int conv;
         try {
-            id = jVideo.getString("_id");
-            mtext = jVideo.getString("text");
-            //timein = jVideo.getString("time_in");
-            timeout = jVideo.getString("time_out");
+            id = jText.getString("_id");
+            mtext = jText.getString("text");
+            //timein = jText.getString("time_in");
+            timeout = jText.getString("time_out");
+            title = jText.getString("title");
+            type =jText.getString("classification");
+            //holder =  timeout.substring(11, 16);
+            timeconv= timeout.substring(11, 13);
+            conv = Integer.parseInt(timeconv);
+            conv = conv+8;
+            if (conv>24) conv = conv -24;
+            else conv = conv;
+            timeconv = Integer.toString(conv,10);
 
-            id = "Item:"+id;
-            mtext= "Text: "+mtext;
-            timeout = "Deadline: "+ timeout.substring(0, 10);
+            mtext= "Message: "+mtext;
+            timeout = "Expires on: "+timeout.substring(0, 10)+" "+timeconv +timeout.substring(13,16); ;
+
 
             text.put("_id", id);
-            text.put("video_id", mtext);
+            text.put("title", title);
+            text.put("type",type);
+            text.put("text", mtext);
             //video.put("details", details);
             text.put("time_out",timeout);
 

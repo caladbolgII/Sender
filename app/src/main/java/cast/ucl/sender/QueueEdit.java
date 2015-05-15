@@ -1,6 +1,9 @@
 package cast.ucl.sender;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
@@ -17,15 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -43,20 +41,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class QueueEdit extends ActionBarActivity {
     VideoQueueAdapter adapter;
     String responseStr;
-    public ListView listView ;
+    final Context context = this;
     public QueueEdit  queue_activity= null;
     String videoItem = "";
     private ArrayList<VideoListModel> videoList = new ArrayList<VideoListModel>();
-    SimpleYouTubeHelper help;
     public ListViewLoaderTask listViewLoaderTask;
     String jsonStr = "";
     Resources res;
+    ProgressDialog progressDialog;
+    String id;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +68,7 @@ public class QueueEdit extends ActionBarActivity {
         responseStr = "";
         actionBar.setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP |ActionBar.DISPLAY_SHOW_HOME
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME
                         | ActionBar.DISPLAY_SHOW_TITLE);
         actionBar.setCustomView(customActionBarView,
                 new ActionBar.LayoutParams(
@@ -105,12 +103,15 @@ public class QueueEdit extends ActionBarActivity {
                 }catch(Exception e){
                     Log.d("Exception",e.toString());
                 }
-
-                jsonStr = readFromFile();
+                listViewLoaderTask = new ListViewLoaderTask();
                 jsonStr = "{ " +
-                        " \"videoqueue\": " + jsonStr + "} ";
+                        " \"videoqueue\": " +responseStr + "} ";
+                try{
+                    listViewLoaderTask.execute(jsonStr);
+                }
+                catch (Exception e){
 
-                /** Start parsing xml data */
+                }
 
             }
         });
@@ -124,164 +125,74 @@ public class QueueEdit extends ActionBarActivity {
         actionBar.setTitle("VIDEO QUEUE");
         res =getResources();
         queue_activity = this;
-        listView = (ListView)findViewById(R.id.videolist);
-
-
         try {
             new video_connect().execute().get();
         }catch(Exception e){
             Log.d("Exception",e.toString());
         }
         listViewLoaderTask = new ListViewLoaderTask();
-
-
-        //jsonStr = readFromFile();
             jsonStr = "{ " +
                     " \"videoqueue\": " +responseStr + "} ";
 
-
-
-        /** Start parsing xml data */
-        //responseStr = globalVariable.getvideoresponse();
-/*
-        if (responseStr.length() <5){
-
-        }
-        else*/
         try{
-            listViewLoaderTask.execute(jsonStr).get();
+            listViewLoaderTask.execute(jsonStr);
         }
         catch (Exception e){
 
         }
-        listView = ( ListView ) findViewById(R.id.videolist);
-        VideoListModel list1 = videoList.get(0);
-        Log.e("List url 1", list1.getUrl());
-        list1 = videoList.get(1);
-        Log.e("List url 2", list1.getUrl());
-        list1 = videoList.get(2);
-        Log.e("List url 3", list1.getUrl());
-//
-//            /** Setting the adapter containing the country list to listview */
-        adapter = new VideoQueueAdapter(this,videoList,res);
 
-        listView.setAdapter(adapter);
+
     }
 
-    private class ListViewLoaderTask extends AsyncTask{
+    public void isEmpty(){
+        Context context = getApplicationContext();
+        CharSequence text = "Queue is Empty";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    private class ListViewLoaderTask extends AsyncTask<String, String, Void>{
 
         JSONObject jObject;
 
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+            ListView listView ;
+            listView = (ListView)findViewById(R.id.videolist);
+            adapter = new VideoQueueAdapter(queue_activity,videoList,res);
+
+            if (videoList.isEmpty()) isEmpty();
+            else listView.setAdapter(adapter);
+            progressDialog.dismiss();
+        }
         /** Doing the parsing of xml data in a non-ui thread */
         @Override
-        protected Object doInBackground(Object... arg0) {
+        protected Void doInBackground(String... arg0)  {
             VideoJSONParser videoJSONParser;
             videoJSONParser = new VideoJSONParser();
             try{
                 jObject = new JSONObject(jsonStr);
 
-//                videoJSONParser.parse(jObject);
-//
             }catch(Exception e){
                 Log.d("JSON Exception1",e.toString());
             }
-//
-//            //VideoJSONParser videoJsonParser = new VideoJSONParser();
-//
-//            List<HashMap<String, String>> videos = null;
-
             videoList = new ArrayList<VideoListModel>();
             try{
                 /** Getting the parsed data as a List construct */
                 videoList = videoJSONParser.parse(jObject);
-                Log.v("Listhi", "hello");
             }catch(Exception e){
                 Log.d("Exception",e.toString());
             }
 
-            /** Keys used in Hashmap */
-            //String[] from = { "_id","video_id","time_out"};
 
-            /** Ids of views in listview_layout */
-            //int[] to = { R.id.item_id,R.id.vid_url,R.id.item_timeout};
-
-            /** Instantiating an adapter to store each items
-             *  R.layout.listview_layout defines the layout of each item
-             */
-
-//           adapter = new ArrayAdapter<VideoListModel>(getApplicationContext(), R.layout.activity_video_item, videoList){
-//                @Override
-//                public View getView(int position, View convertView, ViewGroup parent) {
-//                    if(convertView == null){
-//                        convertView = getLayoutInflater().inflate(R.layout.activity_video_item, parent, false);
-//                    }
-//                    Log.e("Hee",videoList.size()+"");
-//                    ImageView thumbnail = (ImageView)convertView.findViewById(R.id.vid_thumb);
-//                    TextView title = (TextView)convertView.findViewById(R.id.vid_title);
-//                    TextView url = (TextView)convertView.findViewById(R.id.vid_url);
-//                    TextView deadline = (TextView)convertView.findViewById(R.id.item_timeout);
-//                    TextView id = (TextView)convertView.findViewById(R.id.item_id);
-//
-//
-//                    VideoListModel vid_list_item = videoList.get(position);
-//                    //help.getImageUrlQuietly(vid_list_item.getUrl());
-//                    //help.getTitleQuietly(vid_list_item.getUrl());
-//                    String img = vid_list_item.getUrl();
-//                    String hi="";
-//                    /*
-//                    try{
-//                    URL embededURL = new URL("http://www.youtube.com/embed?url=" + img + "&format=json");
-//                    hi = new JSONObject(IOUtils.toString(embededURL)).getString("title");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }*/
-//                    img = "http://img.youtube.com/vi/"+ img+ "/0.jpg";
-//
-//                    Picasso.with(getApplicationContext()).load(img).resize(115, 115).into(thumbnail);
-//                    title.setText(hi);
-//                    url.setText(vid_list_item.getUrl());
-//                    deadline.setText(vid_list_item.getTimeout());
-//                    id.setText(vid_list_item.getId());
-//                    VideoListModel item;
-//                    /*
-//                    item = videoList.get(0);
-//                    Log.e("url",item.getUrl());
-//                    item = videoList.get(1);
-//                    Log.e("url",item.getUrl());
-//                    item = videoList.get(2);
-//                    Log.e("url",item.getUrl());
-//                    */
-//                    return convertView;
-//                }
-//            };
 
             return null;
 
         }
 
-        /** Invoked by the Android system on "doInBackground" is executed completely */
-        /** This will be executed in ui thread */
-//        @Override
-//        protected void onPostExecute(ArrayAdapter adapter) {
-//
-//            /** Getting a reference to listview of main.xml layout file */
-//            listView = ( ListView ) findViewById(R.id.videolist);
-//
-//            /** Setting the adapter containing the country list to listview */
-//            listView.setAdapter(adapter);
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                public void onItemClick(AdapterView<?> parent, View view,
-//                                        int position, long id) {
-//                    TextView textView = (TextView) view.findViewById(R.id.item_id);
-//                    videoItem = textView.getText().toString();
-//
-//                    delete();
-//
-//                }});
-//
-//        }
     }
 
 
@@ -292,27 +203,28 @@ public class QueueEdit extends ActionBarActivity {
             try {
                 new video_connect().execute().get();
             }catch(Exception e){
-                Log.d("Exception",e.toString());
+                Log.d("Exception", e.toString());
             }
-
-            String jsonStr ="";
-            jsonStr = readFromFile();
+            listViewLoaderTask = new ListViewLoaderTask();
             jsonStr = "{ " +
-                    " \"videoqueue\": " + jsonStr + "} ";
-            /** Start parsing xml data */
-            //responseStr = globalVariable.getvideoresponse();
+                    " \"videoqueue\": " +responseStr + "} ";
+            try{
+                listViewLoaderTask.execute(jsonStr);
+            }
+            catch (Exception e){
 
-
+            }
         }catch(Exception e){
             Log.d("JSON Exception1",e.toString());
         }
 
     }
 
-    private class video_delete extends AsyncTask {
+    private class video_delete extends AsyncTask<String, String, Void> {
 
+        /** Doing the parsing of xml data in a non-ui thread */
         @Override
-        protected Object doInBackground(Object... arg0){
+        protected Void doInBackground(String... arg0)  {
             connect1();
             return null;
         }
@@ -323,12 +235,12 @@ public class QueueEdit extends ActionBarActivity {
         try {
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action","deleteVideo");
+            jsonObject.accumulate("action","delete");
 
-            jsonObject.accumulate("id",videoItem.substring(5));
+            jsonObject.accumulate("id", id);
 
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_DELETE);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_VIDEO);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);
@@ -344,11 +256,26 @@ public class QueueEdit extends ActionBarActivity {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
     }
-    private class video_connect extends AsyncTask {
+    private class video_connect extends AsyncTask<String, String, Void> {
 
         @Override
-        protected Object doInBackground(Object... arg0){
-            connect();
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(QueueEdit.this, "Retrieving Video Queue", "Please Wait ...");
+        }
+        @Override
+        protected void onProgressUpdate(String...values){
+            super.onProgressUpdate(values);
+
+        }
+        @Override
+        protected void onPostExecute(Void result){
+            super.onPostExecute(result);
+        }
+        /** Doing the parsing of xml data in a non-ui thread */
+        @Override
+        protected Void doInBackground(String... arg0){
+        connect();
             return null;
         }
 
@@ -358,8 +285,6 @@ public class QueueEdit extends ActionBarActivity {
         try {
             // String json = "";
             InputStream inputStream = null;
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action",Constants.action_get_video);
             DefaultHttpClient httpclient = new DefaultHttpClient();
             URI website = new URI(Constants.SERVER_GET_VIDEO);
             HttpGet request = new HttpGet();
@@ -376,20 +301,9 @@ public class QueueEdit extends ActionBarActivity {
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             globalVariable.setvideoresponse(responseStr);
 
-
-           // TextView httpresponse = (TextView) findViewById(R.id.http_queue);
-           // httpresponse.setText(globalVariable.getimageresponse());
-
-
-
-
-
         } catch (ClientProtocolException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         } catch (IOException e) {
-            Log.d("HTTPCLIENT", e.getLocalizedMessage());
-        }
-        catch (JSONException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
         catch (URISyntaxException e) {
@@ -470,62 +384,39 @@ public class QueueEdit extends ActionBarActivity {
         return ret;
     }
 
-    private void loadVideoQueue(){
-        ArrayAdapter<VideoListModel> adapter = new ArrayAdapter<VideoListModel>(getApplicationContext(), R.layout.activity_video_item, videoList){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if(convertView == null){
-                    convertView = getLayoutInflater().inflate(R.layout.activity_video_item, parent, false);
-                }
-                ImageView thumbnail = (ImageView)convertView.findViewById(R.id.vid_thumb);
-                TextView title = (TextView)convertView.findViewById(R.id.vid_title);
-                TextView url = (TextView)convertView.findViewById(R.id.vid_url);
-                TextView deadline = (TextView)convertView.findViewById(R.id.item_timeout);
-                TextView id = (TextView)convertView.findViewById(R.id.item_id);
+    public void onItemClick(int mPosition)
+    {
+        VideoListModel tempValues = (VideoListModel) videoList.get(mPosition);
+        final CharSequence[] items = {"Edit", "Delete"};
+       id = tempValues.getId();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+
+        // set title
+        alertDialogBuilder.setTitle("Select Action");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Delete Video?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        delete();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
 
 
-                VideoListModel vid_list_item = videoList.get(position);
-                help.getImageUrlQuietly(vid_list_item.getUrl());
-                help.getTitleQuietly(vid_list_item.getUrl());
-
-                Picasso.with(getApplicationContext()).load(help.getImageUrlQuietly(vid_list_item.getUrl())).into(thumbnail);
-                title.setText(help.getImageUrlQuietly(vid_list_item.getUrl()));
-                url.setText(vid_list_item.getUrl());
-                deadline.setText(vid_list_item.getTimeout());
-                id.setText(vid_list_item.getId());
-
-                return convertView;
-            }
-        };
-
-        listView.setAdapter(adapter);
+        Log.e("Delete id:", id);
     }
-    public class SimpleYouTubeHelper {
-
-        public  String getImageUrlQuietly(String youtubeUrl) {
-            try {
-                if (youtubeUrl != null) {
-                    return String.format("http://img.youtube.com/vi/%s/0.jpg", youtubeUrl);
-                }
-            } catch (UnsupportedOperationException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        public  String getTitleQuietly(String youtubeUrl) {
-            try {
-                if (youtubeUrl != null) {
-                    URL embededURL = new URL("http://www.youtube.com/embed?url=" + youtubeUrl + "&format=json");
-                    return new JSONObject(IOUtils.toString(embededURL)).getString("title");
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
 }

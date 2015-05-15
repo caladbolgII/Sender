@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -46,6 +47,7 @@ public class VideoSender extends ActionBarActivity {
     public Button searchButton;
     public String deaddate;
     public String command;
+    public TimePicker deadtime;
     String responseStr;
     String url;
     @Override
@@ -56,6 +58,8 @@ public class VideoSender extends ActionBarActivity {
         setContentView(R.layout.activity_video_sender);
         myTextField = (EditText) findViewById(R.id.video_url);
         textdeadline = (DatePicker) findViewById(R.id.deadline_video);
+        deadtime = (TimePicker)findViewById(R.id.vidtimePicker);
+        deadtime.setIs24HourView(Boolean.TRUE);
         ActionBar actionBar = getSupportActionBar();
         Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
@@ -65,7 +69,6 @@ public class VideoSender extends ActionBarActivity {
         Spannable text = new SpannableString("Video Sender");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-        myButton = (Button) findViewById(R.id.button_castvid);
         searchButton = (Button) findViewById(R.id.button_search);
     }
 
@@ -91,38 +94,21 @@ public class VideoSender extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void attemptSend(View view){
-        String month;
-        String day ;
-        month = String.format("%02d", textdeadline.getMonth());
-        day = String.format("%02d", textdeadline.getDayOfMonth());
 
-        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ month + "-" +day;
-        command = Constants.action_cast_video;
-        try {
-            new Connection().execute();
-        }catch(Exception e){
-            Log.d("JSON Exception1",e.toString());
-        }
-
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.setvideoresponse(responseStr);
-
-        Context context = getApplicationContext();
-        CharSequence text = "Video has been cast";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        go_back();
-    }
     public void attempt_add_video(View view){
-        String month;
-        String day ;
-        month = String.format("%02d", textdeadline.getMonth());
-        day = String.format("%02d", textdeadline.getDayOfMonth());
+        String month = "";
+        String year = "";
+        String day = "";
+        String hour = "";
+        String minutes = "";
+        month = String.format("%02d",textdeadline.getMonth()+1);
+        Log.e("month",Integer.toString(textdeadline.getMonth()));
 
-        deaddate = Integer.toString(textdeadline.getYear())+ "-"+ month + "-" +day;
+        day = String.format("%02d", textdeadline.getDayOfMonth());
+        year = Integer.toString(textdeadline.getYear());
+        hour = Integer.toString(deadtime.getCurrentHour());
+        minutes = Integer.toString(deadtime.getCurrentMinute());
+        deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         command = Constants.action_add_video;
         try {
             new Connection().execute();
@@ -142,7 +128,7 @@ public class VideoSender extends ActionBarActivity {
     }
 
     public void go_back() {
-        Intent intent = new Intent(this, Selection.class);
+        Intent intent = new Intent(this, QueueEdit.class);
         startActivity(intent);
     }
     public void search_youtube(View view) {
@@ -169,7 +155,7 @@ public class VideoSender extends ActionBarActivity {
             jsonObject.accumulate("deadline", deaddate);
             //DefaultHttpClient httpclient= HttpClientProvider.newInstance("string");
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_ADD);
+            HttpPost httpost = new HttpPost(Constants.SERVER_ADDR_VIDEO);
             json = jsonObject.toString();
             StringEntity se = new StringEntity(json);
             httpost.setEntity(se);

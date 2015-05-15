@@ -1,42 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/bg"
     android:background="#ffecf0f1">
     <EditText
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
         android:id="@+id/video_url"
         android:hint="Youtube URL"
         android:textColorHint="#f94b4b4b"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_weight="0.15" />
 
-    <Button
-        android:layout_width="175dp"
-        android:layout_height="50dp"
-        android:text="@string/videocastbutton"
-        android:id="@+id/button_castvid"
-        android:onClick="attemptSend"
-        android:layout_below="@+id/deadline_video"
-        android:layout_toEndOf="@+id/textView6" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
-        android:text="Search Youtube"
-        android:id="@+id/button_search"
-        android:onClick="search_youtube"
-        android:layout_below="@+id/deadline_video"
-        android:layout_toStartOf="@+id/textView6" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/selectdeadline"
         android:id="@+id/textView6"
         android:textAlignment="center"
@@ -44,8 +27,20 @@
         android:textColorHighlight="#ff000000"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_below="@+id/video_url"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.15"
+        android:layout_gravity="center" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.7">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_weight="0.7">
+
 
     <DatePicker
         android:layout_width="wrap_content"
@@ -55,15 +50,41 @@
         android:datePickerMode="spinner"
         android:clickable="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="center" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD VIDEO"
-        android:id="@+id/add_queue_video"
-        android:layout_below="@+id/deadline_video"
-        android:layout_centerHorizontal="true"
-        android:onClick="attempt_add_video" />
+            <TimePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/vidtimePicker"
+                android:timePickerMode="spinner"
+                android:touchscreenBlocksFocus="true"
+                android:layout_gravity="center_vertical" />
 
-</RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.3"
+            android:layout_gravity="center_vertical">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="Search Youtube"
+            android:id="@+id/button_search"
+            android:onClick="search_youtube"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="ADD VIDEO"
+            android:id="@+id/add_queue_video"
+            android:onClick="attempt_add_video"
+            android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
