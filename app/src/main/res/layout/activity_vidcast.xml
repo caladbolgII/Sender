@@ -7,23 +7,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ffecf0f1"
+    android:baselineAligned="false">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal">
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_gravity="bottom" />
+        android:id="@+id/videolist"
+        android:layout_gravity="top" />
     </FrameLayout>
-    <at.markushi.ui.CircleButton
-        android:layout_width="60dp"
-        android:layout_height="60dip"
-        android:src="@drawable/play"
-        app:cb_color="#FDB900"
-        android:id="@+id/PLAY"
-        android:layout_gravity="center_horizontal"
-        />
+
 </LinearLayout>

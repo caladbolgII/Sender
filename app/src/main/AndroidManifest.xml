@@ -2,19 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cast.ucl.sender" >
 
-    <uses-sdk android:minSdkVersion="19" />
-
+    <uses-sdk android:minSdkVersion="17" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
+        android:name="cast.ucl.sender.GlobalClass"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
         <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,20 +30,47 @@
         </activity>
         <activity
             android:screenOrientation="landscape"
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance">
+
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
             android:name=".Selection"
             android:label="@string/title_activity_select"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.MainActivity" />
 
         </activity>
-
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName=".Selection"
+            android:launchMode="singleInstance">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.Selection" />
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".LayoutSelector"
+            android:label="@string/title_activity_layout"
+            android:parentActivityName=".Selection" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.Selection" />
+        </activity>
         <activity
             android:screenOrientation="landscape"
             android:name=".ImageQueueEdit"
-            android:label="@string/title_activity_queueimg"
-            android:parentActivityName=".Selection" >
+            android:label="@string/title_activity_queueing"
+            android:parentActivityName=".Selection"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
@@ -45,7 +79,8 @@
             android:screenOrientation="landscape"
             android:name=".ImageSender"
             android:label="@string/title_activity_image"
-            android:parentActivityName=".ImageQueueEdit" >
+            android:parentActivityName=".ImageQueueEdit"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.ImageQueueEdit" />
@@ -55,16 +90,28 @@
             android:screenOrientation="landscape"
             android:name=".TextQueueEdit"
             android:label="@string/title_activity_queuetxt"
-            android:parentActivityName=".Selection" >
+            android:parentActivityName=".Selection"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
         </activity>
         <activity
             android:screenOrientation="landscape"
+            android:name=".TextEdit"
+            android:label="@string/title_activity_txtedit"
+            android:parentActivityName=".TextQueueEdit"
+            android:launchMode="singleInstance">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.TextQueueEdit" />
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
             android:name=".text"
             android:label="@string/title_activity_text"
-            android:parentActivityName=".TextQueueEdit" >
+            android:parentActivityName=".TextQueueEdit"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.TextQueueEdit" />
@@ -74,20 +121,60 @@
             android:screenOrientation="landscape"
             android:name=".QueueEdit"
             android:label="@string/title_activity_queue"
-            android:parentActivityName=".Selection" >
+            android:parentActivityName=".Selection"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
         </activity>
         <activity
             android:screenOrientation="landscape"
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_youtube"
-            android:parentActivityName=".QueueEdit" >
+            android:name=".VideoSender"
+            android:label="@string/title_activity_vidsend"
+            android:parentActivityName=".QueueEdit"
+            android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.QueueEdit" />
         </activity>
-    </application>
+            <activity
+                android:screenOrientation="landscape"
+                android:name=".SearchActivity"
+                android:label="@string/title_activity_youtube"
+                android:parentActivityName=".VideoSender"
+                android:launchMode="singleInstance">
+                <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="cast.ucl.sender.VideoSender" />
+            </activity>
+    <activity android:name="DropboxDownload"
+        android:screenOrientation="landscape"
+        android:label="@string/title_activity_dropbox"
+        android:parentActivityName=".ImageSender"
+        android:launchMode="singleInstance">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="cast.ucl.sender.ImageSender" />
+    </activity>
+
+    <activity
+        android:name="com.dropbox.client2.android.AuthActivity"
+        android:configChanges="orientation|keyboard"
+        android:launchMode="singleInstance"
+        android:screenOrientation="landscape"
+        android:theme="@android:style/Theme.Light.NoTitleBar"
+        >
+        <intent-filter>
+
+            <!-- Change this to be db- followed by your app key -->
+            <data android:scheme="db-bt00vgtqek79ilm" />
+
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
+</application>
 
 </manifest>

@@ -1,67 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainview"
     style="@style/Hello"
     android:clickable="false"
     android:longClickable="false"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
-
+    android:background="#ffbdc3c7"
     android:orientation="vertical"
 
     >
-
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout">
-
-    </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Welcome to BBCAST Sender"
         android:id="@+id/textView2"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
         android:textStyle="normal|bold"
-        android:textSize="35dp" />
-
-    <TextView
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="To begin casting content on your Bulletin Board, please tap the Cast Icon on the upper right and select your Chromecast"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_toEndOf="@+id/linearLayout"
+        android:textSize="35dp"
+        android:textColor="#ff000000"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center" />
-
-    <at.markushi.ui.CircleButton
-        android:id="@+id/button0"
-        android:layout_width="match_parent"
-        android:layout_height="64dip"
-        android:src="@drawable/ic_action_tick"
-        app:cb_color="#FDB900"
-        android:onClick="go_to_cast"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Press the button when done"
-        android:id="@+id/textView4"
-        android:layout_above="@+id/button0"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="center" />
 
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="gravity"
+            android:textColor="#ff000000"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="top|center"
+            android:text="@string/config"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.80">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/Hello"
+            android:clickable="false"
+            android:longClickable="false"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:background="#ffbdc3c7"
+            android:baselineAligned="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:id="@+id/layout1_pane">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Layout1"
+                    android:id="@+id/button5"
+                    android:onClick="set_layout1"
+                    android:drawableBottom="@drawable/layout1"
+                    android:background="#ffbdc3c7"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:id="@+id/layout2_pane">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Layout2"
+                    android:id="@+id/button6"
+                    android:onClick="set_layout2"
+                    android:drawableBottom="@drawable/layout2"
+                    android:background="#bdc3c7"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:id="@+id/layout3_pane">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Layout3"
+                    android:id="@+id/button7"
+                    android:onClick="set_layout3"
+                    android:drawableBottom="@drawable/layout3"
+                    android:background="#bdc3c7"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+
+            <android.support.v7.app.MediaRouteButton
+                android:id="@+id/media_route_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:mediaRouteTypes="user"
+                android:background="@drawable/circle"
+
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_alignParentTop="false"
+                android:layout_marginBottom="30dp"
+                android:layout_marginRight="30dp" />
+
+
+            <com.nhaarman.supertooltips.ToolTipRelativeLayout
+                android:id="@+id/mediatip"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentRight="false" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="140dp"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:id="@+id/video_icon"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+            android:id="@+id/vid_thumb"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="fill">
+    <!-- Name Label -->
+
+
+
+        <!-- Email label -->
+
+
+        <TextView
+        android:id="@+id/vid_url"
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:text="URL: "
+        android:paddingBottom="2dip"
+        android:textColor="#acacac"
+        android:gravity="fill"
+        android:lines="2"
+        android:visibility="invisible"
+            android:layout_weight="0" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:text="Title: "
+            android:id="@+id/vid_title"
+            android:paddingBottom="2dip"
+            android:textColor="#000000"
+            android:gravity="fill"
+            android:lines="2"
+            android:textSize="15sp" />
+    <!-- Mobile number label -->
+
+        <TextView
+        android:id="@+id/item_id"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="#43bd00"
+        android:text="Object id: "
+            android:textSize="16sp"
+        android:textStyle="bold"
+        android:elegantTextHeight="true"
+        android:gravity="fill"
+        android:lines="2"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/item_timeout"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:gravity="left|fill"
+            android:text="Deadline: "
+            android:textColor="#5d5d5d"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center"
+            android:background="@drawable/delete" />
+    </FrameLayout>
+</LinearLayout>

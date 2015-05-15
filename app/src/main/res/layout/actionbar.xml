@@ -5,21 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top|right">
+    <Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:drawableTop="@drawable/cross1"
+        android:background="@android:color/transparent"
+        android:textColor="#FFFFFF"
+        android:id="@+id/add"
+        android:text="ADD"
+        android:textSize="12sp"
+        android:textStyle="bold">
+        </Button>
 
-    <at.markushi.ui.CircleButton
-        android:layout_width="50dp"
-        android:layout_height="50dip"
-        android:src="@drawable/cross"
-        app:cb_color="#FDB900"
-        android:id="@+id/add" />
-
-    <at.markushi.ui.CircleButton
-        android:layout_width="50dp"
-        android:layout_height="50dip"
-        android:src="@drawable/edit3"
-        app:cb_color="#FDB900"
+    <Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:drawableTop="@drawable/synclist"
+        android:background="@android:color/transparent"
+        android:textColor="#FFFFFF"
         android:id="@+id/edit"
-        android:layout_gravity="top|right"
-        />
+        android:text="SYNC"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_gravity="right"
+        android:singleLine="true">
+
+        </Button>
+
+
 
 </LinearLayout>

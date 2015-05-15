@@ -1,20 +1,21 @@
 package cast.ucl.sender;
 
+
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.app.MediaRouteButton;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -25,21 +26,22 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.nhaarman.supertooltips.ToolTip;
+import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int REQUEST_CODE = 1;
-
-    private MediaRouter mMediaRouter;
-    private MediaRouteSelector mMediaRouteSelector;
-    private MediaRouter.Callback mMediaRouterCallback;
-    private CastDevice mSelectedDevice;
+    GlobalClass globalVariable;
+   // private MediaRouter mMediaRouter;
+   // private MediaRouteSelector mMediaRouteSelector;
+   // private MediaRouter.Callback mMediaRouterCallback;
+  //  private CastDevice mSelectedDevice;
     private GoogleApiClient mApiClient;
     private Cast.Listener mCastListener;
     private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks;
@@ -48,27 +50,86 @@ public class MainActivity extends ActionBarActivity {
     private boolean mApplicationStarted;
     private boolean mWaitingForReconnect;
     private String mSessionId;
-    Animation animFadein;
+
+    private static final String TAG = MainActivity.class
+            .getSimpleName();
+
+    private MediaRouter mMediaRouter;
+    private MediaRouteSelector mMediaRouteSelector;
+    private MediaRouter.Callback mMediaRouterCallback;
+    private MediaRouteButton mMediaRouteButton;
+    private CastDevice mSelectedDevice;
+    private int mRouteCount = 0;
+    int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        ActionBar actionBar = getSupportActionBar();
-       // animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.blink);
-        // actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+        globalVariable= (GlobalClass) getApplicationContext();
+
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        // Create a MediaRouteSelector for the type of routes your app supports
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(
                         CastMediaControlIntent.categoryForCast(getResources()
                                 .getString(R.string.app_id))).build();
+        // Create a MediaRouter callback for discovery events
         mMediaRouterCallback = new MyMediaRouterCallback();
-        Drawable d=getResources().getDrawable(R.drawable.securedownload);
-        actionBar.setBackgroundDrawable(d);
-        actionBar.setDisplayShowTitleEnabled(false);
 
-     }
+        // Set the MediaRouteButton selector for device discovery.
+        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
+        mMediaRouteButton.setRouteSelector(mMediaRouteSelector);
 
+        ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.mediatip);
 
+        ToolTip toolTip = new ToolTip()
+                .withText("Press to Select Chromecast")
+                .withColor(Color.parseColor("#3498db"))
+                .withShadow()
+                ;
+      //  toolTip.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
+        //ToolTipView myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, findViewById(R.id.media_route_button));
+       // ToolTipRelativeLayout toolTipRelativeLayout2 = (ToolTipRelativeLayout) findViewById(R.id.layouttip);
+
+       ToolTip toolTip2 = new ToolTip()
+               .withText("Press to Choose Layout")
+                .withColor(Color.parseColor("#3498db"))
+               .withShadow()
+               ;
+      //  toolTip2.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
+        //ToolTipView myToolTipView2 = toolTipRelativeLayout.showToolTipForView(toolTip2, findViewById(R.id.imageButton));
+
+    }
+
+    public void layout_selector(View view){
+        Intent intent = new Intent(view.getContext(), LayoutSelector.class);
+        startActivity(intent);
+
+    }
+    public void set_layout1(View view){
+        sendMessage("setLayout1");
+        globalVariable.setlayout("layout1");
+        go_back();
+
+    }
+    public void set_layout2(View view){
+        sendMessage("setLayout2");
+        globalVariable.setlayout("layout2");
+        go_back();
+
+    }
+    public void set_layout3(View view){
+        sendMessage("setLayout3");
+        globalVariable.setlayout("layout3");
+        go_back();
+
+    }
+    public void go_back() {
+        Intent intent = new Intent(this, Selection.class);
+        startActivity(intent);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
@@ -89,10 +150,7 @@ public class MainActivity extends ActionBarActivity {
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
     }
-    public void go_to_cast(View view) {
-        Intent intent = new Intent(this,Selection.class);
-        startActivity(intent);
-    }
+
     @Override
     protected void onPause() {
         if (isFinishing()) {
@@ -104,7 +162,8 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onDestroy() {
-        teardown();
+        //
+         //teardown();
         super.onDestroy();
     }
 
@@ -114,8 +173,8 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat
-                .getActionProvider(mediaRouteMenuItem);
-        // Set the MediaRouteActionProvider selector for device discovery.
+               .getActionProvider(mediaRouteMenuItem);
+         //Set the MediaRouteActionProvider selector for device discovery.
         mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
         return true;
     }
@@ -168,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onApplicationDisconnected(int errorCode) {
                     Log.d(TAG, "application has stopped");
-                    teardown();
+                   teardown();
                 }
 
             };
@@ -184,6 +243,8 @@ public class MainActivity extends ActionBarActivity {
                     .build();
 
             mApiClient.connect();
+            //Intent i = new Intent(MainActivity.this, LayoutSelector.class);
+            //startActivity(i);
         } catch (Exception e) {
             Log.e(TAG, "Failed launchReceiver", e);
         }
@@ -213,7 +274,7 @@ public class MainActivity extends ActionBarActivity {
                             && connectionHint
                             .getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
                         Log.d(TAG, "App  is no longer running");
-                        teardown();
+                        //teardown();
                     } else {
                         // Re-create the custom message channel
                         try {
@@ -270,6 +331,7 @@ public class MainActivity extends ActionBarActivity {
                                                                     mHelloWorldChannel
                                                                             .getNamespace(),
                                                                     mHelloWorldChannel);
+                                                    Log.e(TAG, "Cast api callbacks set");
                                                 } catch (IOException e) {
                                                     Log.e(TAG,
                                                             "Exception while creating channel",
@@ -278,7 +340,7 @@ public class MainActivity extends ActionBarActivity {
 
                                                 // set the initial instructions
                                                 // on the receiver
-                                                sendMessage(getString(R.string.instructions));
+                                                //sendMessage(getString(R.string.instructions));
                                             } else {
                                                 Log.e(TAG,
                                                         "application could not launch");
@@ -314,14 +376,14 @@ public class MainActivity extends ActionBarActivity {
                                 if (!result.isSuccess()) {
                                     Log.e(TAG, "Sending message failed");
                                 }
+                                else Toast.makeText(MainActivity.this,"Message Sent", Toast.LENGTH_SHORT).show();
                             }
                         });
             } catch (Exception e) {
                 Log.e(TAG, "Exception while sending message", e);
             }
         } else {
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT)
-                    .show();
+            //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
     /**
