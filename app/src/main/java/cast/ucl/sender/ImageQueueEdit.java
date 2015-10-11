@@ -81,9 +81,9 @@ public class ImageQueueEdit extends ActionBarActivity{
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
         Spannable text = new SpannableString("Image Queue");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
 
         Button addqueue = ( Button) customActionBarView

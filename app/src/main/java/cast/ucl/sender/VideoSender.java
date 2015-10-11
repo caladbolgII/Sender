@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,7 +41,7 @@ import java.io.InputStreamReader;
  * Created by LENOVO on 4/23/2015.
  */
 public class VideoSender extends ActionBarActivity {
-    public EditText myTextField;
+    public TextView myTextField;
     public DatePicker textdeadline;
     public Button myButton;
     public Button searchButton;
@@ -56,7 +56,7 @@ public class VideoSender extends ActionBarActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_sender);
-        myTextField = (EditText) findViewById(R.id.video_url);
+        myTextField = (TextView) findViewById(R.id.video_url);
         textdeadline = (DatePicker) findViewById(R.id.deadline_video);
         deadtime = (TimePicker)findViewById(R.id.vidtimePicker);
         deadtime.setIs24HourView(Boolean.TRUE);
@@ -65,9 +65,9 @@ public class VideoSender extends ActionBarActivity {
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
         Spannable text = new SpannableString("Video Sender");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
         searchButton = (Button) findViewById(R.id.button_search);
     }
@@ -110,21 +110,31 @@ public class VideoSender extends ActionBarActivity {
         minutes = Integer.toString(deadtime.getCurrentMinute());
         deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         command = Constants.action_add_video;
-        try {
-            new Connection().execute();
-        }catch(Exception e){
-            Log.d("JSON Exception1",e.toString());
+        if(myTextField.getText().toString().length()==0) {
+            Context context = getApplicationContext();
+            CharSequence text = "Invalid URL, please search again";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
+        else{
+            try {
+                new Connection().execute();
+            } catch (Exception e) {
+                Log.d("JSON Exception1", e.toString());
+            }
 
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.setvideoresponse(responseStr);
-        Context context = getApplicationContext();
-        CharSequence text = "Video has been added to queue";
-        int duration = Toast.LENGTH_SHORT;
+            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+            globalVariable.setvideoresponse(responseStr);
+            Context context = getApplicationContext();
+            CharSequence text = "Video has been added to queue";
+            int duration = Toast.LENGTH_SHORT;
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        go_back();
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            go_back();
+        }
     }
 
     public void go_back() {

@@ -40,7 +40,7 @@
             android:name=".Selection"
             android:label="@string/title_activity_select"
             android:parentActivityName=".MainActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.MainActivity" />
@@ -51,7 +51,7 @@
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
             android:parentActivityName=".Selection"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
@@ -70,17 +70,21 @@
             android:name=".ImageQueueEdit"
             android:label="@string/title_activity_queueing"
             android:parentActivityName=".Selection"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
         </activity>
+
         <activity
             android:screenOrientation="landscape"
             android:name=".ImageSender"
             android:label="@string/title_activity_image"
             android:parentActivityName=".ImageQueueEdit"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.SelectDate"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.ImageQueueEdit" />
@@ -91,7 +95,8 @@
             android:name=".TextQueueEdit"
             android:label="@string/title_activity_queuetxt"
             android:parentActivityName=".Selection"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
@@ -101,7 +106,8 @@
             android:name=".TextEdit"
             android:label="@string/title_activity_txtedit"
             android:parentActivityName=".TextQueueEdit"
-            android:launchMode="singleInstance">
+            android:theme="@style/Theme.SelectDate"
+            android:launchMode="singleTask">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.TextQueueEdit" />
@@ -110,8 +116,10 @@
             android:screenOrientation="landscape"
             android:name=".text"
             android:label="@string/title_activity_text"
+            android:theme="@style/Theme.SelectDate"
             android:parentActivityName=".TextQueueEdit"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.TextQueueEdit" />
@@ -122,7 +130,8 @@
             android:name=".QueueEdit"
             android:label="@string/title_activity_queue"
             android:parentActivityName=".Selection"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.Selection" />
@@ -131,8 +140,22 @@
             android:screenOrientation="landscape"
             android:name=".VideoSender"
             android:label="@string/title_activity_vidsend"
+            android:theme="@style/Theme.SelectDate"
             android:parentActivityName=".QueueEdit"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.QueueEdit" />
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".VideoEdit"
+            android:label="@string/title_activity_vidsend"
+            android:theme="@style/Theme.SelectDate"
+            android:parentActivityName=".QueueEdit"
+            android:launchMode="singleTask"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cast.ucl.sender.QueueEdit" />
@@ -142,7 +165,7 @@
                 android:name=".SearchActivity"
                 android:label="@string/title_activity_youtube"
                 android:parentActivityName=".VideoSender"
-                android:launchMode="singleInstance">
+                android:launchMode="singleTask">
                 <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="cast.ucl.sender.VideoSender" />
@@ -151,12 +174,49 @@
         android:screenOrientation="landscape"
         android:label="@string/title_activity_dropbox"
         android:parentActivityName=".ImageSender"
-        android:launchMode="singleInstance">
+        android:launchMode="singleTask">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="cast.ucl.sender.ImageSender" />
     </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".ImageSelectorFB"
+            android:label="@string/app_name" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.ImageSelectorFB" />
+        </activity>
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".PhotoChooser"
+            android:label="@string/title_activity_image"
+            android:parentActivityName=".ImageSelectorFB"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.PhotoChooser" />
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".AlbumViewer"
+            android:label="@string/title_activity_album"
+            android:parentActivityName=".PhotoChooser"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.AlbumViewer" />
+        </activity>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider954324571307004"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
     <activity
         android:name="com.dropbox.client2.android.AuthActivity"
         android:configChanges="orientation|keyboard"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/bg"
-    android:background="#ffecf0f1">
+    android:background="#212121">
 
     <EditText
         android:layout_width="match_parent"
@@ -15,7 +15,9 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="0dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="0dp"
+        android:textColor="#dedede"
+        android:textColorHint="#dedede" />
 
     <ListView
         android:id="@+id/videos_found"

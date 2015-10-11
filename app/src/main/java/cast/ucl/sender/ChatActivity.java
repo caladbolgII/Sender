@@ -1,8 +1,15 @@
 package cast.ucl.sender;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -39,6 +46,15 @@ public class ChatActivity extends ActionBarActivity {
 
         name = (EditText)findViewById(R.id.chat_name);
         message = (EditText) findViewById(R.id.chat_message);
+        ActionBar actionBar = getSupportActionBar();
+        Drawable d=getResources().getDrawable(R.drawable.back);
+        actionBar.setHomeAsUpIndicator(d);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
+        Spannable text = new SpannableString("Chat Box");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
     }
 
     public void sendmessage(View view){

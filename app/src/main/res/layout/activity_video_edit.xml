@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/bg"
+    android:background="#ffecf0f1">
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/video_url"
+        android:hint="Youtube URL"
+        android:textColorHint="#f94b4b4b"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.15" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/selectdeadline"
+        android:id="@+id/textView6"
+        android:textAlignment="center"
+        android:textColor="#ff000000"
+        android:textColorHighlight="#ff000000"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.15"
+        android:layout_gravity="center" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.7">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:layout_weight="0.7">
+
+
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:id="@+id/deadline_video"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:clickable="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center" />
+
+            <TimePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/vidtimePicker"
+                android:timePickerMode="spinner"
+                android:touchscreenBlocksFocus="true"
+                android:layout_gravity="center_vertical" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.3"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Video Item ID:"
+                android:id="@+id/Title"
+                android:layout_gravity="right"
+                android:textColor="#ff000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/videoitemid"
+                android:layout_gravity="right"
+                android:textSize="16sp"
+                android:textColor="#ff000000" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:text="Search Youtube"
+                android:id="@+id/button_search"
+                android:onClick="search_youtube"
+                android:layout_marginTop="60dp"
+                android:textSize="16sp" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:text="ADD VIDEO"
+                android:id="@+id/edit_queue_video"
+                android:onClick="attempt_edit_video"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

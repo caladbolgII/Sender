@@ -66,9 +66,9 @@ public class text extends ActionBarActivity {
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
         Spannable text = new SpannableString("Message Sender");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
 
         deadtime = (TimePicker)findViewById(R.id.txttimePicker);
@@ -122,17 +122,38 @@ public class text extends ActionBarActivity {
         type = String.valueOf(spinner.getSelectedItem());
         deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         command = Constants.action_add_text;
-        new Connection().execute();
+        if(myTextField.getText().toString().length()==0) {
+            Context context = getApplicationContext();
+            CharSequence text = "Please type a message";
+            int duration = Toast.LENGTH_SHORT;
 
-        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
-        globalVariable.settextresponse(responseStr);
-        Context context = getApplicationContext();
-        CharSequence text = "Message has been added to Queue";
-        int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else if(TitleField.getText().toString().length()==0) {
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter a title";
+            int duration = Toast.LENGTH_SHORT;
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        go_back();
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else {
+            try {
+                new Connection().execute();
+            } catch (Exception e) {
+                Log.d("JSON Exception1", e.toString());
+            }
+            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+            globalVariable.settextresponse(responseStr);
+            Context context = getApplicationContext();
+            CharSequence text = "Message has been added to Queue";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            go_back();
+        }
     }
     public void go_back() {
         Intent intent = new Intent(this, TextQueueEdit.class);

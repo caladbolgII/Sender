@@ -1,0 +1,165 @@
+package cast.ucl.sender;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * Created by Caladbolg on 05/10/2015.
+ */
+public class AlbumViewer extends Activity {
+    TextView albumtitle;
+    String request;
+    public ListViewLoaderTask listViewLoaderTask;
+    public AlbumViewer albumviewer;
+    GridView photogrid;
+    Resources res;
+    FBImageQueueAdapter imagequeue;
+    JSONObject reader;
+    String jsonStr;
+    private ArrayList<FBImageListModel> fbimageList = new ArrayList<FBImageListModel>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
+        setContentView(R.layout.activity_album_view);
+        albumviewer = this;
+        albumtitle = (TextView)findViewById(R.id.album_title);
+        photogrid = (GridView)findViewById(R.id.photo_album);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+        String title = intent.getStringExtra("title");
+        albumtitle.setText(title);
+        request = "/"+id+"/"+"photos";
+        res =getResources();
+        fetch_album();
+
+
+
+    }
+    public void fetch_album() {
+        try {
+            new GraphRequest(
+
+                    AccessToken.getCurrentAccessToken(),
+                    request,
+                    null,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
+                            String report;
+                            JSONObject photos = null;
+                            JSONArray list;
+                            int count;
+                            //report = "graph response:"+response.toString();
+                            report = "";
+            /* handle the result */
+                            reader = response.getJSONObject();
+                            JSONObject jsonObject = new JSONObject();
+                            JSONArray array = new JSONArray();
+                            jsonStr = reader.toString();
+
+                            try {
+                                list = reader.getJSONArray("data");
+                                count = 0;
+
+                                while (count != list.length()) {
+                                    photos = list.getJSONObject(count);
+                                    report = report + photos.toString();
+                                    count++;
+                                }
+                            } catch (JSONException e) {
+
+                            }
+
+                            listViewLoaderTask = new ListViewLoaderTask();
+
+                            try {
+                                listViewLoaderTask.execute().get();
+                                imagequeue = new FBImageQueueAdapter(albumviewer,fbimageList,res);
+                                photogrid.setAdapter(imagequeue);
+                            } catch (Exception e) {
+
+                            }
+
+                        }
+                    }
+            ).executeAsync();
+        }
+        catch (Exception e){
+
+        }
+    }
+    public void onItemClick(int i) {
+            String shareurl = "";
+            shareurl = fbimageList.get(i).getUrl();
+            Intent intent = new Intent(this,ImageSender.class);
+            intent.putExtra("imgurl",shareurl);
+            startActivity(intent);
+
+    }
+
+    private class ListViewLoaderTask extends AsyncTask{
+
+        JSONObject jObject;
+
+        /** Doing the parsing of xml data in a non-ui thread */
+        @Override
+        protected Object doInBackground(Object... arg0) {
+            PhotoJSONParser fbimageJSONParser;
+            fbimageJSONParser = new PhotoJSONParser();
+            try{
+                jObject = new JSONObject(jsonStr);
+            }catch(Exception e){
+                Log.d("JSON Exception1",e.toString());
+            }
+            fbimageList = new ArrayList<FBImageListModel>();
+            try{
+                /** Getting the parsed data as a List construct */
+
+                fbimageList = fbimageJSONParser.parse(jObject);
+                String hi  = "size:"+fbimageList.size();
+//                Log.v("Listhi",hi );
+//                Log.v("Listhi", fbimageList.get(0).getUrl());
+//                Log.v("Listhi", fbimageList.get(1).getUrl());
+//                Log.v("Listhi", fbimageList.get(2).getUrl());
+//                Log.v("Listhi", fbimageList.get(3).getUrl());
+            }catch(Exception e){
+                Log.d("Exception",e.toString());
+            }
+            return null;
+
+        }
+
+
+    }
+}

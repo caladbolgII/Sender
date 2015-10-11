@@ -37,7 +37,7 @@ public class Constants {
 
     //IP address and port
     //ADD
-    final static public String SERVER = "http://192.168.1.104:8080";
+    final static public String SERVER = "http://192.168.1.129:8080";
     final static public long results = 30;
     final static public String SERVER_ADDR_DELETE = SERVER+"/deleteMedia";
     final static public String SERVER_ADDR_VIDEO = SERVER+"/videos";

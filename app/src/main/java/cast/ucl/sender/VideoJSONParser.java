@@ -72,7 +72,7 @@ public ArrayList<VideoListModel> parse(JSONObject jObject){
                     listitem.setId(id);
                     listitem.setUrl(videoid);
                     listitem.setTimeout(timeout);
-                    listitem.setTitle(getTitile(videoid));
+                    listitem.setTitle(getTitle(videoid));
 
                     vidlist.add(i,listitem);
                 } catch (JSONException e) {
@@ -83,7 +83,7 @@ public ArrayList<VideoListModel> parse(JSONObject jObject){
             return vidlist;
         }
 
-    public String getTitile(String videoId)
+    public String getTitle(String videoId)
     {
         String json;
         String titile=null;

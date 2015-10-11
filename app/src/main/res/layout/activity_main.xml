@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#ffbdc3c7"
+    android:background="#ff212121"
     android:orientation="vertical"
 
     >
@@ -20,7 +20,7 @@
         android:id="@+id/textView2"
         android:textStyle="normal|bold"
         android:textSize="35dp"
-        android:textColor="#ff000000"
+        android:textColor="#ff0FA9F9"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center" />
@@ -33,7 +33,7 @@
             android:id="@+id/textView3"
             android:layout_centerHorizontal="true"
             android:textAlignment="gravity"
-            android:textColor="#ff000000"
+            android:textColor="#ffe9e9e9"
             android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="top|center"
             android:text="@string/config"
@@ -45,7 +45,8 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.80">
+            android:layout_weight="0.80"
+        android:background="#ff212121">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             style="@style/Hello"
             android:clickable="false"
@@ -54,7 +55,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:orientation="horizontal"
-            android:background="#ffbdc3c7"
+            android:background="#ff090909"
             android:baselineAligned="true">
 
             <LinearLayout
@@ -62,7 +63,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.33"
-                android:id="@+id/layout1_pane">
+                android:id="@+id/layout1_pane"
+                android:background="#ff212121">
 
                 <Button
                     android:layout_width="fill_parent"
@@ -71,8 +73,9 @@
                     android:id="@+id/button5"
                     android:onClick="set_layout1"
                     android:drawableBottom="@drawable/layout1"
-                    android:background="#ffbdc3c7"
-                    android:layout_gravity="center" />
+                    android:background="#ff212121"
+                    android:layout_gravity="center"
+                    android:textColor="#e9e9e9" />
             </LinearLayout>
 
             <LinearLayout
@@ -80,7 +83,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.33"
-                android:id="@+id/layout2_pane">
+                android:id="@+id/layout2_pane"
+                android:background="#ff212121">
 
                 <Button
                     android:layout_width="fill_parent"
@@ -89,8 +93,9 @@
                     android:id="@+id/button6"
                     android:onClick="set_layout2"
                     android:drawableBottom="@drawable/layout2"
-                    android:background="#bdc3c7"
-                    android:layout_gravity="center" />
+                    android:background="#ff212121"
+                    android:layout_gravity="center"
+                    android:textColor="#e9e9e9" />
             </LinearLayout>
 
             <LinearLayout
@@ -98,7 +103,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.33"
-                android:id="@+id/layout3_pane">
+                android:id="@+id/layout3_pane"
+                android:background="#ff212121">
 
                 <Button
                     android:layout_width="fill_parent"
@@ -107,8 +113,9 @@
                     android:id="@+id/button7"
                     android:onClick="set_layout3"
                     android:drawableBottom="@drawable/layout3"
-                    android:background="#bdc3c7"
-                    android:layout_gravity="center" />
+                    android:background="#ff212121"
+                    android:layout_gravity="center"
+                    android:textColor="#e9e9e9" />
             </LinearLayout>
         </LinearLayout>
 

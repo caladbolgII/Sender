@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -52,7 +53,7 @@ import java.util.Date;
 
 public class ImageSender extends ActionBarActivity implements View.OnClickListener {
 // variable declarations
-    public EditText myTextField;
+    public TextView myTextField;
     public EditText TitleField;
     public DatePicker imagedeadline;
     private static final int TAKE_PHOTO = 1;
@@ -75,7 +76,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_image);
-        myTextField = (EditText) findViewById(R.id.imagelink);
+        myTextField = (TextView) findViewById(R.id.imagelink);
         TitleField = (EditText)findViewById(R.id.image_title);
         imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         ActionBar actionBar = getSupportActionBar();
@@ -85,7 +86,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
         Spannable text = new SpannableString("Cast Image");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
 
         AndroidAuthSession session = buildSession();
@@ -95,14 +96,16 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         setLoggedIn(false);
         btnDownload = (Button) findViewById(R.id.button_search);
 
-        btnUpload = (Button) findViewById(R.id.btnUploadPhoto);
-        btnUpload.setOnClickListener(this);
+
+//        btnUpload.setOnClickListener(this);
         btnDownload.setOnClickListener(this);
         imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         deadtime = (TimePicker)findViewById(R.id.imgtimePicker);
         deadtime.setIs24HourView(Boolean.TRUE);
         spinner = (Spinner) findViewById(R.id.imgspinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, android.R.layout.simple_spinner_item);
+
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, R.layout.spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
@@ -149,14 +152,37 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         minutes = Integer.toString(deadtime.getCurrentMinute());
         type = String.valueOf(spinner.getSelectedItem());
         deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
-        new Connection().execute();
-        Context context = getApplicationContext();
-        CharSequence text = "Image has been cast";
-        int duration = Toast.LENGTH_SHORT;
+        if(myTextField.getText().toString().length()==0) {
+            Context context = getApplicationContext();
+            CharSequence text = "Invalid URL, please search again";
+            int duration = Toast.LENGTH_SHORT;
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-        go_back();
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else if(TitleField.getText().toString().length()==0) {
+            Context context = getApplicationContext();
+            CharSequence text = "Invalid URL, please search again";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
+        else {
+            try {
+                new Connection().execute();
+            } catch (Exception e) {
+                Log.d("JSON Exception1", e.toString());
+            }
+
+            Context context = getApplicationContext();
+            CharSequence text = "Image has been cast";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            go_back();
+        }
     }
 
 
@@ -333,6 +359,12 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
             startActivityForResult(intent, TAKE_PHOTO);
         }
+    }
+    public void choosefb(View v) {
+
+            startActivity(new Intent(ImageSender.this, ImageSelectorFB.class));
+
+
     }
     @Override
     protected void onStart() {

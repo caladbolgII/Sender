@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +26,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -55,6 +60,15 @@ public class QueueEdit extends ActionBarActivity {
     Resources res;
     ProgressDialog progressDialog;
     String id;
+    String vidid = "";
+    String vidurl = "";
+    String vidtimeout = "";
+    private ListView textlist;
+    AlertDialog alert;
+    Context viewcontext;
+    long t1=0;
+    long t2=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,10 +133,12 @@ public class QueueEdit extends ActionBarActivity {
                 | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
         Drawable d=getResources().getDrawable(R.drawable.back);
         actionBar.setHomeAsUpIndicator(d);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
-        actionBar.setTitle("VIDEO QUEUE");
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
+        Spannable text = new SpannableString("Video Queue");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
         res =getResources();
         queue_activity = this;
         try {
@@ -167,6 +183,9 @@ public class QueueEdit extends ActionBarActivity {
             if (videoList.isEmpty()) isEmpty();
             else listView.setAdapter(adapter);
             progressDialog.dismiss();
+            t2= System.currentTimeMillis();
+            String strlong = Long.toString(t2-t1);
+            Log.e("Time to execute",strlong);
         }
         /** Doing the parsing of xml data in a non-ui thread */
         @Override
@@ -261,6 +280,7 @@ public class QueueEdit extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            t1= System.currentTimeMillis();
             progressDialog = ProgressDialog.show(QueueEdit.this, "Retrieving Video Queue", "Please Wait ...");
         }
         @Override
@@ -384,43 +404,46 @@ public class QueueEdit extends ActionBarActivity {
         return ret;
     }
 
-    public void onItemClick(int mPosition)
+    public void onItemClick(int mPosition,View view)
     {
         VideoListModel tempValues = (VideoListModel) videoList.get(mPosition);
         final CharSequence[] items = {"Edit", "Delete"};
        id = tempValues.getId();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
-
+        TextView text_id = (TextView) view.findViewById(R.id.item_id);
+        vidid = text_id.getText().toString();
+        TextView text_timeout = (TextView) view.findViewById(R.id.item_timeout);
+        vidtimeout = text_timeout.getText().toString();
+        TextView text_title = (TextView) view.findViewById(R.id.vid_url);
+        vidurl = text_title.getText().toString();
         // set title
         alertDialogBuilder.setTitle("Select Action");
-
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("Delete Video?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        delete();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, just close
-                        // the dialog box and do nothing
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
+        viewcontext = view.getContext();
+        alertDialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // Do something with the selection
+                if (item == 0) {
+                    alert.dismiss();
+                    Intent intent = new Intent(viewcontext, VideoEdit.class);
+                    intent.putExtra("id", vidid);
+                    intent.putExtra("timeout", vidtimeout);
+                    intent.putExtra("url", vidurl);
+                    startActivity(intent);
+                } else if (item == 1) {
+                    delete();
+                    alert.dismiss();
+                }
+            }
+        });
+        alert= alertDialogBuilder.create();
+        alert.show();
 
 
         Log.e("Delete id:", id);
     }
 
-
+/*
     @Override
     protected void onRestart() {
         super.onRestart();  // Always call the superclass method first
@@ -468,5 +491,5 @@ public class QueueEdit extends ActionBarActivity {
 
         }
     }
-
+*/
 }

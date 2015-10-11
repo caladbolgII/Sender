@@ -4,29 +4,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/bg"
-    android:background="#ffecf0f1">
-    <EditText
-        android:layout_width="fill_parent"
+    android:background="#212121">
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:id="@+id/imagelink"
-        android:hint="DROPBOX IMAGE URL"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:textColorHint="#f94b4b4b"
         android:layout_gravity="center"
         android:layout_weight="0.10"
-        android:textSize="12sp" />
+        android:textSize="13sp"
+        android:textAlignment="center"
+        android:textStyle="bold|italic"
+        android:textColor="#0FA9F9"
+        android:textColorHint="#0FA9F9" />
     <EditText
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:id="@+id/image_title"
-        android:hint="TITLE"
+        android:hint="ENTER TITLE HERE"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:textColorHint="#f94b4b4b"
+        android:textColorHint="#0FA9F9"
         android:layout_gravity="center"
-        android:layout_weight="0.10"
-        android:textSize="12sp" />
+        android:layout_weight="0.13"
+        android:textSize="13sp"
+        android:textStyle="bold|italic"
+        android:textAlignment="center"
+        android:textColor="#0FA9F9"
+        android:textColorHighlight="#0FA9F9"
+        android:textColorLink="#0FA9F9" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +41,7 @@
         android:text="@string/selectdeadline"
         android:id="@+id/textView6"
         android:textAlignment="center"
-        android:textColor="#ff000000"
+        android:textColor="#0FA9F9"
         android:textColorHighlight="#ff000000"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -54,18 +61,24 @@
 
         <DatePicker
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/deadline_image"
             android:calendarViewShown="false"
             android:datePickerMode="spinner"
             android:clickable="true"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:theme="@style/Theme.SelectDate"
+            android:background="#212121" />
 
         <TimePicker
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/imgtimePicker"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:theme="@style/Theme.SelectDate"
+            android:background="#212121"
+            style="Theme.SelectDate"
+            android:longClickable="false" />
 
 
         </LinearLayout>
@@ -76,16 +89,17 @@
             android:layout_weight="0.3">
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="0dp"
+                android:layout_height="51dp"
                 android:orientation="horizontal"
-                android:layout_weight="0.20">
+                android:background="#dedede">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Post Type:"
                     android:id="@+id/textView"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:textColor="#0FA9F9" />
 
                 <Spinner
                     android:layout_width="wrap_content"
@@ -101,7 +115,8 @@
             android:id="@+id/button_search"
             android:layout_weight="0.266"
             android:layout_gravity="center_horizontal"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="#dedede" />
 
         <Button
             android:layout_width="fill_parent"
@@ -111,19 +126,17 @@
             android:onClick="attemptSend"
             android:layout_weight="0.266"
             android:layout_gravity="center_horizontal"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="#dedede" />
 
-        <Button
-        style="?android:attr/buttonStyleSmall"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:text="Upload to Dropbox"
-            android:id="@+id/btnUploadPhoto"
-            android:layout_weight="0.266"
-            android:layout_gravity="center_horizontal"
-            android:visibility="invisible"
-            android:clickable="false"
-            android:enabled="false" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:text="Choose Facebook Image"
+                android:id="@+id/fb_chooser"
+                android:layout_weight="0.266"
+                android:onClick="choosefb" />
+
         </LinearLayout>
     </LinearLayout>
 

@@ -55,6 +55,8 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
     private ProgressDialog pd;
     public static final String TAG = DropboxDownload.class.getSimpleName();
     ProgressDialog progressDialog;
+    long t1=0;
+    long t2=0;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -83,9 +85,9 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
         Spannable text = new SpannableString("SELECT IMAGE");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
         // btnDropboxDownloadDone = (Button)
         // findViewById(R.id.btnDropboxDownloadDone);
@@ -125,6 +127,7 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = ProgressDialog.show(DropboxDownload.this, "Retrieving Dropbox URL", "Please Wait ...");
+            t1= System.currentTimeMillis();
         }
         @Override
         protected void onProgressUpdate(String...values){
@@ -135,6 +138,9 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
         protected void onPostExecute(Void result){
             super.onPostExecute(result);
             progressDialog.dismiss();
+            t2= System.currentTimeMillis();
+            String strlong = Long.toString(t2-t1);
+            Log.e("Time to execute", strlong);
         }
         /** Doing the parsing of xml data in a non-ui thread */
         @Override
@@ -149,6 +155,7 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
             shareurl = getShareURL(shareLink.url).replaceFirst("https://www.dropbox", "https://dl.dropboxusercontent");
             //shareurl = getShareURL(shareLink.url);
             shareurl = shareurl.substring(0, shareurl.length() - 5);
+            if(shareurl.substring(shareurl.length()-3) == "");
             goback();
         } catch (DropboxException e) {
             e.printStackTrace();

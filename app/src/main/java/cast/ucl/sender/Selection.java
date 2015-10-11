@@ -22,7 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -69,24 +72,55 @@ public class Selection extends ActionBarActivity {
                 left_pane_top.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
+                        alphaAnimation.setDuration(500);
+                        alphaAnimation.setRepeatMode(Animation.REVERSE);
+                        alphaAnimation.setRepeatCount(1);
+                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
+                        view.startAnimation(alphaAnimation);
+//                        long li = 500;
+//                        try{
+//                        Thread.sleep(li);
+//                        }
+//                        catch (Exception e){
+//
+//                        }
                         open_video(view);
                     }
                 });
                 right_pane_top.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
+                        alphaAnimation.setDuration(500);
+                        alphaAnimation.setRepeatMode(Animation.REVERSE);
+                        alphaAnimation.setRepeatCount(1);
+                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
+                        view.startAnimation(alphaAnimation);
                         open_image(view);
                     }
                 });
                 left_pane_bottom.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
+                        alphaAnimation.setDuration(500);
+                        alphaAnimation.setRepeatMode(Animation.REVERSE);
+                        alphaAnimation.setRepeatCount(1);
+                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
+                        view.startAnimation(alphaAnimation);
                         open_sender(view);
                     }
                 });
                 right_pane_bottom.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
+                        alphaAnimation.setDuration(500);
+                        alphaAnimation.setRepeatMode(Animation.REVERSE);
+                        alphaAnimation.setRepeatCount(1);
+                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
+                        view.startAnimation(alphaAnimation);
                         open_twitter(view);
                     }
                 });
@@ -104,12 +138,14 @@ public class Selection extends ActionBarActivity {
                 left_pane.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.blink));
                         open_video(view);
                     }
                 });
                 right_pane.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.blink));
                         open_chat(view);
                     }
                 });
@@ -123,6 +159,7 @@ public class Selection extends ActionBarActivity {
                 whole_pane.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.blink));
                         open_video(view);
                     }
                 });
@@ -165,9 +202,9 @@ public class Selection extends ActionBarActivity {
         actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff000000));
         Spannable text = new SpannableString("Tile Select");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#ecf0f1")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#0fa9f9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
 
     }
@@ -197,15 +234,15 @@ public class Selection extends ActionBarActivity {
             super.onDraw(canvas);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-           // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.parseColor("#ecf0f1"));
+           // paint.setColor(Color.parseColor("#212121"));//bdc3c7
+            paint.setColor(Color.parseColor("#212121"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
             canvas.drawRect(0, 0, x, y, paint);
             paint.setStrokeWidth(0);
-            paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
-            canvas.drawRect(3, 3, x-3, y-3, paint );
+            paint.setColor(Color.parseColor("#303030"));//556773
+            canvas.drawRect(15, 15, x - 15, y - 15, paint);
             p=new Paint();
             Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.video_file);
             Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
@@ -225,10 +262,10 @@ public class Selection extends ActionBarActivity {
             canvas.drawBitmap(b,cx, cy, p);
             else canvas.drawBitmap(n,cxn, cyn, p);
 
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(27);
-            canvas.drawText("Edit Video Queue", e.getWidth()+10, y-15, paint);
-            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
+            paint.setColor(Color.parseColor("#0fa9f9"));
+            paint.setTextSize(37);
+            canvas.drawText("Edit Video Queue", e.getWidth()+25, y-30, paint);
+            canvas.drawBitmap(e,25, y-e.getHeight()-25, p);
 
         }
     }
@@ -255,17 +292,17 @@ public class Selection extends ActionBarActivity {
             super.onDraw(canvas);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.parseColor("#ecf0f1"));
+            // paint.setColor(Color.parseColor("#212121"));//bdc3c7
+            paint.setColor(Color.parseColor("#212121"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
             canvas.drawRect(0, 0, x, y, paint);
             paint.setStrokeWidth(0);
-            paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
-            canvas.drawRect(3, 3, x-3, y-3, paint );
+            paint.setColor(Color.parseColor("#303030"));//556773
+            canvas.drawRect(15, 15, x - 15, y - 15, paint);
             p=new Paint();
-            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.image);
+            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.pic);
             Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
             Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
             p.setColor(Color.RED);
@@ -281,10 +318,10 @@ public class Selection extends ActionBarActivity {
 
 
 
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(27);
-            canvas.drawText("Edit Image Queue", e.getWidth()+10, y-15, paint);
-            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
+            paint.setColor(Color.parseColor("#0fa9f9"));
+            paint.setTextSize(37);
+            canvas.drawText("Edit Image Queue", e.getWidth()+25, y-30, paint);
+            canvas.drawBitmap(e,25, y-e.getHeight()-25, p);
         }
     }
 
@@ -311,15 +348,15 @@ public class Selection extends ActionBarActivity {
             super.onDraw(canvas);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.parseColor("#ecf0f1"));
+            // paint.setColor(Color.parseColor("#212121"));//bdc3c7
+            paint.setColor(Color.parseColor("#212121"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
             canvas.drawRect(0, 0, x, y, paint);
             paint.setStrokeWidth(0);
-            paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
-            canvas.drawRect(3, 3, x-3, y-3, paint );
+            paint.setColor(Color.parseColor("#303030"));//556773
+            canvas.drawRect(15, 15, x - 15, y - 15, paint);
             p=new Paint();
             Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.text);
             Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
@@ -341,10 +378,10 @@ public class Selection extends ActionBarActivity {
             else canvas.drawBitmap(n,cxn, cyn, p);
 
 
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(27);
-            canvas.drawText("Edit Text Queue", e.getWidth()+10, y-15, paint);
-            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
+            paint.setColor(Color.parseColor("#0fa9f9"));
+            paint.setTextSize(37);
+            canvas.drawText("Edit Text Queue", e.getWidth()+25, y-30, paint);
+            canvas.drawBitmap(e,25, y-e.getHeight()-25, p);
         }
     }
     public class ChatView extends View{
@@ -370,17 +407,17 @@ public class Selection extends ActionBarActivity {
             super.onDraw(canvas);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.parseColor("#ecf0f1"));
+            // paint.setColor(Color.parseColor("#212121"));//bdc3c7
+            paint.setColor(Color.parseColor("#212121"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
             canvas.drawRect(0, 0, x, y, paint);
             paint.setStrokeWidth(0);
-            paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
-            canvas.drawRect(3, 3, x-3, y-3, paint );
+            paint.setColor(Color.parseColor("#303030"));//556773
+            canvas.drawRect(15, 15, x - 15, y - 15, paint);
             p=new Paint();
-            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.text);
+            Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.response);
             Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.list_video);
             Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
             Bitmap n = b.createScaledBitmap(b,1*y/4,1*y/4,true);
@@ -400,10 +437,10 @@ public class Selection extends ActionBarActivity {
             else canvas.drawBitmap(n,cxn, cyn, p);
 
 
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(27);
-            canvas.drawText("Chatroom", e.getWidth()+10, y-15, paint);
-            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
+            paint.setColor(Color.parseColor("#0fa9f9"));
+            paint.setTextSize(37);
+            canvas.drawText("Chatroom", e.getWidth()+25, y-30, paint);
+            canvas.drawBitmap(e,25, y-e.getHeight()-25, p);
         }
     }
     public class TwitterView extends View{
@@ -428,15 +465,15 @@ public class Selection extends ActionBarActivity {
             super.onDraw(canvas);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            // paint.setColor(Color.parseColor("#000000"));//bdc3c7
-            paint.setColor(Color.parseColor("#ecf0f1"));
+            // paint.setColor(Color.parseColor("#212121"));//bdc3c7
+            paint.setColor(Color.parseColor("#212121"));
             int x = getWidth();
             int y = getHeight();
             paint.setStrokeWidth(3);
             canvas.drawRect(0, 0, x, y, paint);
             paint.setStrokeWidth(0);
-            paint.setColor(Color.parseColor("#bdc3c7"));//bdc3c7
-            canvas.drawRect(3, 3, x-3, y-3, paint );
+            paint.setColor(Color.parseColor("#303030"));//556773
+            canvas.drawRect(15, 15, x - 15, y - 15, paint);
             p=new Paint();
             Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.twitter_icon);
             Bitmap r = b.createScaledBitmap(b,3*y/4,3*y/4,true);
@@ -455,10 +492,10 @@ public class Selection extends ActionBarActivity {
             else canvas.drawBitmap(b,cx, cy, p);
 
 
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(27);
-            canvas.drawText("Twitter", e.getWidth()+10, y-15, paint);
-            canvas.drawBitmap(e,10, y-e.getHeight()-10, p);
+            paint.setColor(Color.parseColor("#0fa9f9"));
+            paint.setTextSize(37);
+            canvas.drawText("Twitter", e.getWidth()+25, y-30, paint);
+            canvas.drawBitmap(e,25, y-e.getHeight()-25, p);
         }
     }
 

@@ -134,9 +134,9 @@ public class VideoQueueAdapter extends BaseAdapter implements View.OnClickListen
         }
 
         @Override
-        public void onClick(View arg0) {
+        public void onClick(View view) {
            QueueEdit sct = (QueueEdit)activity;
-            sct.onItemClick(mPosition);
+            sct.onItemClick(mPosition,view);
 
         }
     }

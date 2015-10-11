@@ -1,31 +1,44 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Hello" parent="Theme.AppCompat.Light">
-        <item name= "android:background">#ffecf0f1</item>
+    <style name="Hello" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:editTextStyle">@style/Widget.EditText.Black</item>
+        <item name= "android:background">#ff3e3e3e</item>
         <item name="actionBarSize">50dip</item>
         <item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item>
+        <item name="android:textColor">#dedede</item>
 
     </style>
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
     </style>
     <style name="bg" parent="Theme.AppCompat.Light">
-        <item name= "android:background">#ffecf0f1</item>
+        <item name="android:editTextStyle">@style/Widget.EditText.Black</item>
+        <item name= "android:background">#ff3e3e3e</item>
         <item name="actionBarSize">50dip</item>
         <item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item>
+        <item name="android:textColor">#dedede</item>
 
     </style>
     <style name="MyTheme.ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+        <item name="android:textColor">#dedede</item>
     </style>
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">#ffbdc3c7</item>
         <item name="android:height">@dimen/bar_height</item>
+        <item name="android:textColor">#dedede</item>
     </style>
     <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">#ffbdc3c7</item>
+    </style>
+    <style name="Theme.SelectDate" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:editTextStyle">@style/Widget.EditText.Black</item>
+    </style>
+
+    <style name="Widget.EditText.Black" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">#dedede</item>
     </style>
 
 </resources>
