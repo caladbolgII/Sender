@@ -3,14 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/album_title"
-        android:layout_gravity="center_horizontal" />
-
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,5 +12,6 @@
         android:columnWidth="150dp"
         android:stretchMode="columnWidth"
         android:minWidth="150dp"
-        android:minHeight="150dp" />
+        android:minHeight="150dp"
+        android:background="#424242" />
 </LinearLayout>

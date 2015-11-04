@@ -3,21 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/bg"
-    android:background="#212121">
+    android:background="#ff424242">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/search"
-        android:id="@+id/search_input"
-        android:singleLine="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:textColor="#dedede"
-        android:textColorHint="#dedede" />
 
     <ListView
         android:id="@+id/videos_found"

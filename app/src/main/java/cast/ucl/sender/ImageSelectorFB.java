@@ -3,8 +3,15 @@ package cast.ucl.sender;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +38,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ImageSelectorFB extends Activity {
+public class ImageSelectorFB extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
@@ -40,19 +47,21 @@ public class ImageSelectorFB extends Activity {
     private TextView textViewName;
     private ProfilePictureView profilePictureView;
     private TextView json;
-    public ListViewLoaderTask listViewLoaderTask;
     public ListView fblist;
-    String jsonStr = "";
-    List<HashMap<String, String>> buffer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_image_selector_fb);
-        fblist = (ListView)findViewById(R.id.albumlist);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Facebook Login");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
         json = (TextView) findViewById(R.id.textView);
-        fetchpic = (Button) findViewById(R.id.getpic);
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -92,6 +101,9 @@ public class ImageSelectorFB extends Activity {
                 updateProfile();
             }
         };
+
+
+
     }
 
     @Override
@@ -119,6 +131,7 @@ public class ImageSelectorFB extends Activity {
             profilePictureView.setProfileId(profile.getId());
             textViewName.setText(profile.getName());
             loginButton.setText("Logout");
+            fetch();
 
         } else {
             profilePictureView.setProfileId(null);
@@ -127,103 +140,18 @@ public class ImageSelectorFB extends Activity {
         }
     }
 
-    public void fetch(View view) {
+    public void gotoalbum() {
+        AccessToken token = AccessToken.getCurrentAccessToken();
+        if (token != null) {
+            Intent intent = new Intent(this,PhotoChooser.class);
+            startActivity(intent);
+        }
+
+    }
+
+    public void fetch() {
         Intent intent = new Intent(this,PhotoChooser.class);
         startActivity(intent);
-//        new GraphRequest(
-//                AccessToken.getCurrentAccessToken(),
-//                "/me/albums",
-//                null,
-//                HttpMethod.GET,
-//                new GraphRequest.Callback() {
-//                    public void onCompleted(GraphResponse response) {
-//                        String report;
-//                        JSONObject album = null;
-//                        JSONArray list;
-//                        int count;
-//                        //report = "graph response:"+response.toString();
-//                        report = "";
-//            /* handle the result */
-//                        JSONObject reader = response.getJSONObject();
-//                       // jsonStr = response.toString();
-//
-//                        try {
-//                        list = reader.getJSONArray("data");
-//                            count = 0;
-//
-//                            while(count != list.length()) {
-//                                album = list.getJSONObject(count);
-//                                report = report +album.toString();
-//                                count++;
-//                            }
-//                        }
-//                        catch (JSONException e){
-//
-//                        }
-//
-//                        //json.setText(report);
-//                        //Toast.makeText(getApplicationContext(),report,Toast.LENGTH_LONG).show();
-//                        jsonStr = "{ " +
-//                                " \"data\": " + report + "} ";
-//                        //json.setText(reader.toString());
-//                        listViewLoaderTask = new ListViewLoaderTask();
-//
-//                        listViewLoaderTask.execute(reader.toString());
-//
-//                    }
-//                }
-//        ).executeAsync();
     }
 
-    private class ListViewLoaderTask extends AsyncTask<String, Void, SimpleAdapter> {
-
-        JSONObject jObject;
-
-        /**
-         * Doing the parsing of xml data in a non-ui thread
-         */
-        @Override
-        protected SimpleAdapter doInBackground(String... jsonStr) {
-            try {
-                jObject = new JSONObject(jsonStr[0]);
-                //Log.v("log",jsonStr[0]);
-                FBJSONParser fbJsonParser = new FBJSONParser();
-                fbJsonParser.parse(jObject);
-
-            } catch (Exception e) {
-                Log.d("JSON Exception1", e.toString());
-            }
-
-            FBJSONParser fbJsonParser = new FBJSONParser();
-
-            List<HashMap<String, String>> fbs = null;
-
-            try {
-                /** Getting the parsed data as a List construct */
-                fbs = fbJsonParser.parse(jObject);
-                buffer = fbs;
-            } catch (Exception e) {
-                Log.d("Exception", e.toString());
-            }
-
-            /** Keys used in Hashmap */
-            String[] from = {"id", "name"};
-
-            /** Ids of views in listview_layout */
-            int[] to = {R.id.album_id, R.id.album_name};
-
-            /** Instantiating an adapter to store each items
-             *  R.layout.listview_layout defines the layout of each item
-             */
-            SimpleAdapter adapter = null;
-
-            adapter = new SimpleAdapter(getBaseContext(), fbs, R.layout.activity_fb_item, from, to);
-
-            return adapter;
-        }
-        @Override
-        protected void onPostExecute(SimpleAdapter adapter) {
-            fblist.setAdapter(adapter);
-        }
-    }
 }

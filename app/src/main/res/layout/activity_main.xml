@@ -2,145 +2,108 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainview"
-    style="@style/Hello"
     android:clickable="false"
     android:longClickable="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#ff212121"
+    android:background="#ff424242"
     android:orientation="vertical"
 
     >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome to BBCAST Sender"
-        android:id="@+id/textView2"
-        android:textStyle="normal|bold"
-        android:textSize="35dp"
-        android:textColor="#ff0FA9F9"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textView3"
-            android:layout_centerHorizontal="true"
-            android:textAlignment="gravity"
-            android:textColor="#ffe9e9e9"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_gravity="top|center"
-            android:text="@string/config"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
-
 
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.80"
-        android:background="#ff212121">
+        android:background="#ff424242">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/Hello"
             android:clickable="false"
             android:longClickable="false"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
+            android:orientation="vertical"
+            android:background="#ff424242"
+            android:baselineAligned="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+            <Button
+                android:layout_width="400dp"
+                android:layout_height="0dp"
+                android:text="Connect to your Chromecast then select a layout"
+                android:id="@+id/layout_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.70" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:clickable="false"
+            android:longClickable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
             android:orientation="horizontal"
-            android:background="#ff090909"
-            android:baselineAligned="true">
+            android:background="#ff424242"
+            android:baselineAligned="true"
+            android:layout_weight="0.25"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:id="@+id/layout1_pane"
-                android:background="#ff212121">
+
 
                 <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Layout1"
-                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/l1"
                     android:onClick="set_layout1"
-                    android:drawableBottom="@drawable/layout1"
-                    android:background="#ff212121"
-                    android:layout_gravity="center"
-                    android:textColor="#e9e9e9" />
-            </LinearLayout>
+                    android:background="@drawable/layout1"
+                    android:textColor="#e9e9e9"
+                    android:textSize="12sp"
+                    android:layout_gravity="center|left"
+                    android:layout_marginRight="5dp" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:id="@+id/layout2_pane"
-                android:background="#ff212121">
 
                 <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Layout2"
-                    android:id="@+id/button6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/l2"
                     android:onClick="set_layout2"
-                    android:drawableBottom="@drawable/layout2"
-                    android:background="#ff212121"
+                    android:background="@drawable/layout2"
+                    android:textColor="#e9e9e9"
+                    android:textSize="12sp"
                     android:layout_gravity="center"
-                    android:textColor="#e9e9e9" />
-            </LinearLayout>
+                    android:layout_marginRight="5dp" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:id="@+id/layout3_pane"
-                android:background="#ff212121">
 
                 <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Layout3"
-                    android:id="@+id/button7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/l3"
                     android:onClick="set_layout3"
-                    android:drawableBottom="@drawable/layout3"
-                    android:background="#ff212121"
-                    android:layout_gravity="center"
-                    android:textColor="#e9e9e9" />
-            </LinearLayout>
+                    android:background="@drawable/layout3"
+                    android:textColor="#e9e9e9"
+                    android:textSize="12sp"
+                    android:layout_gravity="center|right" />
+
+
+
         </LinearLayout>
 
-            <android.support.v7.app.MediaRouteButton
-                android:id="@+id/media_route_button"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:mediaRouteTypes="user"
-                android:background="@drawable/circle"
 
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentLeft="false"
-                android:layout_alignWithParentIfMissing="false"
-                android:layout_alignParentTop="false"
-                android:layout_marginBottom="30dp"
-                android:layout_marginRight="30dp" />
-
-
-            <com.nhaarman.supertooltips.ToolTipRelativeLayout
-                android:id="@+id/mediatip"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_alignParentBottom="false"
-                android:layout_alignParentRight="false" />
+        </LinearLayout>
+        <android.support.v7.app.MediaRouteButton
+            android:id="@+id/media_route_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:mediaRouteTypes="user"
+            android:background="@drawable/circle"
+            android:elevation="12dp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="17dp"
+            android:layout_alignParentStart="false"
+            android:layout_marginRight="17dp" />
 
     </RelativeLayout>
 

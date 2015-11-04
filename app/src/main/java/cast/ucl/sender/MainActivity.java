@@ -1,21 +1,40 @@
 package cast.ucl.sender;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.app.MediaRouteButton;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -33,9 +52,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
-
+    final Context context = this;
+    Context viewcontext;
     private static final int REQUEST_CODE = 1;
     GlobalClass globalVariable;
    // private MediaRouter mMediaRouter;
@@ -50,7 +70,7 @@ public class MainActivity extends FragmentActivity {
     private boolean mApplicationStarted;
     private boolean mWaitingForReconnect;
     private String mSessionId;
-
+    Button layout,layout1, layout2, layout3;
     private static final String TAG = MainActivity.class
             .getSimpleName();
 
@@ -65,9 +85,59 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set layout and actionbar layout of activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         globalVariable= (GlobalClass) getApplicationContext();
+        globalVariable.setclick(0);
+        ActionBar actionBar = getSupportActionBar();
+        LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(R.layout.actionbar_main, null);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        actionBar.setCustomView(customActionBarView,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+
+        //next button functions
+        Button send = (Button) customActionBarView
+                .findViewById(R.id.next);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                String layouttemp = "";
+
+                if(globalVariable.getlayout() == "layout1") {
+                    sendMessage("setLayout1");
+                    Toast.makeText(getApplicationContext(), globalVariable.getlayout(),
+                            Toast.LENGTH_LONG).show();
+                    go_back();
+                }
+                else if(globalVariable.getlayout() == "layout2") {
+                    sendMessage("setLayout2");
+                    Toast.makeText(getApplicationContext(), globalVariable.getlayout(),
+                            Toast.LENGTH_LONG).show();
+                    go_back();
+                }
+                else if(globalVariable.getlayout() == "layout3") {
+                    sendMessage("setLayout3");
+                    Toast.makeText(getApplicationContext(), globalVariable.getlayout(),
+                            Toast.LENGTH_LONG).show();
+                    go_back();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please select a layout before proceeding",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        layout = (Button)findViewById(R.id.layout_button);
+        layout1 = (Button)findViewById(R.id.l1);
+        layout2 = (Button)findViewById(R.id.l2);
+        layout3 = (Button)findViewById(R.id.l3);
 
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         // Create a MediaRouteSelector for the type of routes your app supports
@@ -81,26 +151,58 @@ public class MainActivity extends FragmentActivity {
         // Set the MediaRouteButton selector for device discovery.
         mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
         mMediaRouteButton.setRouteSelector(mMediaRouteSelector);
+        //misclick counter
+        LinearLayout linear =(LinearLayout)customActionBarView.findViewById(R.id.action_layout);
+        linear.setOnClickListener(new View.OnClickListener()
+        {
 
-        ToolTipRelativeLayout toolTipRelativeLayout = (ToolTipRelativeLayout) findViewById(R.id.mediatip);
+            @Override
+            public void onClick(View v) {
+               int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
 
-        ToolTip toolTip = new ToolTip()
-                .withText("Press to Select Chromecast")
-                .withColor(Color.parseColor("#3498db"))
-                .withShadow()
-                ;
-      //  toolTip.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
-        //ToolTipView myToolTipView = toolTipRelativeLayout.showToolTipForView(toolTip, findViewById(R.id.media_route_button));
-       // ToolTipRelativeLayout toolTipRelativeLayout2 = (ToolTipRelativeLayout) findViewById(R.id.layouttip);
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setOnClickListener(new View.OnClickListener()
+        {
 
-       ToolTip toolTip2 = new ToolTip()
-               .withText("Press to Choose Layout")
-                .withColor(Color.parseColor("#3498db"))
-               .withShadow()
-               ;
-      //  toolTip2.withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW);
-        //ToolTipView myToolTipView2 = toolTipRelativeLayout.showToolTipForView(toolTip2, findViewById(R.id.imageButton));
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
 
+        //check network availability
+
+        if(isNetworkAvailable()){
+
+        }
+
+        else{
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Error: No network connection... closing application....");
+            alertDialog.setMessage("Your device is not connected to the internet. Please connect to the EEEI TV network before restarting the application");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            System.exit(0);
+                        }
+                    });
+            alertDialog.show();
+
+        }
+
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void layout_selector(View view){
@@ -109,23 +211,32 @@ public class MainActivity extends FragmentActivity {
 
     }
     public void set_layout1(View view){
-        sendMessage("setLayout1");
+
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        globalVariable.setlayoutmsg("setLayout1");
         globalVariable.setlayout("layout1");
-        go_back();
+        layout.setBackgroundResource(R.drawable.screen);
+        layout.setText("");
 
     }
     public void set_layout2(View view){
-        sendMessage("setLayout2");
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        globalVariable.setlayoutmsg("setLayout2");
         globalVariable.setlayout("layout2");
-        go_back();
+        layout.setBackgroundResource(R.drawable.screen2);
+        layout.setText("");
 
     }
     public void set_layout3(View view){
-        sendMessage("setLayout3");
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        globalVariable.setlayoutmsg("setLayout3");
         globalVariable.setlayout("layout3");
-        go_back();
+        layout.setBackgroundResource(R.drawable.screen3);
+        layout.setText("");
 
     }
+
+
     public void go_back() {
         Intent intent = new Intent(this, Selection.class);
         startActivity(intent);
@@ -167,32 +278,32 @@ public class MainActivity extends FragmentActivity {
         super.onDestroy();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat
-               .getActionProvider(mediaRouteMenuItem);
-         //Set the MediaRouteActionProvider selector for device discovery.
-        mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+//        MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat
+//               .getActionProvider(mediaRouteMenuItem);
+//         //Set the MediaRouteActionProvider selector for device discovery.
+//        mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     /**

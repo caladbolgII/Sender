@@ -3,9 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="cast.ucl.sender.text"
-    style="@style/bg"
     android:orientation="vertical"
-    android:background="#212121">
+    android:background="#424252">
 
     <EditText
         android:layout_width="fill_parent"
@@ -14,7 +13,7 @@
         android:hint="Title"
         android:layout_weight="0.1"
         android:textSize="12sp"
-        android:textColor="#dedede"
+        android:textColor="#e9e9e9"
         android:textColorHint="#dedede" />
 
     <EditText
@@ -26,7 +25,7 @@
         android:enabled="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="false"
-        android:textColor="#dedede"
+        android:textColor="#e9e9e9"
         android:layout_centerHorizontal="true"
         android:layout_weight="0.1"
         android:textSize="12sp"

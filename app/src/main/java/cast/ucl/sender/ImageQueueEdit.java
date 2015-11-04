@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -75,27 +76,28 @@ public class ImageQueueEdit extends ActionBarActivity{
 
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP |ActionBar.DISPLAY_SHOW_HOME
                         | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
-        Spannable text = new SpannableString("Image Queue");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Images");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
+        actionBar.setDisplayShowTitleEnabled(true);
 
-        Button addqueue = ( Button) customActionBarView
-                .findViewById(R.id.add);
-        addqueue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                Intent intent = new Intent(view.getContext(), ImageSender.class);
-                startActivity(intent);
-            }
-        });
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setText(text);
+//        Button addqueue = ( Button) customActionBarView
+//                .findViewById(R.id.add);
+//        addqueue.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+//                Intent intent = new Intent(view.getContext(), ImageSender.class);
+//                startActivity(intent);
+//            }
+//        });
 
         Button editqueue = ( Button) customActionBarView
                 .findViewById(R.id.edit);
@@ -151,6 +153,12 @@ public class ImageQueueEdit extends ActionBarActivity{
         if (imageList.isEmpty()) isEmpty();
         else imagelist.setAdapter(imagequeue);
 
+
+    }
+    public void addonClick(View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        Intent intent = new Intent(view.getContext(), ImageServiceSelector.class);
+        startActivity(intent);
 
     }
 
@@ -305,28 +313,7 @@ public class ImageQueueEdit extends ActionBarActivity{
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_text, menu);
-        return true;
-    }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     public void onItemClick(int mPosition)
     {
         ImageListModel tempValues = (ImageListModel) imageList.get(mPosition);

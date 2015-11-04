@@ -1,100 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     style="@style/bg"
-    android:background="#212121">
+    android:background="#383838"
+    android:id="@+id/layout_1">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.15"
+        android:id="@+id/layout_2">
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:id="@+id/video_url"
+        android:layout_height="wrap_content"
         android:textColorHint="#f94b4b4b"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_weight="0.20"
-        android:textSize="20sp"
-        android:textStyle="bold|italic"
+        android:layout_weight="0.1"
+        android:textSize="24sp"
+        android:text="URL:"
+        android:textStyle="bold"
         android:textAlignment="center"
         android:layout_gravity="center"
-        android:textColor="#0fa9f9" />
+        android:textColor="#0fa9f9"
+        android:layout_marginLeft="5dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/video_url"
+            android:textColorHint="#f94b4b4b"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.9"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:textColor="#e9e9e9" />
 
-
+</LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="@string/selectdeadline"
         android:id="@+id/textView6"
-        android:textAlignment="center"
         android:textColor="#0fa9f9"
         android:textColorHighlight="#0fa9f9"
         android:textSize="25dp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_weight="0.15"
-        android:layout_gravity="center" />
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginLeft="5dp" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="0.7">
+        android:layout_weight="0.7"
+        android:id="@+id/layout_3">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
-            android:layout_weight="0.7">
+            android:layout_weight="0.7"
+            android:layout_gravity="center_vertical">
 
 
     <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:id="@+id/deadline_video"
-        android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:clickable="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:background="#212121" />
+        android:background="#383838"
+        android:layout_weight="0.5"
+        android:calendarViewShown="false" />
 
             <TimePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
                 android:id="@+id/vidtimePicker"
                 android:timePickerMode="spinner"
-                android:touchscreenBlocksFocus="true"
                 android:layout_gravity="center_vertical"
-                android:background="#212121" />
+                android:background="#383838"
+                android:layout_weight="0.5" />
 
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.3"
-            android:layout_gravity="center_vertical">
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:text="Search Youtube"
-            android:id="@+id/button_search"
-            android:onClick="search_youtube"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
-            android:textSize="16sp"
-            android:textColor="#dedede" />
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:text="ADD VIDEO"
-            android:id="@+id/add_queue_video"
-            android:onClick="attempt_add_video"
-            android:layout_gravity="center_horizontal"
-            android:textSize="16sp"
-            android:textColor="#dedede" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

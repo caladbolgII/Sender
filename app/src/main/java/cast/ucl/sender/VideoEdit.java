@@ -65,8 +65,7 @@ public class VideoEdit extends ActionBarActivity {
         deadtime.setIs24HourView(Boolean.TRUE);
         idtext = (TextView)findViewById(R.id.videoitemid);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d = getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));

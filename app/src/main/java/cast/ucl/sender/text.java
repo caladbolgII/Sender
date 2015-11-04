@@ -62,8 +62,6 @@ public class text extends ActionBarActivity {
         textdeadline = (DatePicker) findViewById(R.id.deadline_text);
         TitleField = (EditText)findViewById(R.id.cast_text_title);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));

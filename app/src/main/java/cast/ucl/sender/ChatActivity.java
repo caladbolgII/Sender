@@ -47,8 +47,6 @@ public class ChatActivity extends ActionBarActivity {
         name = (EditText)findViewById(R.id.chat_name);
         message = (EditText) findViewById(R.id.chat_message);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));

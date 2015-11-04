@@ -75,20 +75,7 @@ public class TextQueueEdit extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        ActionBar actionBar = getSupportActionBar();
 
-        LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
-                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View customActionBarView = inflater.inflate(R.layout.actionbar, null);
-
-        actionBar.setDisplayOptions(
-                ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP |ActionBar.DISPLAY_SHOW_HOME
-                        | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setCustomView(customActionBarView,
-                new ActionBar.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));
 
         setContentView(R.layout.activity_txtcast);
 
@@ -97,18 +84,40 @@ public class TextQueueEdit extends ActionBarActivity{
 
         text_queue = this;
 
-        Button addqueue = ( Button) customActionBarView
-                .findViewById(R.id.add);
-        addqueue.setOnClickListener(new View.OnClickListener() {
+//        Button addqueue = ( Button) customActionBarView
+//                .findViewById(R.id.add);
+//        addqueue.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+//                Intent intent = new Intent(view.getContext(), text.class);
+//                startActivity(intent);
+//
+//            }
+//        });
+        ActionBar actionBar = getSupportActionBar();
 
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                Intent intent = new Intent(view.getContext(), text.class);
-                startActivity(intent);
+        LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(R.layout.actionbar, null);
 
-            }
-        });
+        actionBar.setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_CUSTOM,
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME
+                        | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setCustomView(customActionBarView,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Texts");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setText(text);
         Button refreshqueue = (Button)customActionBarView.findViewById(R.id.edit);
         refreshqueue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +125,8 @@ public class TextQueueEdit extends ActionBarActivity{
                 view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
                 try {
                     new text_connect().execute().get();
-                }catch(Exception e){
-                    Log.d("Exception",e.toString());
+                } catch (Exception e) {
+                    Log.d("Exception", e.toString());
                 }
 
                 //readFromFile();
@@ -129,16 +138,7 @@ public class TextQueueEdit extends ActionBarActivity{
                 listViewLoaderTask.execute(jsonStr);
             }
         });
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
-        Spannable text = new SpannableString("Message Queue");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        actionBar.setTitle(text);
+
         textlist = ( ListView ) findViewById(R.id.textlist);
         try {
             new text_connect().execute().get();
@@ -155,6 +155,12 @@ public class TextQueueEdit extends ActionBarActivity{
         listViewLoaderTask.execute(jsonStr);
 
 
+
+    }
+    public void addonClick(View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        Intent intent = new Intent(view.getContext(), text.class);
+        startActivity(intent);
 
     }
 
@@ -325,28 +331,7 @@ public class TextQueueEdit extends ActionBarActivity{
         return result;
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_text, menu);
-        return true;
-    }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void delete(){
         try {

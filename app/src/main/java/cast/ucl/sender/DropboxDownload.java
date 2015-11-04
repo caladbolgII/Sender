@@ -81,13 +81,11 @@ public class DropboxDownload extends ActionBarActivity implements AdapterView.On
         setContentView(R.layout.dropboxdownload);
         lvDropboxDownloadFilesList = (ListView) findViewById(R.id.lvDropboxDownloadFilesList);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
-        Spannable text = new SpannableString("SELECT IMAGE");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Photo Chooser");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
         // btnDropboxDownloadDone = (Button)
         // findViewById(R.id.btnDropboxDownloadDone);

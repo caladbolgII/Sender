@@ -170,14 +170,23 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="cast.ucl.sender.VideoSender" />
             </activity>
+        <activity android:name="ImageServiceSelector"
+            android:screenOrientation="landscape"
+            android:label="@string/title_activity_dropbox"
+            android:parentActivityName=".ImageQueueEdit"
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cast.ucl.sender.ImageQueueEdit" />
+        </activity>
     <activity android:name="DropboxDownload"
         android:screenOrientation="landscape"
         android:label="@string/title_activity_dropbox"
-        android:parentActivityName=".ImageSender"
+        android:parentActivityName=".ImageServiceSelector"
         android:launchMode="singleTask">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="cast.ucl.sender.ImageSender" />
+            android:value="cast.ucl.sender.ImageServiceSelector" />
     </activity>
         <activity
             android:screenOrientation="landscape"

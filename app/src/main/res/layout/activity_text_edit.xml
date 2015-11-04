@@ -3,9 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="cast.ucl.sender.text"
-    style="@style/bg"
     android:orientation="vertical"
-    android:background="#ffecf0f1">
+    android:background="#ff424242">
 
     <EditText
         android:layout_width="fill_parent"

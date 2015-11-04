@@ -13,12 +13,16 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -50,6 +54,8 @@ public class VideoSender extends ActionBarActivity {
     public TimePicker deadtime;
     String responseStr;
     String url;
+    GlobalClass globalVariable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,39 +67,100 @@ public class VideoSender extends ActionBarActivity {
         deadtime = (TimePicker)findViewById(R.id.vidtimePicker);
         deadtime.setIs24HourView(Boolean.TRUE);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
+        LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(R.layout.actionbar_sender, null);
+        responseStr = "";
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME);
+        globalVariable= (GlobalClass) getApplicationContext();
+
+
+
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
-        Spannable text = new SpannableString("Video Sender");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        actionBar.setTitle(text);
-        searchButton = (Button) findViewById(R.id.button_search);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Cast to Screen");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        //actionBar.setTitle(text);
+        actionBar.setCustomView(customActionBarView,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setText(text);
+
+        Button send = (Button) customActionBarView
+                .findViewById(R.id.next);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                attempt_add_video(view);
+
+            }
+        });
+
+
+        LinearLayout linear =(LinearLayout)customActionBarView.findViewById(R.id.layout_g);
+        linear.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+        LinearLayout linear1 =(LinearLayout)customActionBarView.findViewById(R.id.layout_b);
+        linear1.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+        LinearLayout linear2 =(LinearLayout)findViewById(R.id.layout_1);
+        linear2.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+        LinearLayout linear3=(LinearLayout)findViewById(R.id.layout_2);
+        linear3.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+        LinearLayout linear4 =(LinearLayout)findViewById(R.id.layout_3);
+        linear4.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+
+
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_text, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void attempt_add_video(View view){
         String month = "";
@@ -128,11 +195,13 @@ public class VideoSender extends ActionBarActivity {
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             globalVariable.setvideoresponse(responseStr);
             Context context = getApplicationContext();
-            CharSequence text = "Video has been added to queue";
+            int click = globalVariable.getclick();
+            CharSequence text = "Video has been added to queue," + "There have been:"+click+"Misclicks";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            globalVariable.setclick(0);
             go_back();
         }
     }
@@ -141,10 +210,7 @@ public class VideoSender extends ActionBarActivity {
         Intent intent = new Intent(this, QueueEdit.class);
         startActivity(intent);
     }
-    public void search_youtube(View view) {
-        Intent intent = new Intent(this, SearchActivity.class);
-        startActivity(intent);
-    }
+
     private class Connection extends AsyncTask {
 
         @Override

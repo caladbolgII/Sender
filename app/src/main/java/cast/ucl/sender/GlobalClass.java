@@ -12,6 +12,19 @@ public class GlobalClass extends Application {
     private String imageresponse;
     private String textresponse;
     private String layout;
+    private String layoutmsg;
+    private int click;
+
+    public int getclick() {
+
+        return click;
+    }
+
+    public void setclick(int aName) {
+
+        click = aName;
+
+    }
 
     public String getlayout() {
 
@@ -21,6 +34,16 @@ public class GlobalClass extends Application {
     public void setlayout(String aName) {
 
         layout = aName;
+
+    }
+    public String getlayoutmsg() {
+
+        return layoutmsg;
+    }
+
+    public void setlayoutmsg(String aName) {
+
+        layoutmsg = aName;
 
     }
 

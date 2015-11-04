@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +54,7 @@ public class QueueEdit extends ActionBarActivity {
     VideoQueueAdapter adapter;
     String responseStr;
     final Context context = this;
-    public QueueEdit  queue_activity= null;
+    public QueueEdit queue_activity = null;
     String videoItem = "";
     private ArrayList<VideoListModel> videoList = new ArrayList<VideoListModel>();
     public ListViewLoaderTask listViewLoaderTask;
@@ -66,24 +68,25 @@ public class QueueEdit extends ActionBarActivity {
     private ListView textlist;
     AlertDialog alert;
     Context viewcontext;
-    long t1=0;
-    long t2=0;
+    long t1 = 0;
+    long t2 = 0;
+    Button editqueue;
+    AnimationDrawable d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
-        .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View customActionBarView = inflater.inflate(R.layout.actionbar, null);
         responseStr = "";
-        actionBar.setDisplayOptions(
-                ActionBar.DISPLAY_SHOW_CUSTOM,
-                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME
-                        | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME
+                | ActionBar.DISPLAY_SHOW_TITLE);
         actionBar.setCustomView(customActionBarView,
                 new ActionBar.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -92,120 +95,150 @@ public class QueueEdit extends ActionBarActivity {
         setContentView(R.layout.activity_vidcast);
 
 
-       Button addqueue = ( Button) customActionBarView
-                .findViewById(R.id.add);
-        addqueue.setOnClickListener(new View.OnClickListener() {
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Videos");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
 
-            @Override
-            public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                Intent intent = new Intent(view.getContext(), VideoSender.class);
-                startActivity(intent);
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setText(text);
 
-            }
-        });
-
-        Button editqueue = ( Button) customActionBarView
+        editqueue = (Button) customActionBarView
                 .findViewById(R.id.edit);
+        d=(AnimationDrawable)editqueue.getCompoundDrawables()[0];
         editqueue.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+                d.start();
                 try {
                     new video_connect().execute().get();
-                }catch(Exception e){
-                    Log.d("Exception",e.toString());
+                } catch (Exception e) {
+                    Log.d("Exception", e.toString());
                 }
                 listViewLoaderTask = new ListViewLoaderTask();
                 jsonStr = "{ " +
-                        " \"videoqueue\": " +responseStr + "} ";
-                try{
+                        " \"videoqueue\": " + responseStr + "} ";
+                try {
                     listViewLoaderTask.execute(jsonStr);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
             }
         });
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
-        Spannable text = new SpannableString("Video Queue");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        actionBar.setTitle(text);
-        res =getResources();
+
+
+        res = getResources();
         queue_activity = this;
         try {
             new video_connect().execute().get();
-        }catch(Exception e){
-            Log.d("Exception",e.toString());
+        } catch (Exception e) {
+            Log.d("Exception", e.toString());
         }
         listViewLoaderTask = new ListViewLoaderTask();
-            jsonStr = "{ " +
-                    " \"videoqueue\": " +responseStr + "} ";
+        jsonStr = "{ " +
+                " \"videoqueue\": " + responseStr + "} ";
 
-        try{
+        try {
             listViewLoaderTask.execute(jsonStr);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
+
+        LinearLayout linear =(LinearLayout)customActionBarView.findViewById(R.id.action_queue);
+        linear.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+
+        TextView actiontitle = (TextView)customActionBarView.findViewById(R.id.action_title);
+        actiontitle.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
 
 
     }
 
-    public void isEmpty(){
+    public void addonClick(View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        Intent intent = new Intent(view.getContext(), SearchActivity.class);
+        startActivity(intent);
+
+    }
+
+
+    public void isEmpty() {
         Context context = getApplicationContext();
         CharSequence text = "Queue is Empty";
         int duration = Toast.LENGTH_SHORT;
-
+        ListView listView;
+        listView = (ListView) findViewById(R.id.videolist);
+        listView.setAdapter(adapter);
+        listView.setEmptyView(findViewById(R.id.emptyElement));
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+
     }
 
-    private class ListViewLoaderTask extends AsyncTask<String, String, Void>{
+    private class ListViewLoaderTask extends AsyncTask<String, String, Void> {
 
         JSONObject jObject;
 
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            ListView listView ;
-            listView = (ListView)findViewById(R.id.videolist);
-            adapter = new VideoQueueAdapter(queue_activity,videoList,res);
+            ListView listView;
+            listView = (ListView) findViewById(R.id.videolist);
+            adapter = new VideoQueueAdapter(queue_activity, videoList, res);
 
             if (videoList.isEmpty()) isEmpty();
             else listView.setAdapter(adapter);
             progressDialog.dismiss();
-            t2= System.currentTimeMillis();
-            String strlong = Long.toString(t2-t1);
-            Log.e("Time to execute",strlong);
+            t2 = System.currentTimeMillis();
+            String strlong = Long.toString(t2 - t1);
+            Log.e("Time to execute", strlong);
+            d.stop();
         }
-        /** Doing the parsing of xml data in a non-ui thread */
+
+        /**
+         * Doing the parsing of xml data in a non-ui thread
+         */
         @Override
-        protected Void doInBackground(String... arg0)  {
+        protected Void doInBackground(String... arg0) {
             VideoJSONParser videoJSONParser;
             videoJSONParser = new VideoJSONParser();
-            try{
+            try {
                 jObject = new JSONObject(jsonStr);
 
-            }catch(Exception e){
-                Log.d("JSON Exception1",e.toString());
+            } catch (Exception e) {
+                Log.d("JSON Exception1", e.toString());
             }
             videoList = new ArrayList<VideoListModel>();
-            try{
+            try {
                 /** Getting the parsed data as a List construct */
                 videoList = videoJSONParser.parse(jObject);
-            }catch(Exception e){
-                Log.d("Exception",e.toString());
+            } catch (Exception e) {
+                Log.d("Exception", e.toString());
             }
-
 
 
             return null;
@@ -215,46 +248,47 @@ public class QueueEdit extends ActionBarActivity {
     }
 
 
-    public void delete(){
+    public void delete() {
         try {
 
             new video_delete().execute().get();
             try {
                 new video_connect().execute().get();
-            }catch(Exception e){
+            } catch (Exception e) {
                 Log.d("Exception", e.toString());
             }
             listViewLoaderTask = new ListViewLoaderTask();
             jsonStr = "{ " +
-                    " \"videoqueue\": " +responseStr + "} ";
-            try{
+                    " \"videoqueue\": " + responseStr + "} ";
+            try {
                 listViewLoaderTask.execute(jsonStr);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
 
             }
-        }catch(Exception e){
-            Log.d("JSON Exception1",e.toString());
+        } catch (Exception e) {
+            Log.d("JSON Exception1", e.toString());
         }
 
     }
 
     private class video_delete extends AsyncTask<String, String, Void> {
 
-        /** Doing the parsing of xml data in a non-ui thread */
+        /**
+         * Doing the parsing of xml data in a non-ui thread
+         */
         @Override
-        protected Void doInBackground(String... arg0)  {
+        protected Void doInBackground(String... arg0) {
             connect1();
             return null;
         }
 
     }
 
-    private void connect1(){
+    private void connect1() {
         try {
             String json = "";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("action","delete");
+            jsonObject.accumulate("action", "delete");
 
             jsonObject.accumulate("id", id);
 
@@ -270,43 +304,49 @@ public class QueueEdit extends ActionBarActivity {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         } catch (IOException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
     }
+
     private class video_connect extends AsyncTask<String, String, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            t1= System.currentTimeMillis();
+            t1 = System.currentTimeMillis();
             progressDialog = ProgressDialog.show(QueueEdit.this, "Retrieving Video Queue", "Please Wait ...");
         }
+
         @Override
-        protected void onProgressUpdate(String...values){
+        protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
 
         }
+
         @Override
-        protected void onPostExecute(Void result){
+        protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
-        /** Doing the parsing of xml data in a non-ui thread */
+
+        /**
+         * Doing the parsing of xml data in a non-ui thread
+         */
         @Override
-        protected Void doInBackground(String... arg0){
-        connect();
+        protected Void doInBackground(String... arg0) {
+            connect();
             return null;
         }
 
     }
 
-    private void connect(){
+    private void connect() {
         try {
             // String json = "";
             InputStream inputStream = null;
             DefaultHttpClient httpclient = new DefaultHttpClient();
             URI website = new URI(Constants.SERVER_GET_VIDEO);
+            Log.e("server:", Constants.SERVER_GET_VIDEO);
             HttpGet request = new HttpGet();
             request.setURI(website);
             HttpResponse response = httpclient.execute(request);
@@ -314,7 +354,7 @@ public class QueueEdit extends ActionBarActivity {
             inputStream = response.getEntity().getContent();
 
             // convert inputstream to string
-            if(inputStream != null)
+            if (inputStream != null)
                 responseStr = convertInputStreamToString(inputStream);
             else
                 responseStr = "Did not work!";
@@ -325,90 +365,27 @@ public class QueueEdit extends ActionBarActivity {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         } catch (IOException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             Log.d("HTTPCLIENT", e.getLocalizedMessage());
         }
     }
 
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();
         return result;
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-       getMenuInflater().inflate(R.menu.menu_text, menu);
-        return true;
-    }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    private void writeToFile(String data) {
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("file.txt", Context.MODE_WORLD_READABLE));
-            outputStreamWriter.write(data);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-    }
-    private String readFromFile() {
-
-        String ret = "";
-
-        try {
-            InputStream inputStream = openFileInput("file.txt");
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-
-        return ret;
-    }
-
-    public void onItemClick(int mPosition,View view)
-    {
+    public void onItemClick(int mPosition, View view) {
         VideoListModel tempValues = (VideoListModel) videoList.get(mPosition);
         final CharSequence[] items = {"Edit", "Delete"};
-       id = tempValues.getId();
+        id = tempValues.getId();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 context);
         TextView text_id = (TextView) view.findViewById(R.id.item_id);
@@ -436,34 +413,33 @@ public class QueueEdit extends ActionBarActivity {
                 }
             }
         });
-        alert= alertDialogBuilder.create();
+        alert = alertDialogBuilder.create();
         alert.show();
 
 
         Log.e("Delete id:", id);
     }
 
-/*
-    @Override
-    protected void onRestart() {
-        super.onRestart();  // Always call the superclass method first
-        Bundle extras = getIntent().getExtras();
-        try {
-            new video_connect().execute().get();
-        }catch(Exception e){
-            Log.d("Exception",e.toString());
-        }
-        listViewLoaderTask = new ListViewLoaderTask();
-        jsonStr = "{ " +
-                " \"videoqueue\": " +responseStr + "} ";
-        try{
-            listViewLoaderTask.execute(jsonStr);
-        }
-        catch (Exception e){
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();  // Always call the superclass method first
+//        Bundle extras = getIntent().getExtras();
+//
+//        try {
+//            new video_connect().execute().get();
+//        } catch (Exception e) {
+//            Log.d("Exception", e.toString());
+//        }
+//        listViewLoaderTask = new ListViewLoaderTask();
+//        jsonStr = "{ " +
+//                " \"videoqueue\": " + responseStr + "} ";
+//        try {
+//            listViewLoaderTask.execute(jsonStr);
+//        } catch (Exception e) {
+//
+//        }
+//    }
 
-        }
-        // Activity being restarted from stopped state
-    }
     @Override
     protected void onResume() {
         super.onResume();  // Always call the superclass method first
@@ -471,25 +447,26 @@ public class QueueEdit extends ActionBarActivity {
 
         // Activity being restarted from stopped state
     }
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);//must store the new intent unless getIntent() will return the old one
-        Bundle extras = getIntent().getExtras();
-        try {
-            new video_connect().execute().get();
-        }catch(Exception e){
-            Log.d("Exception",e.toString());
-        }
-        listViewLoaderTask = new ListViewLoaderTask();
-        jsonStr = "{ " +
-                " \"videoqueue\": " +responseStr + "} ";
-        try{
-            listViewLoaderTask.execute(jsonStr);
-        }
-        catch (Exception e){
 
-        }
-    }
-*/
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        setIntent(intent);//must store the new intent unless getIntent() will return the old one
+//        Bundle extras = getIntent().getExtras();
+//
+//        try {
+//            new video_connect().execute().get();
+//        } catch (Exception e) {
+//            Log.d("Exception", e.toString());
+//        }
+//        listViewLoaderTask = new ListViewLoaderTask();
+//        jsonStr = "{ " +
+//                " \"videoqueue\": " + responseStr + "} ";
+//        try {
+//            listViewLoaderTask.execute(jsonStr);
+//        } catch (Exception e) {
+//
+//        }
+//
+//    }
 }

@@ -39,9 +39,6 @@ private String layout_selected;
 
         ActionBar actionBar = getSupportActionBar();
        globalVariable= (GlobalClass) getApplicationContext();
-
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));

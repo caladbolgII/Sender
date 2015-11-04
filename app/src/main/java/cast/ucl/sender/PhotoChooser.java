@@ -3,8 +3,15 @@ package cast.ucl.sender;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +36,7 @@ import java.util.List;
 /**
  * Created by Caladbolg on 04/10/2015.
  */
-public class PhotoChooser extends Activity {
+public class PhotoChooser extends AppCompatActivity {
     public ListViewLoaderTask listViewLoaderTask;
     public ListView fblist;
     String jsonStr = "";
@@ -42,6 +49,13 @@ public class PhotoChooser extends Activity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_fb_photopick);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Album List");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
         fblist = (ListView)findViewById(R.id.photo_grid);
         viewcontext = getApplicationContext();
         fetch2();

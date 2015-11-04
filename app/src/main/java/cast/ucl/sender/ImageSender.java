@@ -80,8 +80,6 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         TitleField = (EditText)findViewById(R.id.image_title);
         imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
@@ -154,7 +152,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         if(myTextField.getText().toString().length()==0) {
             Context context = getApplicationContext();
-            CharSequence text = "Invalid URL, please search again";
+            CharSequence text = "Invalid URL, please search again for an image file";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
@@ -162,7 +160,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         }
         else if(TitleField.getText().toString().length()==0) {
             Context context = getApplicationContext();
-            CharSequence text = "Invalid URL, please search again";
+            CharSequence text = "Please give a title to your posts";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);

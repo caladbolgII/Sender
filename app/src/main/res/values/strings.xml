@@ -10,7 +10,7 @@
     <string name="edit_message2">Deadline</string>
     <string name="edit_message3">Post your message here</string>
     <string name="button_send">send link</string>
-    <string name="search">Search Youtube for Videos to Cast</string>
+    <string name="search">Search Youtube</string>
     <string name="title_activity_dropbox">DROPBOX SELECTOR</string>
     <string name="title_activity_text">MESSAGE BOARD</string>
     <string name="title_activity_image">IMAGE</string>
@@ -31,7 +31,7 @@
     <string name="imagecastbutton">CAST IMAGE</string>
     <string name="videocastbutton">CAST VIDEO</string>
     <string name="selectdeadline">Play Until:</string>
-    <string name="config">Start configuring your display by selecting your Chromecast then choose a layout</string>
+    <string name="config">Setup your display by tapping the cast button and selecting your Chromecast</string>
     <string name="step2">After selecting a Chromecast, tap the button below to select a layout</string>
     <string name="app_name">Sender</string>
     <string name="facebook_app_id">954324571307004</string>

@@ -3,10 +3,17 @@ package cast.ucl.sender;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +42,7 @@ import java.util.List;
 /**
  * Created by Caladbolg on 05/10/2015.
  */
-public class AlbumViewer extends Activity {
+public class AlbumViewer extends AppCompatActivity {
     TextView albumtitle;
     String request;
     public ListViewLoaderTask listViewLoaderTask;
@@ -45,6 +52,7 @@ public class AlbumViewer extends Activity {
     FBImageQueueAdapter imagequeue;
     JSONObject reader;
     String jsonStr;
+    ActionBar actionBar;
     private ArrayList<FBImageListModel> fbimageList = new ArrayList<FBImageListModel>();
 
     @Override
@@ -53,13 +61,19 @@ public class AlbumViewer extends Activity {
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_album_view);
         albumviewer = this;
-        albumtitle = (TextView)findViewById(R.id.album_title);
         photogrid = (GridView)findViewById(R.id.photo_album);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         String title = intent.getStringExtra("title");
-        albumtitle.setText(title);
         request = "/"+id+"/"+"photos";
+        Spannable text = new SpannableString(title);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setTitle(text);
         res =getResources();
         fetch_album();
 

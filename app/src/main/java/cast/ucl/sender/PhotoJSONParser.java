@@ -80,7 +80,7 @@ public ArrayList<FBImageListModel> parse(JSONObject jObject){
                                 try {
                                 array = jsonObject.getJSONArray("images");
                                     //Log.v(-"response",array.toString());
-                                    jsonObject1 = array.getJSONObject(0);
+                                    jsonObject1 = array.getJSONObject(2);
                                     //Log.v("response",jsonObject1.toString());
                                     imgurl = jsonObject1.getString("source");
                                     //Log.v("response1",imgurl);

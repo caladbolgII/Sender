@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#212121">
+    android:background="#ff424242">
 
     <ImageView
         android:id="@+id/video_thumbnail"
@@ -22,7 +22,7 @@
         android:layout_marginTop="5dp"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:textColor="#dedede" />
+        android:textColor="#e9e9e9" />
 
     <TextView android:id="@+id/video_description"
         android:layout_width="wrap_content"
@@ -30,6 +30,6 @@
         android:layout_toRightOf="@+id/video_thumbnail"
         android:layout_below="@+id/video_title"
         android:textSize="15sp"
-        android:textColor="#dedede" />
+        android:textColor="#c6c6c6" />
 
 </RelativeLayout>

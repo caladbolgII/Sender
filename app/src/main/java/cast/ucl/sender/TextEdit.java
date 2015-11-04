@@ -66,8 +66,7 @@ public class TextEdit extends ActionBarActivity {
         TitleField = (EditText)findViewById(R.id.cast_text_title);
         idtext = (TextView)findViewById(R.id.textitemid);
         ActionBar actionBar = getSupportActionBar();
-        Drawable d=getResources().getDrawable(R.drawable.back);
-        actionBar.setHomeAsUpIndicator(d);
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
