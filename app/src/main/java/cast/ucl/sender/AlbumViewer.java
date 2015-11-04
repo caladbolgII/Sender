@@ -1,6 +1,7 @@
 package cast.ucl.sender;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -54,6 +55,7 @@ public class AlbumViewer extends AppCompatActivity {
     String jsonStr;
     ActionBar actionBar;
     private ArrayList<FBImageListModel> fbimageList = new ArrayList<FBImageListModel>();
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +77,17 @@ public class AlbumViewer extends AppCompatActivity {
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
         res =getResources();
-        fetch_album();
+        try {
+            new image_connect().execute().get();
+        } catch (Exception e) {
+            Log.d("Exception", e.toString());
+        }
 
 
 
     }
     public void fetch_album() {
+
         try {
             new GraphRequest(
 
@@ -121,6 +128,7 @@ public class AlbumViewer extends AppCompatActivity {
                                 listViewLoaderTask.execute().get();
                                 imagequeue = new FBImageQueueAdapter(albumviewer,fbimageList,res);
                                 photogrid.setAdapter(imagequeue);
+                                progressDialog.dismiss();
                             } catch (Exception e) {
 
                             }
@@ -174,6 +182,36 @@ public class AlbumViewer extends AppCompatActivity {
 
         }
 
+
+    }
+
+    private class image_connect extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(AlbumViewer.this, "Retrieving Facebook Images", "Please Wait ...");
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+        /**
+         * Doing the parsing of xml data in a non-ui thread
+         */
+        @Override
+        protected Void doInBackground(String... arg0) {
+            fetch_album();
+            return null;
+        }
 
     }
 }
