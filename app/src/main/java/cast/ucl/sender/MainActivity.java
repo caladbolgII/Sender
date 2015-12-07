@@ -55,13 +55,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     final Context context = this;
-    Context viewcontext;
     private static final int REQUEST_CODE = 1;
     GlobalClass globalVariable;
-   // private MediaRouter mMediaRouter;
-   // private MediaRouteSelector mMediaRouteSelector;
-   // private MediaRouter.Callback mMediaRouterCallback;
-  //  private CastDevice mSelectedDevice;
     private GoogleApiClient mApiClient;
     private Cast.Listener mCastListener;
     private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks;
@@ -179,18 +174,18 @@ public class MainActivity extends AppCompatActivity {
         //check network availability
 
         if(isNetworkAvailable()){
-
+            //proceed normally
         }
 
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-            alertDialog.setTitle("Error: No network connection... closing application....");
-            alertDialog.setMessage("Your device is not connected to the internet. Please connect to the EEEI TV network before restarting the application");
+            alertDialog.setTitle("Error: No network connection");
+            alertDialog.setMessage("Your device is not connected to the internet. Please connect to the EEEI-TV network before restarting the application");
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            System.exit(0);
+                            //System.exit(0);
                         }
                     });
             alertDialog.show();
@@ -205,6 +200,34 @@ public class MainActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public void post(View view) {
+        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+        String layouttemp = "";
+
+        if(globalVariable.getlayout() == "layout1") {
+            sendMessage("setLayout1");
+//            Toast.makeText(getApplicationContext(), globalVariable.getlayout(),
+//                    Toast.LENGTH_LONG).show();
+            go_back();
+        }
+        else if(globalVariable.getlayout() == "layout2") {
+            sendMessage("setLayout2");
+//            Toast.makeText(getApplicationContext(), globalVariable.getlayout(),
+//                    Toast.LENGTH_LONG).show();
+            go_back();
+        }
+        else if(globalVariable.getlayout() == "layout3") {
+            sendMessage("setLayout3");
+//            Toast.makeText(getApplicationContext(), globalVariable.getlayout(),
+//                    Toast.LENGTH_LONG).show();
+            go_back();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please select a layout before proceeding",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void layout_selector(View view){
         Intent intent = new Intent(view.getContext(), LayoutSelector.class);
         startActivity(intent);
@@ -216,6 +239,9 @@ public class MainActivity extends AppCompatActivity {
         globalVariable.setlayoutmsg("setLayout1");
         globalVariable.setlayout("layout1");
         layout.setBackgroundResource(R.drawable.screen);
+        layout1.setBackgroundResource(R.drawable.layout1_sel);
+        layout2.setBackgroundResource(R.drawable.layout2);
+        layout3.setBackgroundResource(R.drawable.layout3);
         layout.setText("");
 
     }
@@ -224,6 +250,10 @@ public class MainActivity extends AppCompatActivity {
         globalVariable.setlayoutmsg("setLayout2");
         globalVariable.setlayout("layout2");
         layout.setBackgroundResource(R.drawable.screen2);
+        layout1.setBackgroundResource(R.drawable.layout1);
+        layout2.setBackgroundResource(R.drawable.layout2_sel);
+        layout3.setBackgroundResource(R.drawable.layout3);
+
         layout.setText("");
 
     }
@@ -232,6 +262,9 @@ public class MainActivity extends AppCompatActivity {
         globalVariable.setlayoutmsg("setLayout3");
         globalVariable.setlayout("layout3");
         layout.setBackgroundResource(R.drawable.screen3);
+        layout1.setBackgroundResource(R.drawable.layout1);
+        layout2.setBackgroundResource(R.drawable.layout2);
+        layout3.setBackgroundResource(R.drawable.layout3_sel);
         layout.setText("");
 
     }
@@ -487,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (!result.isSuccess()) {
                                     Log.e(TAG, "Sending message failed");
                                 }
-                                else Toast.makeText(MainActivity.this,"Message Sent", Toast.LENGTH_SHORT).show();
+//                                else Toast.makeText(MainActivity.this,"Message Sent", Toast.LENGTH_SHORT).show();
                             }
                         });
             } catch (Exception e) {

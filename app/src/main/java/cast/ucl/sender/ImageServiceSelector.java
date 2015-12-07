@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -45,6 +46,29 @@ public class ImageServiceSelector extends AppCompatActivity {
         Spannable text = new SpannableString("Photo Services");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
+
+        TextView text1 =(TextView)findViewById(R.id.text_1);
+        text1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+
+        LinearLayout linear2 =(LinearLayout)findViewById(R.id.layout_1);
+        linear2.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
 
     }
 

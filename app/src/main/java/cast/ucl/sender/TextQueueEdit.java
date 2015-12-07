@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -69,7 +71,7 @@ public class TextQueueEdit extends ActionBarActivity{
     List<HashMap<String, String>> buffer = null;
     AlertDialog alert;
     Context viewcontext;
-
+    AnimationDrawable d;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -84,18 +86,7 @@ public class TextQueueEdit extends ActionBarActivity{
 
         text_queue = this;
 
-//        Button addqueue = ( Button) customActionBarView
-//                .findViewById(R.id.add);
-//        addqueue.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-//                Intent intent = new Intent(view.getContext(), text.class);
-//                startActivity(intent);
-//
-//            }
-//        });
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
         ActionBar actionBar = getSupportActionBar();
 
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
@@ -119,10 +110,11 @@ public class TextQueueEdit extends ActionBarActivity{
         TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
         title.setText(text);
         Button refreshqueue = (Button)customActionBarView.findViewById(R.id.edit);
+        d=(AnimationDrawable)refreshqueue.getCompoundDrawables()[0];
         refreshqueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                d.start();
                 try {
                     new text_connect().execute().get();
                 } catch (Exception e) {
@@ -136,6 +128,30 @@ public class TextQueueEdit extends ActionBarActivity{
                 listViewLoaderTask = new ListViewLoaderTask();
 
                 listViewLoaderTask.execute(jsonStr);
+                d.stop();
+            }
+        });
+
+        LinearLayout linear =(LinearLayout)customActionBarView.findViewById(R.id.action_queue);
+        linear.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+
+        TextView actiontitle = (TextView)customActionBarView.findViewById(R.id.action_title);
+        actiontitle.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
             }
         });
 

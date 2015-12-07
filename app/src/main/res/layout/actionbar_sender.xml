@@ -18,7 +18,8 @@
         android:singleLine="true"
         android:layout_weight="0.9"
         android:textAlignment="textStart"
-        android:background="#2196f3" />
+        android:background="#2196f3"
+        android:layout_marginRight="50dp" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="0dp"

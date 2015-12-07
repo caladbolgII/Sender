@@ -111,11 +111,10 @@ public class QueueEdit extends ActionBarActivity {
         editqueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                d.start();
                 int i = globalVariable.getclick();
                 i++;
                 globalVariable.setclick(i);
-                d.start();
                 try {
                     new video_connect().execute().get();
                 } catch (Exception e) {

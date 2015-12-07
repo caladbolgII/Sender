@@ -8,7 +8,7 @@
     <string name="BBCAST">BBCAST</string>
     <string name="edit_message1">Enter video link</string>
     <string name="edit_message2">Deadline</string>
-    <string name="edit_message3">Post your message here</string>
+    <string name="edit_message3">Type your message here</string>
     <string name="button_send">send link</string>
     <string name="search">Search Youtube</string>
     <string name="title_activity_dropbox">DROPBOX SELECTOR</string>

@@ -46,12 +46,15 @@ public class Selection extends ActionBarActivity {
         globalVariable = (GlobalClass) getApplicationContext();
         VideoView left_pane = new VideoView(this);
         VideoView left_pane_top = new  VideoView(this);
+        VideoView right_pane_top2 = new  VideoView(this);
         TextView left_pane_bottom = new TextView(this);
          ChatView right_pane = new ChatView(this);
         ImageView right_pane_top = new ImageView(this);
+        ImageView left_pane_top2 = new ImageView(this);
+        ImageView left_pane2 = new ImageView(this);
         TwitterView right_pane_bottom = new TwitterView(this);
         VideoView whole_pane = new VideoView(this);
-
+        ImageView whole_pane2 = new ImageView(this);
 
 
         layout_selected = globalVariable.getlayout();
@@ -74,19 +77,6 @@ public class Selection extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-//                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
-//                        alphaAnimation.setDuration(500);
-//                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-//                        alphaAnimation.setRepeatCount(1);
-//                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
-//                        view.startAnimation(alphaAnimation);
-//                        long li = 500;
-//                        try{
-//                        Thread.sleep(li);
-//                        }
-//                        catch (Exception e){
-//
-//                        }
                         open_video(view);
                     }
                 });
@@ -94,12 +84,6 @@ public class Selection extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-//                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
-//                        alphaAnimation.setDuration(500);
-//                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-//                        alphaAnimation.setRepeatCount(1);
-//                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
-//                        view.startAnimation(alphaAnimation);
                         open_image(view);
                     }
                 });
@@ -107,12 +91,6 @@ public class Selection extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-//                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
-//                        alphaAnimation.setDuration(500);
-//                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-//                        alphaAnimation.setRepeatCount(1);
-//                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
-//                        view.startAnimation(alphaAnimation);
                         open_sender(view);
                     }
                 });
@@ -120,12 +98,6 @@ public class Selection extends ActionBarActivity {
                     @Override
                     public void onClick(View view) {
                         view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-//                        AlphaAnimation alphaAnimation = new AlphaAnimation(view.getAlpha(), 0);
-//                        alphaAnimation.setDuration(500);
-//                        alphaAnimation.setRepeatMode(Animation.REVERSE);
-//                        alphaAnimation.setRepeatCount(1);
-//                        alphaAnimation.setInterpolator(new DecelerateInterpolator());
-//                        view.startAnimation(alphaAnimation);
                         open_twitter(view);
                     }
                 });
@@ -142,25 +114,43 @@ public class Selection extends ActionBarActivity {
 
                 break;
             case "layout2":
-                left_pane.setOnClickListener(new View.OnClickListener() {
+                left_pane_top2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                        open_image(view);
+                    }
+                });
+                right_pane_top2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
                         open_video(view);
                     }
                 });
-                right_pane.setOnClickListener(new View.OnClickListener() {
+                left_pane_bottom.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                        open_chat(view);
+                        open_sender(view);
                     }
                 });
-                left_pane.setLayoutParams(layoutParams);
-                right_pane.setLayoutParams(layoutParams);
+                right_pane_bottom.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                        open_twitter(view);
+                    }
+                });
+                left_pane_top2.setLayoutParams(layoutParams);
+                left_pane_bottom.setLayoutParams(layoutParams);
+                right_pane_top2.setLayoutParams(layoutParams);
+                right_pane_bottom.setLayoutParams(layoutParams);
 
-                right.addView(right_pane);
-                left.addView(left_pane);
+                right_top.addView(right_pane_top2);
+                right_bottom.addView(right_pane_bottom);
+                left_top.addView(left_pane_top2);
+                left_bottom.addView(left_pane_bottom);
                 break;
             case"layout3":
                 whole_pane.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +161,16 @@ public class Selection extends ActionBarActivity {
                     }
                 });
                 whole.addView(whole_pane);
+                break;
+            case"layout4":
+                whole_pane2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                        open_image(view);
+                    }
+                });
+                whole.addView(whole_pane2);
                 break;
         }
 
@@ -183,17 +183,7 @@ public class Selection extends ActionBarActivity {
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
         actionBar.setDisplayShowTitleEnabled(true);
-//        View view = getActionBarView();
-//        view.setOnClickListener(new View.OnClickListener()
-//        {
-//
-//            @Override
-//            public void onClick(View v) {
-//                int i = globalVariable.getclick();
-//                i++;
-//                globalVariable.setclick(i);
-//            }
-//        });
+
 
 
     }
@@ -237,17 +227,21 @@ public class Selection extends ActionBarActivity {
             paint.setStrokeWidth(0);
             paint.setColor(Color.parseColor("#803533"));//556773
             if(globalVariable.getlayout()=="layout3")canvas.drawRect(15, 15, x - 15, y - 15, paint);
+            else if(globalVariable.getlayout()=="layout2")canvas.drawRect(15, 15, x - 15, y - 15, paint);
             else  canvas.drawRect(15, 15, x, y - 15, paint);
             p=new Paint();
             Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.hq2);
+            Bitmap c= BitmapFactory.decodeResource(getResources(), R.drawable.hq3);
             Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.video_file1);
             Bitmap n = b.createScaledBitmap(b, x, 82 * y / 100, true);
             Bitmap o = b.createScaledBitmap(b,x-25,82*y/100,true);
+
+            Bitmap r = c.createScaledBitmap(c,c.getWidth()+5,80*y/100,true);
             p.setColor(Color.RED);
             int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
             int cy = (mHeight - b.getHeight()) >> 1;
-            int cxn = (mWidth - n.getWidth()) >> 1; // same as (...) / 2
-            int cyn = (mHeight - n.getHeight()) >> 1;
+            int cxc = (mWidth - c.getWidth()) >> 1; // same as (...) / 2
+            int cyc = (mHeight - c.getHeight()) >> 1;
 
             int cxe = (mWidth - e.getWidth()) >> 1; // same as (...) / 2
             int cye = (mHeight - e.getHeight()) >> 1;
@@ -255,8 +249,10 @@ public class Selection extends ActionBarActivity {
                 canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
             }
             if(globalVariable.getlayout()=="layout1") canvas.drawBitmap(n,cx, cy, p);
-            else if(globalVariable.getlayout()=="layout2")canvas.drawBitmap(n,cx, cy-62, p);
+            //canvas.drawBitmap(r, cx-2, cy-42, p);
+            else if(globalVariable.getlayout()=="layout2")canvas.drawBitmap(r, cxc-2, cyc-42, p);
             else if(globalVariable.getlayout()=="layout3")canvas.drawBitmap(o,cx/2-82, cy-62, p);
+            else if(globalVariable.getlayout()=="layout4")canvas.drawBitmap(o,cx/2-82, cy-62, p);
 
             paint.setColor(Color.parseColor("#e9e9e9"));
             paint.setTextSize(37);
@@ -297,23 +293,28 @@ public class Selection extends ActionBarActivity {
             canvas.drawRect(0, 0, x, y, paint);
             paint.setStrokeWidth(0);
             paint.setColor(Color.parseColor("#33803b"));//556773
-            canvas.drawRect(15, 15, x - 15, y - 15, paint);
+            if(globalVariable.getlayout() == "layout2")canvas.drawRect(15, 15, x, y - 15, paint);
+            else  canvas.drawRect(15, 15, x-15, y - 15, paint);
             p=new Paint();
             Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.photography1);
-
+            Bitmap c= BitmapFactory.decodeResource(getResources(), R.drawable.photography2);
+            Bitmap n = c.createScaledBitmap(b, x, 82 * y / 100, true);
             Bitmap e= BitmapFactory.decodeResource(getResources(), R.drawable.pic1);
             Bitmap r = b.createScaledBitmap(b,b.getWidth()+5,80*y/100,true);
             p.setColor(Color.RED);
             int cx = (mWidth - b.getWidth()) >> 1; // same as (...) / 2
             int cy = (mHeight - b.getHeight()) >> 1;
-            int cxn = (mWidth - r.getWidth()) >> 1; // same as (...) / 2
-            int cyn = (mHeight - r.getHeight()) >> 1;
+            int cxc = (mWidth - c.getWidth()) >> 1; // same as (...) / 2
+            int cyc = (mHeight - c.getHeight()) >> 1;
             if (mAngle > 0) {
                 canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
             }
             //if(globalVariable.getlayout()=="layout1")
-            canvas.drawBitmap(r, cx-2, cy-42, p);
-          //  else canvas.drawBitmap(r,cx, cy, p);
+            //canvas.drawBitmap(r, cx-2, cy-42, p);canvas.drawBitmap(n,cx, cy, p)
+            if(globalVariable.getlayout()=="layout1") canvas.drawBitmap(r, cx-2, cy-42, p);
+            else if(globalVariable.getlayout()=="layout2")canvas.drawBitmap(n,cxc, cyc, p);
+            else if(globalVariable.getlayout()=="layout3")canvas.drawBitmap(r, cx-2, cy-42, p);
+            else if(globalVariable.getlayout()=="layout4")canvas.drawBitmap(r, cx-2, cy-42, p);
 
 
 
@@ -373,9 +374,9 @@ public class Selection extends ActionBarActivity {
             if (mAngle > 0) {
                 canvas.rotate(mAngle, mWidth >> 1, mHeight >> 1);
             }
-            if(globalVariable.getlayout()=="layout1")
+            //if(globalVariable.getlayout()=="layout1")
            canvas.drawBitmap(b,x-65, y-e.getHeight()-26,p);
-            else canvas.drawBitmap(n,cxn, cyn, p);
+           // else canvas.drawBitmap(n,cxn, cyn, p);
 
 
             paint.setColor(Color.parseColor("#e9e9e9"));

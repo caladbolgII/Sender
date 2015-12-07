@@ -6,11 +6,19 @@
     style="@style/bg"
     android:background="#383838"
     android:id="@+id/layout_1">
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:id="@+id/thumb"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="0.15"
         android:id="@+id/layout_2">
     <TextView
         android:layout_width="wrap_content"
@@ -41,10 +49,14 @@
             android:textColor="#e9e9e9" />
 
 </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:id="@+id/layout_3">
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/selectdeadline"
         android:id="@+id/textView6"
         android:textColor="#0fa9f9"
@@ -52,45 +64,28 @@
         android:textSize="25dp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_weight="0.15"
         android:layout_gravity="center_vertical|left"
         android:layout_marginLeft="5dp" />
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.7"
-        android:id="@+id/layout_3">
-        <LinearLayout
-            android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="    Month,  Day  Year, Hour:Minutes"
+            android:id="@+id/expiry"
+            android:textColor="#e9e9e9"
+            android:textSize="25sp"
+            android:layout_gravity="center_vertical|left"
+            android:onClick="setdate" />
+
+        <ImageButton
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:layout_weight="0.7"
-            android:layout_gravity="center_vertical">
+            android:id="@+id/button4"
+            android:background="@drawable/calendar"
+            android:layout_gravity="center_vertical|right"
+            android:onClick="setdate"
+            android:layout_marginRight="10dp" />
 
-
-    <DatePicker
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:id="@+id/deadline_video"
-        android:datePickerMode="spinner"
-        android:clickable="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:background="#383838"
-        android:layout_weight="0.5"
-        android:calendarViewShown="false" />
-
-            <TimePicker
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:id="@+id/vidtimePicker"
-                android:timePickerMode="spinner"
-                android:layout_gravity="center_vertical"
-                android:background="#383838"
-                android:layout_weight="0.5" />
-
-
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

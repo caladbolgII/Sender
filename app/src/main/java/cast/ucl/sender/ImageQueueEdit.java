@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,13 +63,15 @@ public class ImageQueueEdit extends ActionBarActivity{
     ProgressDialog progressDialog;
     String id;
     final Context context = this;
+    AnimationDrawable d;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_imgcast);
-
+        final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
         //setting up the actionbar
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
@@ -88,23 +92,14 @@ public class ImageQueueEdit extends ActionBarActivity{
 
         TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
         title.setText(text);
-//        Button addqueue = ( Button) customActionBarView
-//                .findViewById(R.id.add);
-//        addqueue.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-//                Intent intent = new Intent(view.getContext(), ImageSender.class);
-//                startActivity(intent);
-//            }
-//        });
 
         Button editqueue = ( Button) customActionBarView
                 .findViewById(R.id.edit);
+        d=(AnimationDrawable)editqueue.getCompoundDrawables()[0];
         editqueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                d.start();
 
                 try {
                     new image_connect().execute().get();
@@ -125,12 +120,37 @@ public class ImageQueueEdit extends ActionBarActivity{
                 imagequeue = new ImageQueueAdapter(image_queue,imageList,res);
                 if (imageList.isEmpty()) isEmpty();
                 else imagelist.setAdapter(imagequeue);
+                d.stop();
             }
         });
         responseStr = "";
         res =getResources();
         image_queue = this;
         imagelist = (ListView)findViewById(R.id.videolist);
+
+        LinearLayout linear =(LinearLayout)customActionBarView.findViewById(R.id.action_queue);
+        linear.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
+
+        TextView actiontitle = (TextView)customActionBarView.findViewById(R.id.action_title);
+        actiontitle.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
 
 
         try {

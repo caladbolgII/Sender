@@ -1,5 +1,7 @@
 package cast.ucl.sender;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,10 +24,13 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -40,22 +45,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by LENOVO on 4/23/2015.
  */
 public class VideoSender extends ActionBarActivity {
     public TextView myTextField;
-    public DatePicker textdeadline;
+    public TextView exp;
+   // public DatePicker textdeadline;
     public Button myButton;
     public Button searchButton;
     public String deaddate;
     public String command;
-    public TimePicker deadtime;
+    //public TimePicker deadtime;
     String responseStr;
     String url;
+    String yy,mm,dd,hh,mi,MM;
     GlobalClass globalVariable;
-
+    ImageView thumb;
+    String timeString="";
+    Context context ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +75,11 @@ public class VideoSender extends ActionBarActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_sender);
         myTextField = (TextView) findViewById(R.id.video_url);
-        textdeadline = (DatePicker) findViewById(R.id.deadline_video);
-        deadtime = (TimePicker)findViewById(R.id.vidtimePicker);
-        deadtime.setIs24HourView(Boolean.TRUE);
+        thumb = (ImageView)findViewById(R.id.thumb);
+        exp = (TextView) findViewById(R.id.expiry);
+       // textdeadline = (DatePicker) findViewById(R.id.deadline_video);
+        //deadtime = (TimePicker)findViewById(R.id.vidtimePicker);
+        //deadtime.setIs24HourView(Boolean.TRUE);
         ActionBar actionBar = getSupportActionBar();
         LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
                 .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -73,10 +87,9 @@ public class VideoSender extends ActionBarActivity {
         responseStr = "";
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME);
         globalVariable= (GlobalClass) getApplicationContext();
-
-
-
-
+        context = getApplicationContext();
+        mm = "";
+        mi = "";
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
@@ -95,9 +108,18 @@ public class VideoSender extends ActionBarActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
-                attempt_add_video(view);
+               // view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                if(mm.length() <1 || mi.length()<1){
 
+                    CharSequence text = "Please set date and time";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                else {
+                    attempt_add_video(view);
+                }
             }
         });
 
@@ -161,21 +183,62 @@ public class VideoSender extends ActionBarActivity {
 
     }
 
+    public void setdate(View view){
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        // the callback received when the user "sets" the Date in the DatePickerDialog
+           @Override
+            public void onDateSet(DatePicker view, int yearSelected, int monthOfYear, int dayOfMonth) {
+               Calendar c = Calendar.getInstance();
+               int hour = c.get(Calendar.HOUR_OF_DAY);
+               int minutes = c.get(Calendar.MINUTE);
+
+               if (hour == 0) {
+                   timeString =  "AM";
+               } else if (hour < 12) {
+                   timeString =  "AM";
+               } else if (hour == 12) {
+                   timeString = "PM";
+               } else {
+                   timeString = "PM";
+               }
+
+               c.get(Calendar.AM_PM);
+               MM = c.getDisplayName(c.MONTH, Calendar.LONG, Locale.US);
+               mm = String.format("%02d", monthOfYear+1);
+               dd = String.format("%02d", dayOfMonth);
+               yy = Integer.toString(yearSelected);
+               final TimePickerDialog timePickerDialog = new TimePickerDialog(VideoSender.this, new TimePickerDialog.OnTimeSetListener() {
+
+                   @Override
+                   public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
+                       hh = Integer.toString(hours);
+                       mi = Integer.toString(minutes);
+                       Toast.makeText(getApplicationContext(), "Time selected is:  "+hh+":"+mi, Toast.LENGTH_SHORT).show();
+                       exp.setText("  "+MM + " "+ dd+ ","+ " " + yy+" "+hh+":"+mi);
+                   }
+
+                 }, hour, minutes, true);
+                timePickerDialog.setTitle("Set Video Expiry Time");
+                timePickerDialog.show();
+
+                int monthSelected = monthOfYear;
+                int daySelected = dayOfMonth;
+                Toast.makeText(getApplicationContext(), "Date selected is:  "+daySelected+"-"+monthSelected+"-"+yearSelected, Toast.LENGTH_SHORT).show();
+            }
+        },mYear,mMonth,mDay);
+        datePickerDialog.setTitle("Set Video Expiry Date");
+        datePickerDialog.show();
+
+
+    }
 
     public void attempt_add_video(View view){
-        String month = "";
-        String year = "";
-        String day = "";
-        String hour = "";
-        String minutes = "";
-        month = String.format("%02d",textdeadline.getMonth()+1);
-        Log.e("month",Integer.toString(textdeadline.getMonth()));
+        deaddate = mm + " "+ dd+ " " + yy+ " "+hh+":"+mi;
 
-        day = String.format("%02d", textdeadline.getDayOfMonth());
-        year = Integer.toString(textdeadline.getYear());
-        hour = Integer.toString(deadtime.getCurrentHour());
-        minutes = Integer.toString(deadtime.getCurrentMinute());
-        deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
         command = Constants.action_add_video;
         if(myTextField.getText().toString().length()==0) {
             Context context = getApplicationContext();
@@ -185,13 +248,14 @@ public class VideoSender extends ActionBarActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
+
         else{
             try {
                 new Connection().execute();
             } catch (Exception e) {
                 Log.d("JSON Exception1", e.toString());
             }
-
+//misclick
             final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             globalVariable.setvideoresponse(responseStr);
             Context context = getApplicationContext();
@@ -279,7 +343,11 @@ public class VideoSender extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
+
             url = extras.getString("video");
+            String img;
+            img = "http://img.youtube.com/vi/"+ url+ "/0.jpg";
+            Picasso.with(getApplicationContext()).load(img).resize(400,200).into(thumb);
         }
     }
     @Override
@@ -289,6 +357,9 @@ public class VideoSender extends ActionBarActivity {
         if (extras != null) {
             myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
             url = extras.getString("video");
+            String img;
+            img = "http://img.youtube.com/vi/"+ url+ "/0.jpg";
+            Picasso.with(getApplicationContext()).load(img).resize(400,200).into(thumb);
 
         }
         // Activity being restarted from stopped state
@@ -300,6 +371,9 @@ public class VideoSender extends ActionBarActivity {
         if (extras != null) {
             myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
             url = extras.getString("video");
+            String img;
+            img = "http://img.youtube.com/vi/"+ url+ "/0.jpg";
+            Picasso.with(getApplicationContext()).load(img).resize(400,200).into(thumb);
 
         }
         // Activity being restarted from stopped state
@@ -311,6 +385,9 @@ public class VideoSender extends ActionBarActivity {
         if (extras != null) {
             myTextField.setText("www.youtube.com/watch?v="+extras.getString("video"));
             url = extras.getString("video");
+            String img;
+            img = "http://img.youtube.com/vi/"+ url+ "/0.jpg";
+            Picasso.with(getApplicationContext()).load(img).resize(400,200).into(thumb);
 
         }
     }

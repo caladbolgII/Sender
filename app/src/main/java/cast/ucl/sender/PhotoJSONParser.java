@@ -79,8 +79,8 @@ public ArrayList<FBImageListModel> parse(JSONObject jObject){
                                 jsonObject = response.getJSONObject();
                                 try {
                                 array = jsonObject.getJSONArray("images");
-                                    //Log.v(-"response",array.toString());
-                                    jsonObject1 = array.getJSONObject(2);
+                                    //set image size
+                                    jsonObject1 = array.getJSONObject(0);
                                     //Log.v("response",jsonObject1.toString());
                                     imgurl = jsonObject1.getString("source");
                                     //Log.v("response1",imgurl);

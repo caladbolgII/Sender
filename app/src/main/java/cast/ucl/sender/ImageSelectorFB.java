@@ -48,7 +48,7 @@ public class ImageSelectorFB extends AppCompatActivity {
     private ProfilePictureView profilePictureView;
     private TextView json;
     public ListView fblist;
-
+   GlobalClass globalVariable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,8 @@ public class ImageSelectorFB extends AppCompatActivity {
         Spannable text = new SpannableString("Facebook Login");
         text.setSpan(new ForegroundColorSpan(Color.parseColor("#e9e9e9")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
-        json = (TextView) findViewById(R.id.textView);
+        globalVariable= (GlobalClass) getApplicationContext();
+        //json = (TextView) findViewById(R.id.textView);
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -138,6 +139,12 @@ public class ImageSelectorFB extends AppCompatActivity {
             textViewName.setText("not login yet");
             loginButton.setText("Login");
         }
+    }
+
+    public void onmisClick(View v) {
+        int i = globalVariable.getclick();
+        i++;
+        globalVariable.setclick(i);
     }
 
     public void gotoalbum() {

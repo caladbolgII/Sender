@@ -1,5 +1,7 @@
 package cast.ucl.sender;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,15 +15,20 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -38,6 +45,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class text extends ActionBarActivity {
@@ -50,7 +59,11 @@ public class text extends ActionBarActivity {
     public String command;
     public TimePicker deadtime;
     public Spinner spinner;
+    String timeString="";
+    String yy,mm,dd,hh,mi,MM;
     public String type = "";
+    GlobalClass globalVariable;
+    public TextView exp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,66 +72,130 @@ public class text extends ActionBarActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_text);
         myTextField = (EditText) findViewById(R.id.text_message);
-        textdeadline = (DatePicker) findViewById(R.id.deadline_text);
         TitleField = (EditText)findViewById(R.id.cast_text_title);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(R.layout.actionbar_sender, null);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME);
+        exp = (TextView) findViewById(R.id.expiry_text);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff161616));
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
         Spannable text = new SpannableString("Message Sender");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#2196f3")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         actionBar.setTitle(text);
+        mm = "";
+        mi = "";
+        actionBar.setCustomView(customActionBarView,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setText(text);
 
-        deadtime = (TimePicker)findViewById(R.id.txttimePicker);
-        deadtime.setIs24HourView(Boolean.TRUE);
+        Button send = (Button) customActionBarView
+                .findViewById(R.id.next);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                if(mm.length() <1 || mi.length()<1){
+
+                    CharSequence text = "Please set date and time";
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                else {
+                    attempt_add_text(view);
+                }
+
+
+            }
+        });
+
+
+
+        globalVariable= (GlobalClass) getApplicationContext();
         spinner = (Spinner) findViewById(R.id.txtspinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+        spinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        spinner.setSelection(4);
+
+        LinearLayout linear1 = (LinearLayout)findViewById(R.id.linear);
+        linear1.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                int i = globalVariable.getclick();
+                i++;
+                globalVariable.setclick(i);
+            }
+        });
     }
 
+    public void setdate(View view){
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            // the callback received when the user "sets" the Date in the DatePickerDialog
+            @Override
+            public void onDateSet(DatePicker view, int yearSelected, int monthOfYear, int dayOfMonth) {
+                Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minutes = c.get(Calendar.MINUTE);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_text, menu);
-        return true;
-    }
+                if (hour == 0) {
+                    timeString =  "AM";
+                } else if (hour < 12) {
+                    timeString =  "AM";
+                } else if (hour == 12) {
+                    timeString = "PM";
+                } else {
+                    timeString = "PM";
+                }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+                c.get(Calendar.AM_PM);
+                MM = c.getDisplayName(c.MONTH, Calendar.LONG, Locale.US);
+                mm = String.format("%02d", monthOfYear+1);
+                dd = String.format("%02d", dayOfMonth);
+                yy = Integer.toString(yearSelected);
+                final TimePickerDialog timePickerDialog = new TimePickerDialog(text.this, new TimePickerDialog.OnTimeSetListener() {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
+                        hh = Integer.toString(hours);
+                        mi = Integer.toString(minutes);
+                        Toast.makeText(getApplicationContext(), "Time selected is:  "+hh+":"+mi, Toast.LENGTH_SHORT).show();
+                        exp.setText("  " + MM + " " + dd+ ","+ " " + yy+" "+hh+":"+mi);
+                    }
 
-        return super.onOptionsItemSelected(item);
+                }, hour, minutes, true);
+                timePickerDialog.setTitle("Set Message Expiry Time");
+                timePickerDialog.show();
+
+                int monthSelected = monthOfYear;
+                int daySelected = dayOfMonth;
+                Toast.makeText(getApplicationContext(), "Date selected is:  "+daySelected+"-"+monthSelected+"-"+yearSelected, Toast.LENGTH_SHORT).show();
+            }
+        },mYear,mMonth,mDay);
+        datePickerDialog.setTitle("Set Message Expiry Date");
+        datePickerDialog.show();
+
+
     }
 
 
     public void attempt_add_text(View view){
-
-        String month = "";
-        String year = "";
-        String day = "";
-        String hour = "";
-        String minutes = "";
-        month = String.format("%02d",textdeadline.getMonth()+1);
-        // Log.e("month",Integer.toString(imagedeadline.getMonth()));
-        command = "add";
-        day = String.format("%02d", textdeadline.getDayOfMonth());
-        year = Integer.toString(textdeadline.getYear());
-        hour = Integer.toString(deadtime.getCurrentHour());
-        minutes = Integer.toString(deadtime.getCurrentMinute());
-        type = String.valueOf(spinner.getSelectedItem());
-        deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
+        deaddate = mm + " "+ dd+ " " + yy+ " "+hh+":"+mi;
         command = Constants.action_add_text;
         if(myTextField.getText().toString().length()==0) {
             Context context = getApplicationContext();
@@ -142,14 +219,21 @@ public class text extends ActionBarActivity {
             } catch (Exception e) {
                 Log.d("JSON Exception1", e.toString());
             }
-            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
+
             globalVariable.settextresponse(responseStr);
             Context context = getApplicationContext();
-            CharSequence text = "Message has been added to Queue";
+//            CharSequence text = "Message has been added to Queue";
+//            int duration = Toast.LENGTH_SHORT;
+//
+//            Toast toast = Toast.makeText(context, text, duration);
+//            toast.show();
+            int click = globalVariable.getclick();
+            CharSequence text = "Message has been added to queue," + "There have been: "+click+" Misclicks";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            globalVariable.setclick(0);
             go_back();
         }
     }

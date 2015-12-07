@@ -21,7 +21,8 @@
         android:layout_width="450dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="fill">
+        android:gravity="fill"
+        android:layout_marginLeft="10dp">
         <!-- Name Label -->
 
 
@@ -48,7 +49,7 @@
             android:visibility="invisible" />
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:text="Title: "
             android:id="@+id/img_title"
             android:paddingBottom="2dip"
@@ -56,13 +57,14 @@
             android:gravity="fill"
             android:lines="2"
             android:textSize="15sp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
         <!-- Mobile number label -->
 
         <TextView
             android:id="@+id/item_id"
             android:layout_width="fill_parent"
-            android:layout_height="20dp"
+            android:layout_height="5dp"
             android:paddingBottom="2dip"
             android:paddingTop="6dip"
             android:textColor="#43bd00"
@@ -76,9 +78,9 @@
         <TextView
             android:id="@+id/item_timeout"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:gravity="left|fill"
-            android:text="Deadline: "
+            android:text="Show image until: "
             android:textColor="#c9c9c9"
             android:textStyle="bold"
             android:textSize="15sp"

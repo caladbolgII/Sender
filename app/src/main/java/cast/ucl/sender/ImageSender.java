@@ -4,6 +4,8 @@ package cast.ucl.sender;
  * Created by LENOVO on 2/20/2015.
  */
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,14 +22,18 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -38,6 +44,7 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.TokenPair;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -48,12 +55,14 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class ImageSender extends ActionBarActivity implements View.OnClickListener {
 // variable declarations
-    public TextView myTextField;
+   // public TextView myTextField;
     public EditText TitleField;
     public DatePicker imagedeadline;
     private static final int TAKE_PHOTO = 1;
@@ -67,40 +76,73 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
     public TimePicker deadtime;
     public  Spinner spinner;
     public String type = "";
+    public ImageView imgthumb;
+    String url;
+    String yy,mm,dd,hh,mi,MM;
+    GlobalClass globalVariable;
+    String timeString="";
+    public TextView exp;
+
     @Override
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_image);
-        myTextField = (TextView) findViewById(R.id.imagelink);
+        //myTextField = (TextView) findViewById(R.id.imagelink);
         TitleField = (EditText)findViewById(R.id.image_title);
-        imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
+        imgthumb = (ImageView)findViewById(R.id.imgthumb);
+        //imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
+                .getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(R.layout.actionbar_sender, null);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_HOME);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(0xff262626));
-        Spannable text = new SpannableString("Cast Image");
-        text.setSpan(new ForegroundColorSpan(Color.parseColor("#3498db")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        actionBar.setBackgroundDrawable(new ColorDrawable(0xff2196f3));
+        Spannable text = new SpannableString("Message Sender");
+        text.setSpan(new ForegroundColorSpan(Color.parseColor("#2196f3")), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mm = "";
+        mi = "";
         actionBar.setTitle(text);
+        actionBar.setCustomView(customActionBarView,
+                new ActionBar.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        TextView title = (TextView)customActionBarView.findViewById(R.id.action_title);
+        title.setText(text);
 
+        Button send = (Button) customActionBarView
+                .findViewById(R.id.next);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.startAnimation(AnimationUtils.loadAnimation(view.getContext(), R.anim.button_click));
+                if(mm.length() <1 || mi.length()<1){
+
+                    CharSequence text = "Please set date and time";
+                    int duration = Toast.LENGTH_SHORT;
+                    Context context = getApplicationContext();
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                else {
+                attemptSend(view);
+                }
+            }
+        });
+        exp = (TextView) findViewById(R.id.expiry_image);
         AndroidAuthSession session = buildSession();
         mApi = new DropboxAPI<AndroidAuthSession>(session);
 
         // checkAppKeySetup();
         setLoggedIn(false);
-        btnDownload = (Button) findViewById(R.id.button_search);
 
-
-//        btnUpload.setOnClickListener(this);
-        btnDownload.setOnClickListener(this);
-        imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
-        deadtime = (TimePicker)findViewById(R.id.imgtimePicker);
-        deadtime.setIs24HourView(Boolean.TRUE);
+        //imagedeadline = (DatePicker) findViewById(R.id.deadline_image);
+        //deadtime = (TimePicker)findViewById(R.id.imgtimePicker);
+        //deadtime.setIs24HourView(Boolean.TRUE);
         spinner = (Spinner) findViewById(R.id.imgspinner);
+
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.classification_array, R.layout.spinner_item);
@@ -108,59 +150,71 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+        spinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        spinner.setSelection(4);
+    }
+
+    public void setdate(View view){
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            // the callback received when the user "sets" the Date in the DatePickerDialog
+            @Override
+            public void onDateSet(DatePicker view, int yearSelected, int monthOfYear, int dayOfMonth) {
+                Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minutes = c.get(Calendar.MINUTE);
+
+                if (hour == 0) {
+                    timeString =  "AM";
+                } else if (hour < 12) {
+                    timeString =  "AM";
+                } else if (hour == 12) {
+                    timeString = "PM";
+                } else {
+                    timeString = "PM";
+                }
+
+                c.get(Calendar.AM_PM);
+                MM = c.getDisplayName(c.MONTH, Calendar.LONG, Locale.US);
+                mm = String.format("%02d", monthOfYear+1);
+                dd = String.format("%02d", dayOfMonth);
+                yy = Integer.toString(yearSelected);
+                final TimePickerDialog timePickerDialog = new TimePickerDialog(ImageSender.this, new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
+                        hh = Integer.toString(hours);
+                        mi = Integer.toString(minutes);
+                        Toast.makeText(getApplicationContext(), "Time selected is:  "+hh+":"+mi, Toast.LENGTH_SHORT).show();
+                        exp.setText("  "+MM + " "+ dd+ ","+ " " + yy+" "+hh+":"+mi);
+                    }
+
+                }, hour, minutes, true);
+                timePickerDialog.setTitle("Set Image Expiry Time");
+                timePickerDialog.show();
+
+                int monthSelected = monthOfYear;
+                int daySelected = dayOfMonth;
+                Toast.makeText(getApplicationContext(), "Date selected is:  "+daySelected+"-"+monthSelected+"-"+yearSelected, Toast.LENGTH_SHORT).show();
+            }
+        },mYear,mMonth,mDay);
+        datePickerDialog.setTitle("Set Image Expiry Date");
+        datePickerDialog.show();
+
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_text, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void attemptSend(View view){
 
-        String month = "";
-        String year = "";
-        String day = "";
-        String hour = "";
-        String minutes = "";
-        month = String.format("%02d",imagedeadline.getMonth()+1);
-       // Log.e("month",Integer.toString(imagedeadline.getMonth()));
-        command = "add";
-        day = String.format("%02d", imagedeadline.getDayOfMonth());
-        year = Integer.toString(imagedeadline.getYear());
-        hour = Integer.toString(deadtime.getCurrentHour());
-        minutes = Integer.toString(deadtime.getCurrentMinute());
-        type = String.valueOf(spinner.getSelectedItem());
-        deaddate = month + " "+ day+ " " + year+ " "+hour+":"+minutes;
-        if(myTextField.getText().toString().length()==0) {
+        deaddate = mm + " "+ dd+ " " + yy+ " "+hh+":"+mi;
+        command = Constants.action_add_image;
+        if(TitleField.getText().toString().length()==0) {
             Context context = getApplicationContext();
-            CharSequence text = "Invalid URL, please search again for an image file";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        }
-        else if(TitleField.getText().toString().length()==0) {
-            Context context = getApplicationContext();
-            CharSequence text = "Please give a title to your posts";
+            CharSequence text = "Please give a title to your post";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
@@ -173,12 +227,15 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
                 Log.d("JSON Exception1", e.toString());
             }
 
+            final GlobalClass globalVariable = (GlobalClass) getApplicationContext();
             Context context = getApplicationContext();
-            CharSequence text = "Image has been cast";
+            int click = globalVariable.getclick();
+            CharSequence text = "Image has been added to queue," + "There have been: "+click+" Misclicks";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            globalVariable.setclick(0);
             go_back();
         }
     }
@@ -204,7 +261,7 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
             String json = "";
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("action", command);
-            jsonObject.accumulate("image_url",myTextField.getText());
+            jsonObject.accumulate("image_url",url);
             jsonObject.accumulate("title",TitleField.getText());
             jsonObject.accumulate("classification",type);
             jsonObject.accumulate("deadline", deaddate);
@@ -341,7 +398,8 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         super.onResume();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText(extras.getString("imgurl"));
+            url = extras.getString("imgurl");
+//            myTextField.setText(extras.getString("imgurl"));
         }
     }
     public void onClick(View v) {
@@ -369,7 +427,9 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         super.onStart();  // Always call the superclass method first
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText(extras.getString("imgurl"));
+            url = extras.getString("imgurl");
+            Picasso.with(getApplicationContext()).load(url).resize(300,150).into(imgthumb);
+//            myTextField.setText(extras.getString("imgurl"));
         }
     }
 
@@ -378,7 +438,9 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         super.onRestart();  // Always call the superclass method first
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText(extras.getString("imgurl"));
+            url = extras.getString("imgurl");
+            Picasso.with(getApplicationContext()).load(url).resize(300,150).into(imgthumb);
+//            myTextField.setText(extras.getString("imgurl"));
         }
         // Activity being restarted from stopped state
     }
@@ -388,7 +450,9 @@ public class ImageSender extends ActionBarActivity implements View.OnClickListen
         setIntent(intent);//must store the new intent unless getIntent() will return the old one
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            myTextField.setText(extras.getString("imgurl"));
+            url = extras.getString("imgurl");
+            Picasso.with(getApplicationContext()).load(url).resize(300,150).into(imgthumb);
+//            myTextField.setText(extras.getString("imgurl"));
         }
 
     }

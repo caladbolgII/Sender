@@ -35,7 +35,8 @@
                 android:text="Connect to your Chromecast then select a layout"
                 android:id="@+id/layout_button"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.70" />
+                android:layout_weight="0.70"
+                android:onClick="post" />
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:clickable="false"
             android:longClickable="false"
